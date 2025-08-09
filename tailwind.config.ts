@@ -52,6 +52,17 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// Nigerian theme colors
+				'nigeria-green': {
+					DEFAULT: 'hsl(var(--nigeria-green))',
+					light: 'hsl(var(--nigeria-green-light))',
+					dark: 'hsl(var(--nigeria-green-dark))'
+				},
+				'education-blue': 'hsl(var(--education-blue))',
+				'education-purple': 'hsl(var(--education-purple))',
+				success: 'hsl(var(--success))',
+				warning: 'hsl(var(--warning))',
+				info: 'hsl(var(--info))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
