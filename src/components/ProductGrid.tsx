@@ -183,13 +183,13 @@ const products = [
   {
     id: 17,
     name: "NABTEB Scratch Card Bulk",
-    description: "Bulk NABTEB scratch cards for result verification. Perfect for schools and institutions. Min: 20, Max: 100 units.",
-    price: 0,
+    description: "Bulk NABTEB scratch cards for result verification. Tiered pricing: 20-40 units (₦1,050), 41-60 units (₦1,000), 61-80 units (₦975), 81-100 units (₦960).",
+    price: 1050,
     category: "Educational",
     icon: Shield,
     rating: 4.8,
     inStock: true,
-    features: ["Bulk pricing", "Min: 20 units", "Max: 100 units", "24/7 support"]
+    features: ["20-40 units: ₦1,050", "41-60 units: ₦1,000", "61-80 units: ₦975", "81-100 units: ₦960", "24/7 support"]
   },
   {
     id: 18,
