@@ -168,6 +168,61 @@ const products = [
     rating: 4.7,
     inStock: true,
     features: ["Digital access", "Business & technical", "24/7 support"]
+  },
+  {
+    id: 16,
+    name: "Bulk Scratch Card",
+    description: "Bulk scratch cards for educational institutions and organizations. Minimum order 20 units, maximum 100 units.",
+    price: 0,
+    category: "Educational",
+    icon: FileText,
+    rating: 4.9,
+    inStock: true,
+    features: ["Bulk discount", "Min: 20 units", "Max: 100 units", "24/7 support"]
+  },
+  {
+    id: 17,
+    name: "NABTEB Scratch Card Bulk",
+    description: "Bulk NABTEB scratch cards for result verification. Perfect for schools and institutions. Min: 20, Max: 100 units.",
+    price: 0,
+    category: "Educational",
+    icon: Shield,
+    rating: 4.8,
+    inStock: true,
+    features: ["Bulk pricing", "Min: 20 units", "Max: 100 units", "24/7 support"]
+  },
+  {
+    id: 18,
+    name: "WAEC Verification Pin Bulk",
+    description: "Bulk WAEC verification pins for result checking. Institutional pricing available. Min: 20, Max: 100 units.",
+    price: 0,
+    category: "Educational",
+    icon: FileText,
+    rating: 4.9,
+    inStock: true,
+    features: ["Verification pins", "Min: 20 units", "Max: 100 units", "24/7 support"]
+  },
+  {
+    id: 19,
+    name: "NECO Result Token Bulk",
+    description: "Bulk NECO result tokens for educational institutions. Special pricing for bulk orders. Min: 20, Max: 100 units.",
+    price: 0,
+    category: "Educational",
+    icon: GraduationCap,
+    rating: 4.8,
+    inStock: true,
+    features: ["Bulk tokens", "Min: 20 units", "Max: 100 units", "24/7 support"]
+  },
+  {
+    id: 20,
+    name: "NBAIS Scratch Card Bulk",
+    description: "Bulk NBAIS scratch cards for result verification. Institutional discount available. Min: 20, Max: 100 units.",
+    price: 0,
+    category: "Educational",
+    icon: Shield,
+    rating: 4.7,
+    inStock: true,
+    features: ["NBAIS cards", "Min: 20 units", "Max: 100 units", "24/7 support"]
   }
 ];
 
