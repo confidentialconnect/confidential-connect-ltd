@@ -146,6 +146,28 @@ const products = [
     rating: 4.7,
     inStock: true,
     features: ["High protein", "Fresh daily", "Healthy choice"]
+  },
+  {
+    id: 14,
+    name: "NECO Result Token",
+    description: "Digital NECO result verification token for secure online access to Senior Secondary Certificate results.",
+    price: 2000,
+    category: "Educational",
+    icon: GraduationCap,
+    rating: 4.8,
+    inStock: true,
+    features: ["Digital token", "Instant access", "Secure verification"]
+  },
+  {
+    id: 15,
+    name: "NABTEB Token",
+    description: "Official NABTEB digital token for accessing National Business and Technical Examinations Board results.",
+    price: 2000,
+    category: "Educational",
+    icon: Shield,
+    rating: 4.7,
+    inStock: true,
+    features: ["Digital access", "Business & technical", "Quick verification"]
   }
 ];
 
