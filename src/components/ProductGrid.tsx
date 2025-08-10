@@ -24,7 +24,7 @@ const products = [
     icon: GraduationCap,
     rating: 4.8,
     inStock: true,
-    features: ["Fast verification", "Secure access", "Digital delivery"]
+    features: ["Fast verification", "Secure access", "24/7 support"]
   },
   {
     id: 3,
@@ -35,7 +35,7 @@ const products = [
     icon: Shield,
     rating: 4.7,
     inStock: true,
-    features: ["Technical education", "Business studies", "Instant access"]
+    features: ["Technical education", "Business studies", "24/7 support"]
   },
   {
     id: 4,
@@ -46,7 +46,7 @@ const products = [
     icon: Star,
     rating: 4.9,
     inStock: true,
-    features: ["Advanced level", "Professional support", "Quick delivery"]
+    features: ["Advanced level", "Quick delivery", "24/7 support"]
   },
   {
     id: 5,
@@ -57,7 +57,7 @@ const products = [
     icon: FileText,
     rating: 4.8,
     inStock: true,
-    features: ["Authentication", "Fast processing", "Secure delivery"]
+    features: ["Authentication", "Fast processing", "24/7 support"]
   },
   {
     id: 6,
@@ -68,7 +68,7 @@ const products = [
     icon: GraduationCap,
     rating: 4.9,
     inStock: true,
-    features: ["Complete support", "Expert guidance", "Success guarantee"]
+    features: ["Complete support", "Expert guidance", "24/7 support"]
   },
   {
     id: 7,
@@ -79,7 +79,7 @@ const products = [
     icon: Shield,
     rating: 4.7,
     inStock: true,
-    features: ["Application support", "Document help", "Admission guidance"]
+    features: ["Application support", "Document help", "24/7 support"]
   },
   {
     id: 8,
@@ -90,7 +90,7 @@ const products = [
     icon: Clock,
     rating: 4.8,
     inStock: true,
-    features: ["Exam registration", "Preparation tips", "University screening"]
+    features: ["Exam registration", "Preparation tips", "24/7 support"]
   },
   {
     id: 9,
@@ -101,7 +101,7 @@ const products = [
     icon: Shield,
     rating: 4.9,
     inStock: true,
-    features: ["24-hour service", "Secure process", "Identity verification"]
+    features: ["Secure process", "Identity verification", "24/7 support"]
   },
   {
     id: 10,
@@ -112,7 +112,7 @@ const products = [
     icon: CreditCard,
     rating: 4.6,
     inStock: true,
-    features: ["Multiple institutions", "Instant confirmation", "Payment receipt"]
+    features: ["Multiple institutions", "Instant confirmation", "24/7 support"]
   },
   {
     id: 11,
@@ -123,7 +123,7 @@ const products = [
     icon: Home,
     rating: 4.5,
     inStock: true,
-    features: ["Room selection", "Instant booking", "Accommodation guarantee"]
+    features: ["Room selection", "Instant booking", "24/7 support"]
   },
   {
     id: 12,
@@ -134,7 +134,7 @@ const products = [
     icon: Coffee,
     rating: 4.8,
     inStock: true,
-    features: ["Homemade quality", "Fresh ingredients", "Student favorite"]
+    features: ["Homemade quality", "Fresh ingredients", "24/7 support"]
   },
   {
     id: 13,
@@ -145,7 +145,7 @@ const products = [
     icon: Coffee,
     rating: 4.7,
     inStock: true,
-    features: ["High protein", "Fresh daily", "Healthy choice"]
+    features: ["High protein", "Fresh daily", "24/7 support"]
   },
   {
     id: 14,
@@ -156,7 +156,7 @@ const products = [
     icon: GraduationCap,
     rating: 4.8,
     inStock: true,
-    features: ["Digital token", "Instant access", "Secure verification"]
+    features: ["Digital token", "Instant access", "24/7 support"]
   },
   {
     id: 15,
@@ -167,7 +167,7 @@ const products = [
     icon: Shield,
     rating: 4.7,
     inStock: true,
-    features: ["Digital access", "Business & technical", "Quick verification"]
+    features: ["Digital access", "Business & technical", "24/7 support"]
   }
 ];
 
