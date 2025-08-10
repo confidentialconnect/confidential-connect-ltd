@@ -41,7 +41,7 @@ const products = [
     id: 4,
     name: "GCE Result Checker",
     description: "General Certificate of Education (GCE) result verification token for advanced level examinations.",
-    price: 3800,
+    price: 2000,
     category: "Educational",
     icon: Star,
     rating: 4.9,
