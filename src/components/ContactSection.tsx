@@ -159,6 +159,23 @@ export const ContactSection = () => {
               </CardContent>
             </Card>
 
+            {/* WhatsApp QR Code */}
+            <Card className="hover-lift">
+              <CardHeader>
+                <CardTitle>WhatsApp Support</CardTitle>
+                <CardDescription>
+                  Scan the QR code to start a WhatsApp chat with us
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="text-center">
+                <img 
+                  src="/lovable-uploads/56744fde-8308-4e73-8a51-d4b460dcfe1a.png" 
+                  alt="WhatsApp QR Code for CONFIDENTIAL CONNECT" 
+                  className="w-full max-w-[280px] mx-auto rounded-lg"
+                />
+              </CardContent>
+            </Card>
+
             {/* Social Media */}
             <Card className="hover-lift">
               <CardHeader>
