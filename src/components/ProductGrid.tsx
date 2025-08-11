@@ -217,13 +217,19 @@ const products = [
   {
     id: 19,
     name: "NECO Result Token Bulk",
-    description: "Bulk NECO result tokens for educational institutions. Special pricing for bulk orders. Min: 20, Max: 100 units.",
-    price: 0,
+    description: "Bulk NECO result tokens for educational institutions with tiered pricing based on quantity.",
+    price: 1300,
     category: "Educational",
     icon: GraduationCap,
     rating: 4.8,
     inStock: true,
-    features: ["Bulk tokens", "Min: 20 units", "Max: 100 units", "24/7 support"]
+    features: [
+      "Quantity: 20-40 units | Unit Price: ₦1,300",
+      "Quantity: 41-60 units | Unit Price: ₦1,200",
+      "Quantity: 61-80 units | Unit Price: ₦1,180",
+      "Quantity: 81-100 units | Unit Price: ₦1,150",
+      "24/7 support"
+    ]
   },
   {
     id: 20,
