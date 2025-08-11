@@ -200,13 +200,19 @@ const products = [
   {
     id: 18,
     name: "WAEC Verification Pin Bulk",
-    description: "Bulk WAEC verification pins for result checking. Institutional pricing available. Min: 20, Max: 100 units.",
-    price: 0,
+    description: "Bulk WAEC verification pins for result checking with tiered pricing based on quantity.",
+    price: 4500,
     category: "Educational",
     icon: FileText,
     rating: 4.9,
     inStock: true,
-    features: ["Verification pins", "Min: 20 units", "Max: 100 units", "24/7 support"]
+    features: [
+      "Quantity: 20-40 units | Unit Price: ₦4,500",
+      "Quantity: 41-60 units | Unit Price: ₦4,300",
+      "Quantity: 61-80 units | Unit Price: ₦4,250", 
+      "Quantity: 81-100 units | Unit Price: ₦4,100",
+      "24/7 support"
+    ]
   },
   {
     id: 19,
