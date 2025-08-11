@@ -234,13 +234,19 @@ const products = [
   {
     id: 20,
     name: "NBAIS Scratch Card Bulk",
-    description: "Bulk NBAIS scratch cards for result verification. Institutional discount available. Min: 20, Max: 100 units.",
-    price: 0,
+    description: "Bulk NBAIS scratch cards for result verification with tiered pricing based on quantity.",
+    price: 1500,
     category: "Educational",
     icon: Shield,
     rating: 4.7,
     inStock: true,
-    features: ["NBAIS cards", "Min: 20 units", "Max: 100 units", "24/7 support"]
+    features: [
+      "Quantity: 20-40 units | Unit Price: ₦1,500",
+      "Quantity: 41-60 units | Unit Price: ₦1,350",
+      "Quantity: 61-80 units | Unit Price: ₦1,300",
+      "Quantity: 81-100 units | Unit Price: ₦1,250",
+      "24/7 support"
+    ]
   }
 ];
 
