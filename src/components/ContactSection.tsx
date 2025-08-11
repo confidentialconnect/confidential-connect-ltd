@@ -169,7 +169,7 @@ export const ContactSection = () => {
               </CardHeader>
               <CardContent className="text-center">
                 <img 
-                  src="/lovable-uploads/56744fde-8308-4e73-8a51-d4b460dcfe1a.png" 
+                  src="/lovable-uploads/844d6332-7434-4200-93de-bb9fa92f86e9.png" 
                   alt="WhatsApp QR Code for CONFIDENTIAL CONNECT" 
                   className="w-full max-w-[280px] mx-auto rounded-lg"
                 />
