@@ -101,7 +101,7 @@ export const ContactSection = () => {
                   <div>
                     <div className="font-semibold">Phone</div>
                     <div className="text-muted-foreground">+234 704 029 4858</div>
-                    <div className="text-muted-foreground">+234 901 171 5040</div>
+                    <div className="text-muted-foreground">+234 901 171 50406</div>
                   </div>
                 </div>
                 
