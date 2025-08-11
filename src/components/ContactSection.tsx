@@ -100,8 +100,8 @@ export const ContactSection = () => {
                   <Phone className="h-6 w-6 text-primary mr-4" />
                   <div>
                     <div className="font-semibold">Phone</div>
-                    <div className="text-muted-foreground">+234 800 123 4567</div>
-                    <div className="text-muted-foreground">+234 901 234 5678</div>
+                    <div className="text-muted-foreground">+234 704 029 4858</div>
+                    <div className="text-muted-foreground">+234 901 171 5040</div>
                   </div>
                 </div>
                 
@@ -109,8 +109,7 @@ export const ContactSection = () => {
                   <Mail className="h-6 w-6 text-primary mr-4" />
                   <div>
                     <div className="font-semibold">Email</div>
-                    <div className="text-muted-foreground">info@confidentialconnect.ng</div>
-                    <div className="text-muted-foreground">support@confidentialconnect.ng</div>
+                    <div className="text-muted-foreground">princejuniorokpo@gmail.com</div>
                   </div>
                 </div>
                 
@@ -119,8 +118,8 @@ export const ContactSection = () => {
                   <div>
                     <div className="font-semibold">Address</div>
                     <div className="text-muted-foreground">
-                      123 Education Avenue<br />
-                      Victoria Island, Lagos<br />
+                      Assembly of God Church Iddo Sarki<br />
+                      Airport Road, close to University of Abuja P/Site<br />
                       Nigeria
                     </div>
                   </div>
