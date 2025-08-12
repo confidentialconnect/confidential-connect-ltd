@@ -153,15 +153,15 @@ export const Footer = () => {
               <div className="flex items-start">
                 <Phone className="h-5 w-5 mr-3 text-primary-foreground/60 mt-1" />
                 <div>
-                  <div className="text-primary-foreground/80">+234 800 123 4567</div>
-                  <div className="text-primary-foreground/60 text-sm">24/7 Support Line</div>
+                  <div className="text-primary-foreground/80">07040294858</div>
+                  <div className="text-primary-foreground/60 text-sm">Primary (WhatsApp)</div>
                 </div>
               </div>
               
               <div className="flex items-start">
                 <Mail className="h-5 w-5 mr-3 text-primary-foreground/60 mt-1" />
                 <div>
-                  <div className="text-primary-foreground/80">info@confidentialconnect.ng</div>
+                  <div className="text-primary-foreground/80">princejuniorokpo@gmail.com</div>
                   <div className="text-primary-foreground/60 text-sm">General Inquiries</div>
                 </div>
               </div>
@@ -169,8 +169,8 @@ export const Footer = () => {
               <div className="flex items-start">
                 <MapPin className="h-5 w-5 mr-3 text-primary-foreground/60 mt-1" />
                 <div>
-                  <div className="text-primary-foreground/80">123 Education Avenue</div>
-                  <div className="text-primary-foreground/80">Victoria Island, Lagos</div>
+                  <div className="text-primary-foreground/80">Assembly of God Church Iddo Sarki</div>
+                  <div className="text-primary-foreground/80">Airport Road, close to University of Abuja P/Site</div>
                   <div className="text-primary-foreground/60 text-sm">Nigeria</div>
                 </div>
               </div>

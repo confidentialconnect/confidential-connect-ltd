@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, Star, Clock, CheckCircle, FileText, GraduationCap, Shield, CreditCard, Home, Coffee } from "lucide-react";
-
+import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/hooks/use-toast";
 const products = [
   {
     id: 1,
@@ -252,7 +253,8 @@ const products = [
 
 export const ProductGrid = () => {
   const categories = ["All", "Educational", "Documentation", "Identity", "Payment", "Accommodation", "Food"];
-
+  const { addItem } = useCart();
+  const { toast } = useToast();
   return (
     <section id="products" className="py-20 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -317,7 +319,14 @@ export const ProductGrid = () => {
                 </CardContent>
 
                 <CardFooter className="pt-0">
-                  <Button className="w-full hover-lift" disabled={!product.inStock}>
+                  <Button
+                    className="w-full hover-lift"
+                    disabled={!product.inStock}
+                    onClick={() => {
+                      addItem({ id: product.id, name: product.name, price: product.price }, 1);
+                      toast({ title: "Added to cart", description: `${product.name} added to your cart.` });
+                    }}
+                  >
                     <ShoppingCart className="h-4 w-4 mr-2" />
                     {product.inStock ? "Add to Cart" : "Out of Stock"}
                   </Button>

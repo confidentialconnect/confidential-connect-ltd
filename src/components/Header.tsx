@@ -2,10 +2,11 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, Phone, Mail, ShoppingCart } from "lucide-react";
-
+import { Link } from "react-router-dom";
+import { useCart } from "@/contexts/CartContext";
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const { totalItems } = useCart();
   const navigation = [
     { name: "Home", href: "#home" },
     { name: "Products", href: "#products" },
@@ -46,11 +47,20 @@ export const Header = () => {
           <div className="hidden lg:flex items-center space-x-4">
             <div className="flex items-center space-x-2 text-sm text-muted-foreground">
               <Phone className="h-4 w-4" />
-              <span>+234 800 123 4567</span>
+              <span>07040294858</span>
             </div>
-            <Button variant="outline" size="sm" className="hover-lift">
-              <ShoppingCart className="h-4 w-4 mr-2" />
-              Cart
+            <Button asChild variant="outline" size="sm" className="hover-lift">
+              <Link to="/cart" aria-label={`Cart with ${totalItems} items`}>
+                <span className="inline-flex items-center">
+                  <ShoppingCart className="h-4 w-4 mr-2" />
+                  Cart
+                  {totalItems > 0 && (
+                    <span className="ml-2 inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground h-5 min-w-5 px-1 text-xs">
+                      {totalItems}
+                    </span>
+                  )}
+                </span>
+              </Link>
             </Button>
           </div>
 
@@ -88,15 +98,22 @@ export const Header = () => {
                 <div className="border-t pt-6 space-y-4">
                   <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                     <Phone className="h-4 w-4" />
-                    <span>+234 800 123 4567</span>
+                    <span>07040294858</span>
                   </div>
                   <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                     <Mail className="h-4 w-4" />
-                    <span>info@confidentialconnect.ng</span>
+                    <span>princejuniorokpo@gmail.com</span>
                   </div>
-                  <Button className="w-full hover-lift">
-                    <ShoppingCart className="h-4 w-4 mr-2" />
-                    View Cart
+                  <Button asChild className="w-full hover-lift" onClick={() => setIsOpen(false)}>
+                    <Link to="/cart">
+                      <ShoppingCart className="h-4 w-4 mr-2" />
+                      View Cart
+                      {totalItems > 0 && (
+                        <span className="ml-2 inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground h-5 min-w-5 px-1 text-xs">
+                          {totalItems}
+                        </span>
+                      )}
+                    </Link>
                   </Button>
                 </div>
               </div>
