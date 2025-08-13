@@ -85,7 +85,7 @@ export const Hero = () => {
                       <div className="text-sm text-muted-foreground">Check your results instantly</div>
                     </div>
                   </div>
-                  <Badge variant="secondary">₦3,500</Badge>
+                  <Badge variant="secondary">₦4,500</Badge>
                 </div>
 
                 <div className="flex items-center justify-between p-4 bg-secondary rounded-lg hover-lift cursor-pointer" onClick={() => { window.location.hash = 'products'; }}>
@@ -96,7 +96,7 @@ export const Hero = () => {
                       <div className="text-sm text-muted-foreground">Complete enrollment support</div>
                     </div>
                   </div>
-                  <Badge variant="secondary">₦15,000</Badge>
+                  <Badge variant="secondary">₦7,000</Badge>
                 </div>
 
                 <div className="flex items-center justify-between p-4 bg-secondary rounded-lg hover-lift cursor-pointer" onClick={() => { window.location.hash = 'products'; }}>
@@ -107,7 +107,7 @@ export const Hero = () => {
                       <div className="text-sm text-muted-foreground">Fast and secure</div>
                     </div>
                   </div>
-                  <Badge variant="secondary">₦2,000</Badge>
+                  <Badge variant="secondary">₦3,500</Badge>
                 </div>
               </div>
 
