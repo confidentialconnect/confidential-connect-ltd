@@ -130,8 +130,10 @@ export const ServicesSection = () => {
                     ))}
                   </div>
                   
-                  <Button className="w-full hover-lift">
-                    Learn More
+                  <Button asChild className="w-full hover-lift">
+                    <a href={service.title === "Payment Solutions" ? "/payments" : "#contact"} aria-label={`Learn more about ${service.title}`}>
+                      Learn More
+                    </a>
                   </Button>
                 </CardContent>
               </Card>
@@ -177,15 +179,16 @@ export const ServicesSection = () => {
                 Join thousands of satisfied students who trust us with their educational needs. Get started today and experience the difference.
               </p>
               <div className="space-y-4">
-                <Button size="lg" className="w-full bg-white text-nigeria-green hover:bg-white/90 hover-lift">
-                  Start Your Journey
+                <Button asChild size="lg" className="w-full bg-white text-nigeria-green hover:bg-white/90 hover-lift">
+                  <a href="#products" aria-label="Start your journey with our products">Start Your Journey</a>
                 </Button>
                 <Button 
+                  asChild
                   size="lg" 
                   variant="outline" 
                   className="w-full border-white text-white hover:bg-white hover:text-nigeria-green hover-lift"
                 >
-                  Contact Our Team
+                  <a href="#contact" aria-label="Contact our team">Contact Our Team</a>
                 </Button>
               </div>
             </div>

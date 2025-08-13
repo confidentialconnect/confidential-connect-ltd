@@ -144,16 +144,21 @@ export const ContactSection = () => {
               <CardContent className="p-6 text-white">
                 <h3 className="text-xl font-bold mb-4">Quick Actions</h3>
                 <div className="space-y-3">
-                  <Button className="w-full bg-white text-nigeria-green hover:bg-white/90 hover-lift">
-                    <Phone className="h-4 w-4 mr-2" />
-                    Call Us Now
+                  <Button asChild className="w-full bg-white text-nigeria-green hover:bg-white/90 hover-lift">
+                    <a href="tel:+2347040294858" aria-label="Call us now">
+                      <Phone className="h-4 w-4 mr-2" />
+                      Call Us Now
+                    </a>
                   </Button>
                   <Button 
+                    asChild
                     variant="outline" 
                     className="w-full border-white text-white hover:bg-white hover:text-nigeria-green hover-lift"
                   >
-                    <Globe className="h-4 w-4 mr-2" />
-                    Live Chat Support
+                    <a href="https://wa.me/2347040294858?text=Hello%20Confidential%20Connect%2C%20I%20need%20help%20with..." target="_blank" rel="noopener noreferrer" aria-label="Live chat support on WhatsApp">
+                      <Globe className="h-4 w-4 mr-2" />
+                      Live Chat Support
+                    </a>
                   </Button>
                 </div>
               </CardContent>

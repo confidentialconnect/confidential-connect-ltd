@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -255,6 +256,7 @@ export const ProductGrid = () => {
   const categories = ["All", "Educational", "Documentation", "Identity", "Payment", "Accommodation", "Food"];
   const { addItem } = useCart();
   const { toast } = useToast();
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
   return (
     <section id="products" className="py-20 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -270,8 +272,10 @@ export const ProductGrid = () => {
           {categories.map((category) => (
             <Button
               key={category}
-              variant="outline"
+              variant={selectedCategory === category ? "default" : "outline"}
               className="hover-lift"
+              onClick={() => setSelectedCategory(category)}
+              aria-pressed={selectedCategory === category}
             >
               {category}
             </Button>
@@ -280,60 +284,62 @@ export const ProductGrid = () => {
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-slide-up">
-          {products.map((product, index) => {
-            const Icon = product.icon;
-            return (
-              <Card key={product.id} className="hover-lift border-border/50 hover:border-primary/50 transition-all duration-300" style={{animationDelay: `${index * 0.1}s`}}>
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <Icon className="h-8 w-8 text-primary" />
-                    <Badge variant="secondary" className="text-xs">
-                      {product.category}
-                    </Badge>
-                  </div>
-                  <CardTitle className="text-lg">{product.name}</CardTitle>
-                  <CardDescription className="text-sm line-clamp-3">
-                    {product.description}
-                  </CardDescription>
-                </CardHeader>
-                
-                <CardContent className="pb-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="text-2xl font-bold text-primary">
-                      ₦{product.price.toLocaleString()}
+          {products
+            .filter((p) => selectedCategory === "All" || p.category === selectedCategory)
+            .map((product, index) => {
+              const Icon = product.icon;
+              return (
+                <Card key={product.id} className="hover-lift border-border/50 hover:border-primary/50 transition-all duration-300" style={{animationDelay: `${index * 0.1}s`}}>
+                  <CardHeader className="pb-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <Icon className="h-8 w-8 text-primary" />
+                      <Badge variant="secondary" className="text-xs">
+                        {product.category}
+                      </Badge>
                     </div>
-                    <div className="flex items-center">
-                      <Star className="h-4 w-4 text-yellow-500 fill-current mr-1" />
-                      <span className="text-sm text-muted-foreground">{product.rating}</span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    {product.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-center text-sm text-muted-foreground">
-                        <CheckCircle className="h-3 w-3 text-success mr-2" />
-                        {feature}
+                    <CardTitle className="text-lg">{product.name}</CardTitle>
+                    <CardDescription className="text-sm line-clamp-3">
+                      {product.description}
+                    </CardDescription>
+                  </CardHeader>
+                  
+                  <CardContent className="pb-4">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="text-2xl font-bold text-primary">
+                        ₦{product.price.toLocaleString()}
                       </div>
-                    ))}
-                  </div>
-                </CardContent>
+                      <div className="flex items-center">
+                        <Star className="h-4 w-4 text-yellow-500 fill-current mr-1" />
+                        <span className="text-sm text-muted-foreground">{product.rating}</span>
+                      </div>
+                    </div>
 
-                <CardFooter className="pt-0">
-                  <Button
-                    className="w-full hover-lift"
-                    disabled={!product.inStock}
-                    onClick={() => {
-                      addItem({ id: product.id, name: product.name, price: product.price }, 1);
-                      toast({ title: "Added to cart", description: `${product.name} added to your cart.` });
-                    }}
-                  >
-                    <ShoppingCart className="h-4 w-4 mr-2" />
-                    {product.inStock ? "Add to Cart" : "Out of Stock"}
-                  </Button>
-                </CardFooter>
-              </Card>
-            );
-          })}
+                    <div className="space-y-2">
+                      {product.features.map((feature, idx) => (
+                        <div key={idx} className="flex items-center text-sm text-muted-foreground">
+                          <CheckCircle className="h-3 w-3 text-success mr-2" />
+                          {feature}
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+
+                  <CardFooter className="pt-0">
+                    <Button
+                      className="w-full hover-lift"
+                      disabled={!product.inStock}
+                      onClick={() => {
+                        addItem({ id: product.id, name: product.name, price: product.price }, 1);
+                        toast({ title: "Added to cart", description: `${product.name} added to your cart.` });
+                      }}
+                    >
+                      <ShoppingCart className="h-4 w-4 mr-2" />
+                      {product.inStock ? "Add to Cart" : "Out of Stock"}
+                    </Button>
+                  </CardFooter>
+                </Card>
+              );
+            })}
         </div>
 
         {/* Call to Action */}
@@ -344,8 +350,8 @@ export const ProductGrid = () => {
               <p className="text-white/90 mb-6">
                 Our team of experts is ready to help you find the perfect educational solution for your needs.
               </p>
-              <Button size="lg" className="bg-white text-nigeria-green hover:bg-white/90 hover-lift">
-                Get Expert Consultation
+              <Button asChild size="lg" className="bg-white text-nigeria-green hover:bg-white/90 hover-lift">
+                <a href="#contact" aria-label="Get expert consultation">Get Expert Consultation</a>
               </Button>
             </div>
           </Card>

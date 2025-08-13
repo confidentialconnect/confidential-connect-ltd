@@ -28,16 +28,19 @@ export const Hero = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <Button size="lg" className="bg-white text-nigeria-green hover:bg-white/90 hover-lift">
-                <GraduationCap className="h-5 w-5 mr-2" />
-                Explore Our Services
+              <Button asChild size="lg" className="bg-white text-nigeria-green hover:bg-white/90 hover-lift">
+                <a href="#services" aria-label="Explore our services">
+                  <GraduationCap className="h-5 w-5 mr-2" />
+                  Explore Our Services
+                </a>
               </Button>
               <Button 
+                asChild
                 size="lg" 
                 variant="outline" 
                 className="border-white text-white hover:bg-white hover:text-nigeria-green hover-lift"
               >
-                Contact Us Today
+                <a href="#contact" aria-label="Contact us today">Contact Us Today</a>
               </Button>
             </div>
 
@@ -74,7 +77,7 @@ export const Hero = () => {
               </div>
 
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-secondary rounded-lg hover-lift cursor-pointer">
+                <div className="flex items-center justify-between p-4 bg-secondary rounded-lg hover-lift cursor-pointer" onClick={() => { window.location.hash = 'products'; }}>
                   <div className="flex items-center">
                     <GraduationCap className="h-8 w-8 text-primary mr-3" />
                     <div>
@@ -85,7 +88,7 @@ export const Hero = () => {
                   <Badge variant="secondary">₦3,500</Badge>
                 </div>
 
-                <div className="flex items-center justify-between p-4 bg-secondary rounded-lg hover-lift cursor-pointer">
+                <div className="flex items-center justify-between p-4 bg-secondary rounded-lg hover-lift cursor-pointer" onClick={() => { window.location.hash = 'products'; }}>
                   <div className="flex items-center">
                     <Clock className="h-8 w-8 text-primary mr-3" />
                     <div>
@@ -96,7 +99,7 @@ export const Hero = () => {
                   <Badge variant="secondary">₦15,000</Badge>
                 </div>
 
-                <div className="flex items-center justify-between p-4 bg-secondary rounded-lg hover-lift cursor-pointer">
+                <div className="flex items-center justify-between p-4 bg-secondary rounded-lg hover-lift cursor-pointer" onClick={() => { window.location.hash = 'products'; }}>
                   <div className="flex items-center">
                     <Star className="h-8 w-8 text-primary mr-3" />
                     <div>
@@ -108,8 +111,8 @@ export const Hero = () => {
                 </div>
               </div>
 
-              <Button className="w-full mt-6 hover-lift">
-                View All Services
+              <Button asChild className="w-full mt-6 hover-lift">
+                <a href="#products" aria-label="View all services">View All Services</a>
               </Button>
             </Card>
           </div>

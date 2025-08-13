@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { 
@@ -16,6 +17,12 @@ import {
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const [email, setEmail] = useState("");
+  const handleSubscribe = () => {
+    const subject = "Newsletter Subscription";
+    const body = `Please subscribe this email: ${email || "(email not provided)"}`;
+    window.location.href = `mailto:princejuniorokpo@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
 
   return (
     <footer className="bg-primary text-primary-foreground">
@@ -31,8 +38,10 @@ export const Footer = () => {
               <Input 
                 placeholder="Enter your email address" 
                 className="bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:border-white/40"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
-              <Button variant="secondary" className="hover-lift">
+              <Button variant="secondary" className="hover-lift" onClick={handleSubscribe} aria-label="Subscribe to newsletter">
                 <Send className="h-4 w-4 mr-2" />
                 Subscribe
               </Button>
@@ -100,13 +109,13 @@ export const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="#" className="text-primary-foreground/80 hover:text-white transition-colors duration-200">
-                  About Us
+                <a href="/payments" className="text-primary-foreground/80 hover:text-white transition-colors duration-200">
+                  Payments
                 </a>
               </li>
               <li>
-                <a href="#" className="text-primary-foreground/80 hover:text-white transition-colors duration-200">
-                  Privacy Policy
+                <a href="/admin" className="text-primary-foreground/80 hover:text-white transition-colors duration-200">
+                  Admin
                 </a>
               </li>
             </ul>
