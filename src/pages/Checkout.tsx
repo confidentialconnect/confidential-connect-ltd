@@ -59,9 +59,36 @@ const Checkout = () => {
 
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [supabaseAvailable, setSupabaseAvailable] = useState(true);
+
+  useEffect(() => {
+    // Check if Supabase is properly configured
+    const checkSupabase = async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke('create-order', {
+          body: { test: true }
+        });
+        if (error && error.message === 'Supabase not configured') {
+          setSupabaseAvailable(false);
+        }
+      } catch (e) {
+        setSupabaseAvailable(false);
+      }
+    };
+    checkSupabase();
+  }, []);
 
   const handleProceedToPayment = async () => {
     if (isCartEmpty) return;
+    
+    if (!supabaseAvailable) {
+      toast({
+        title: "Service Unavailable",
+        description: "Online payments are being set up. Please use WhatsApp or Email options below.",
+        variant: "destructive"
+      });
+      return;
+    }
     
     if (!form.fullName || !form.phone) {
       toast({
@@ -104,7 +131,7 @@ const Checkout = () => {
       console.error('Order creation failed:', error);
       toast({
         title: "Order Failed",
-        description: "Failed to create order. Please try again.",
+        description: "Failed to create order. Please try again or use WhatsApp/Email options.",
         variant: "destructive"
       });
     } finally {
@@ -247,16 +274,24 @@ const Checkout = () => {
                     <span className="font-semibold">{formatNGN(subtotal)}</span>
                   </div>
                   <div className="space-y-3">
-                    <Button 
-                      className="w-full" 
-                      onClick={handleProceedToPayment}
-                      disabled={isProcessing}
-                    >
-                      {isProcessing ? "Processing..." : "Proceed to Payment"}
-                    </Button>
-                    <div className="text-xs text-muted-foreground text-center">
-                      You'll be redirected to our secure payment page
-                    </div>
+                    {supabaseAvailable ? (
+                      <>
+                        <Button 
+                          className="w-full" 
+                          onClick={handleProceedToPayment}
+                          disabled={isProcessing}
+                        >
+                          {isProcessing ? "Processing..." : "Proceed to Payment"}
+                        </Button>
+                        <div className="text-xs text-muted-foreground text-center">
+                          You'll be redirected to our secure payment page
+                        </div>
+                      </>
+                    ) : (
+                      <div className="text-sm text-muted-foreground text-center p-3 bg-muted rounded-lg">
+                        Online payments are being configured. Please use the options below.
+                      </div>
+                    )}
                     <Button variant="outline" className="w-full" onClick={handleWhatsApp}>
                       Place Order via WhatsApp
                     </Button>
