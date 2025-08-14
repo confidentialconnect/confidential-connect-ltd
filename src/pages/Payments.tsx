@@ -11,15 +11,24 @@ import { useNavigate } from "react-router-dom";
 const WHATSAPP_NUMBER_E164 = "2347040294858";
 
 const paymentMethods = {
+  remita: {
+    label: "Remita (Cards/Online)",
+    description: "Pay with Debit/Credit Cards, Bank Transfer",
+    icon: "CreditCard",
+  },
   opay: {
     label: "OPay",
     account: "7040294858",
     name: "OKPO CONFIDENCE OKO",
+    description: "Mobile money transfer",
+    icon: "Wallet",
   },
   palmpay: {
-    label: "PalmPay",
+    label: "PalmPay", 
     account: "7040294858",
     name: "OKPO CONFIDENCE OKO",
+    description: "Mobile money transfer",
+    icon: "Wallet",
   },
 } as const;
 
@@ -29,9 +38,10 @@ const Payments = () => {
   const { items, subtotal } = useCart();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const [method, setMethod] = useState<MethodKey>("opay");
+  const [method, setMethod] = useState<MethodKey>("remita");
   const [orderData, setOrderData] = useState<any>(null);
   const [isConfirming, setIsConfirming] = useState(false);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
   useEffect(() => {
     document.title = "Payments | Confidential Connect";
@@ -62,10 +72,87 @@ const Payments = () => {
     }
   };
 
-  const handleConfirmTransfer = async () => {
+  const handleRemitaPayment = async () => {
     if (!orderData?.paymentReference) {
       toast({
         title: "Error",
+        description: "No order found. Please create a new order from checkout.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsProcessingPayment(true);
+
+    try {
+      // Initialize Remita payment
+      const { data, error } = await supabase.functions.invoke('create-remita-payment', {
+        body: {
+          paymentReference: orderData.paymentReference,
+          amount: orderData.total,
+          customerName: orderData.customerInfo?.fullName || "Customer",
+          customerEmail: orderData.customerInfo?.email || "customer@example.com",
+          customerPhone: orderData.customerInfo?.phone || "",
+          description: `Payment for Order #${orderData.paymentReference}`
+        }
+      });
+
+      if (error) throw error;
+
+      // Redirect to Remita payment page
+      if (data?.paymentUrl) {
+        window.open(data.paymentUrl, '_blank');
+        
+        toast({
+          title: "Payment Initiated",
+          description: "Complete your payment in the new tab. Return here once done.",
+        });
+
+        // Start checking payment status
+        setTimeout(() => checkPaymentStatus(), 5000);
+      }
+    } catch (error) {
+      console.error('Remita payment failed:', error);
+      toast({
+        title: "Payment Failed",
+        description: "Unable to initialize payment. Please try again or use bank transfer.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsProcessingPayment(false);
+    }
+  };
+
+  const checkPaymentStatus = async () => {
+    if (!orderData?.paymentReference) return;
+
+    try {
+      const { data } = await supabase.functions.invoke('verify-remita-payment', {
+        body: { paymentReference: orderData.paymentReference }
+      });
+
+      if (data?.status === 'completed') {
+        localStorage.removeItem('currentOrder');
+        navigate("/order-success");
+        toast({
+          title: "Payment Successful",
+          description: "Your payment has been confirmed!",
+        });
+      } else if (data?.status === 'failed') {
+        toast({
+          title: "Payment Failed",
+          description: "Payment was not successful. Please try again.",
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      console.error('Payment verification failed:', error);
+    }
+  };
+  const handleConfirmTransfer = async () => {
+    if (!orderData?.paymentReference) {
+      toast({
+        title: "Error", 
         description: "No order found. Please create a new order.",
         variant: "destructive"
       });
@@ -75,7 +162,6 @@ const Payments = () => {
     setIsConfirming(true);
 
     try {
-      // Update payment status to completed
       const { error } = await supabase.functions.invoke('verify-payment', {
         body: {
           paymentReference: orderData.paymentReference,
@@ -85,12 +171,12 @@ const Payments = () => {
 
       if (error) throw error;
 
-      const m = paymentMethods[method];
+      const m = paymentMethods[method as keyof typeof paymentMethods];
       const msg = [
         `Payment Confirmation - Order #${orderData.paymentReference}`,
         `Method: ${m.label}`,
-        `Account: ${m.account}`,
-        `Name: ${m.name}`,
+        `Account: ${(m as any).account}`,
+        `Name: ${(m as any).name}`,
         `Amount: ${formatNGN(orderData?.total || subtotal)}`,
         "",
         "Items:",
@@ -104,7 +190,6 @@ const Payments = () => {
       const url = `https://wa.me/${WHATSAPP_NUMBER_E164}?text=${encodeURIComponent(msg)}`;
       window.open(url, "_blank");
 
-      // Clear order data and navigate to success
       localStorage.removeItem('currentOrder');
       navigate("/order-success");
     } catch (error) {
@@ -130,11 +215,52 @@ const Payments = () => {
                 <CardTitle>Select a Payment Method</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid gap-4">
+                  {/* Remita Online Payment */}
+                  <div className={`rounded-lg border p-4 ${method === "remita" ? "border-primary bg-primary/5" : "border-border"}`}>
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <CreditCard className="h-5 w-5 text-primary" />
+                        <div>
+                          <div className="font-semibold">Remita (Recommended)</div>
+                          <div className="text-sm text-muted-foreground">Pay with Cards/Bank Transfer</div>
+                        </div>
+                      </div>
+                      <input
+                        type="radio"
+                        name="method"
+                        checked={method === "remita"}
+                        onChange={() => setMethod("remita")}
+                        aria-label="Select Remita"
+                      />
+                    </div>
+                    <div className="text-sm text-muted-foreground mb-3">
+                      Secure online payment with Visa, Mastercard, Verve cards and bank transfers
+                    </div>
+                    {method === "remita" && (
+                      <Button 
+                        className="w-full" 
+                        onClick={handleRemitaPayment}
+                        disabled={isProcessingPayment}
+                      >
+                        <CreditCard className="h-4 w-4 mr-2" />
+                        {isProcessingPayment ? "Processing..." : "Pay Now"}
+                      </Button>
+                    )}
+                  </div>
+
+                  <div className="text-center text-sm text-muted-foreground">
+                    OR
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4">
                   {/* OPay */}
                   <div className={`rounded-lg border p-4 ${method === "opay" ? "border-primary" : "border-border"}`}>
                     <div className="flex items-center justify-between mb-3">
-                      <div className="font-semibold">OPay</div>
+                      <div className="flex items-center gap-3">
+                        <Wallet className="h-5 w-5" />
+                        <div className="font-semibold">OPay</div>
+                      </div>
                       <input
                         type="radio"
                         name="method"
@@ -163,7 +289,10 @@ const Payments = () => {
                   {/* PalmPay */}
                   <div className={`rounded-lg border p-4 ${method === "palmpay" ? "border-primary" : "border-border"}`}>
                     <div className="flex items-center justify-between mb-3">
-                      <div className="font-semibold">PalmPay</div>
+                      <div className="flex items-center gap-3">
+                        <Wallet className="h-5 w-5" />
+                        <div className="font-semibold">PalmPay</div>
+                      </div>
                       <input
                         type="radio"
                         name="method"
@@ -187,6 +316,7 @@ const Payments = () => {
                         <Copy className="h-4 w-4 mr-2" /> Copy Number
                       </Button>
                     </div>
+                  </div>
                   </div>
                 </div>
 
@@ -217,14 +347,25 @@ const Payments = () => {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Button 
-                    className="w-full" 
-                    onClick={handleConfirmTransfer}
-                    disabled={isConfirming}
-                  >
-                    <CheckCircle2 className="h-4 w-4 mr-2" /> 
-                    {isConfirming ? "Confirming..." : "I have sent the money"}
-                  </Button>
+                  {method === "remita" ? (
+                    <Button 
+                      className="w-full" 
+                      onClick={handleRemitaPayment}
+                      disabled={isProcessingPayment}
+                    >
+                      <CreditCard className="h-4 w-4 mr-2" />
+                      {isProcessingPayment ? "Processing Payment..." : "Pay with Remita"}
+                    </Button>
+                  ) : (
+                    <Button 
+                      className="w-full" 
+                      onClick={handleConfirmTransfer}
+                      disabled={isConfirming}
+                    >
+                      <CheckCircle2 className="h-4 w-4 mr-2" /> 
+                      {isConfirming ? "Confirming..." : "I have sent the money"}
+                    </Button>
+                  )}
                   <Button asChild variant="outline" className="w-full">
                     <a href="/checkout">Go to Checkout</a>
                   </Button>
@@ -234,17 +375,25 @@ const Payments = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>Pay Online (Cards) - Coming Soon</CardTitle>
+                <CardTitle>Payment Instructions</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3 text-sm text-muted-foreground">
-                <p>
-                  We can enable secure in-app card payments (e.g., Remita/OPay/Paystack/Flutterwave). To proceed, please connect Supabase so we can safely store your payment gateway keys.
-                </p>
-                <ul className="list-disc ml-6">
-                  <li>Multiple methods and automatic confirmation</li>
-                  <li>Receipts and order tracking</li>
-                  <li>Works with your existing checkout flow</li>
-                </ul>
+              <CardContent className="space-y-3 text-sm">
+                {method === "remita" ? (
+                  <div className="space-y-2">
+                    <p className="text-green-600 font-medium">✓ Secure online payment with cards</p>
+                    <p>• Accepts Visa, Mastercard, Verve cards</p>
+                    <p>• Bank transfer and USSD options available</p>
+                    <p>• Instant payment confirmation</p>
+                    <p>• 256-bit SSL encryption</p>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <p className="font-medium">Manual Transfer Instructions:</p>
+                    <p>1. Transfer to the account details above</p>
+                    <p>2. Click "I have sent the money" button</p>
+                    <p>3. We'll verify and confirm your payment</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
