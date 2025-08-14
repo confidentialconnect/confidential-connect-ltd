@@ -3,8 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RadioGroup } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
-import { Phone, Copy, CheckCircle2, CreditCard, Wallet } from "lucide-react";
+import { Phone, Copy, CheckCircle2, CreditCard, Wallet, Clock } from "lucide-react";
 import { useCart, formatNGN } from "@/contexts/CartContext";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 
 const WHATSAPP_NUMBER_E164 = "2347040294858";
 
@@ -26,20 +28,30 @@ type MethodKey = keyof typeof paymentMethods;
 const Payments = () => {
   const { items, subtotal } = useCart();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [method, setMethod] = useState<MethodKey>("opay");
+  const [orderData, setOrderData] = useState<any>(null);
+  const [isConfirming, setIsConfirming] = useState(false);
 
   useEffect(() => {
     document.title = "Payments | Confidential Connect";
     const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Choose a payment method (OPay, PalmPay) or contact us for card payments. Confirm your transfer instantly via WhatsApp.");
+    if (meta) meta.setAttribute("content", "Complete your payment using OPay, PalmPay or online card payment. Secure and instant confirmation.");
+
+    // Load order data from localStorage
+    const savedOrder = localStorage.getItem('currentOrder');
+    if (savedOrder) {
+      setOrderData(JSON.parse(savedOrder));
+    }
   }, []);
 
   const summary = useMemo(() => {
-    if (!items.length) return "No items in cart";
-    return items
-      .map((i) => `- ${i.name} x ${i.quantity} @ ${formatNGN(i.price)} = ${formatNGN(i.price * i.quantity)}`)
+    const currentItems = orderData?.items || items;
+    if (!currentItems.length) return "No items in order";
+    return currentItems
+      .map((i: any) => `- ${i.name} x ${i.quantity} @ ${formatNGN(i.price)} = ${formatNGN(i.price * i.quantity)}`)
       .join("\n");
-  }, [items]);
+  }, [items, orderData]);
 
   const handleCopy = async (text: string, label: string) => {
     try {
@@ -50,25 +62,61 @@ const Payments = () => {
     }
   };
 
-  const handleConfirmTransfer = () => {
-    const m = paymentMethods[method];
-    const msg = [
-      `Payment Confirmation`,
-      `Method: ${m.label}`,
-      `Account: ${m.account}`,
-      `Name: ${m.name}`,
-      `Amount: ${formatNGN(subtotal)}`,
-      "",
-      "Items:",
-      summary,
-      "",
-      "I have sent the money. Kindly confirm. Thank you.",
-    ]
-      .filter(Boolean)
-      .join("\n");
+  const handleConfirmTransfer = async () => {
+    if (!orderData?.paymentReference) {
+      toast({
+        title: "Error",
+        description: "No order found. Please create a new order.",
+        variant: "destructive"
+      });
+      return;
+    }
 
-    const url = `https://wa.me/${WHATSAPP_NUMBER_E164}?text=${encodeURIComponent(msg)}`;
-    window.open(url, "_blank");
+    setIsConfirming(true);
+
+    try {
+      // Update payment status to completed
+      const { error } = await supabase.functions.invoke('verify-payment', {
+        body: {
+          paymentReference: orderData.paymentReference,
+          paymentStatus: 'completed'
+        }
+      });
+
+      if (error) throw error;
+
+      const m = paymentMethods[method];
+      const msg = [
+        `Payment Confirmation - Order #${orderData.paymentReference}`,
+        `Method: ${m.label}`,
+        `Account: ${m.account}`,
+        `Name: ${m.name}`,
+        `Amount: ${formatNGN(orderData?.total || subtotal)}`,
+        "",
+        "Items:",
+        summary,
+        "",
+        "I have sent the money. Kindly confirm. Thank you.",
+      ]
+        .filter(Boolean)
+        .join("\n");
+
+      const url = `https://wa.me/${WHATSAPP_NUMBER_E164}?text=${encodeURIComponent(msg)}`;
+      window.open(url, "_blank");
+
+      // Clear order data and navigate to success
+      localStorage.removeItem('currentOrder');
+      navigate("/order-success");
+    } catch (error) {
+      console.error('Payment confirmation failed:', error);
+      toast({
+        title: "Confirmation Failed",
+        description: "Please try again or contact support.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsConfirming(false);
+    }
   };
 
   return (
@@ -142,19 +190,40 @@ const Payments = () => {
                   </div>
                 </div>
 
+                {orderData && (
+                  <div className="rounded-lg border p-4 bg-primary/5">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Clock className="h-4 w-4 text-primary" />
+                      <span className="font-medium text-primary">Order #{orderData.paymentReference}</span>
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Order created for {orderData.customerInfo?.fullName}
+                    </div>
+                  </div>
+                )}
+
                 <div className="rounded-lg border p-4 bg-muted/40">
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="font-semibold">Amount to Pay</div>
-                      <div className="text-muted-foreground text-sm">Based on your current cart subtotal</div>
+                      <div className="text-muted-foreground text-sm">
+                        {orderData ? "Order total" : "Based on your current cart subtotal"}
+                      </div>
                     </div>
-                    <div className="text-2xl font-bold text-primary">{formatNGN(subtotal)}</div>
+                    <div className="text-2xl font-bold text-primary">
+                      {formatNGN(orderData?.total || subtotal)}
+                    </div>
                   </div>
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Button className="w-full" onClick={handleConfirmTransfer}>
-                    <CheckCircle2 className="h-4 w-4 mr-2" /> I have sent the money
+                  <Button 
+                    className="w-full" 
+                    onClick={handleConfirmTransfer}
+                    disabled={isConfirming}
+                  >
+                    <CheckCircle2 className="h-4 w-4 mr-2" /> 
+                    {isConfirming ? "Confirming..." : "I have sent the money"}
                   </Button>
                   <Button asChild variant="outline" className="w-full">
                     <a href="/checkout">Go to Checkout</a>
@@ -187,22 +256,25 @@ const Payments = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  {items.length === 0 ? (
-                    <div className="text-sm text-muted-foreground">Your cart is empty.</div>
-                  ) : (
-                    items.map((i) => (
-                      <div key={i.id} className="flex justify-between text-sm">
-                        <span>
-                          {i.name} × {i.quantity}
-                        </span>
-                        <span className="font-medium">{formatNGN(i.price * i.quantity)}</span>
-                      </div>
-                    ))
-                  )}
+                  {(() => {
+                    const currentItems = orderData?.items || items;
+                    return currentItems.length === 0 ? (
+                      <div className="text-sm text-muted-foreground">No items in order.</div>
+                    ) : (
+                      currentItems.map((i: any) => (
+                        <div key={i.id} className="flex justify-between text-sm">
+                          <span>
+                            {i.name} × {i.quantity}
+                          </span>
+                          <span className="font-medium">{formatNGN(i.price * i.quantity)}</span>
+                        </div>
+                      ))
+                    );
+                  })()}
                 </div>
                 <div className="flex justify-between pt-2 border-t">
-                  <span className="font-semibold">Subtotal</span>
-                  <span className="font-semibold">{formatNGN(subtotal)}</span>
+                  <span className="font-semibold">Total</span>
+                  <span className="font-semibold">{formatNGN(orderData?.total || subtotal)}</span>
                 </div>
               </CardContent>
             </Card>

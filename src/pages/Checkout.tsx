@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const WHATSAPP_NUMBER_E164 = "2347040294858"; // Primary WhatsApp in E.164 without '+' for wa.me
 const ORDER_EMAIL = "princejuniorokpo@gmail.com";
@@ -54,6 +56,61 @@ const Checkout = () => {
       .filter(Boolean)
       .join("\n");
   }, [form, summary, subtotal]);
+
+  const { toast } = useToast();
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const handleProceedToPayment = async () => {
+    if (isCartEmpty) return;
+    
+    if (!form.fullName || !form.phone) {
+      toast({
+        title: "Missing Information",
+        description: "Please provide your name and phone number.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsProcessing(true);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('create-order', {
+        body: {
+          customerName: form.fullName,
+          customerEmail: form.email,
+          customerPhone: form.phone,
+          customerAddress: [form.address, form.city, form.state, form.country].filter(Boolean).join(", "),
+          items: items,
+          totalAmount: subtotal,
+          paymentMethod: 'bank_transfer'
+        }
+      });
+
+      if (error) throw error;
+
+      // Store order details in localStorage for payment page
+      localStorage.setItem('currentOrder', JSON.stringify({
+        orderId: data.order.id,
+        paymentReference: data.paymentReference,
+        customerInfo: form,
+        items: items,
+        total: subtotal
+      }));
+
+      clearCart();
+      navigate("/payments");
+    } catch (error) {
+      console.error('Order creation failed:', error);
+      toast({
+        title: "Order Failed",
+        description: "Failed to create order. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   const handleWhatsApp = () => {
     if (isCartEmpty) return;
@@ -190,7 +247,17 @@ const Checkout = () => {
                     <span className="font-semibold">{formatNGN(subtotal)}</span>
                   </div>
                   <div className="space-y-3">
-                    <Button className="w-full" onClick={handleWhatsApp}>
+                    <Button 
+                      className="w-full" 
+                      onClick={handleProceedToPayment}
+                      disabled={isProcessing}
+                    >
+                      {isProcessing ? "Processing..." : "Proceed to Payment"}
+                    </Button>
+                    <div className="text-xs text-muted-foreground text-center">
+                      You'll be redirected to our secure payment page
+                    </div>
+                    <Button variant="outline" className="w-full" onClick={handleWhatsApp}>
                       Place Order via WhatsApp
                     </Button>
                     <Button variant="outline" className="w-full" onClick={handleEmail}>
