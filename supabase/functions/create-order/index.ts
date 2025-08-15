@@ -39,14 +39,21 @@ serve(async (req) => {
     // Generate payment reference
     const paymentReference = `CC-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
+    console.log('Creating order with data:', {
+      customerName: orderData.customerName,
+      customerEmail: orderData.customerEmail || '',
+      customerPhone: orderData.customerPhone || '',
+      totalAmount: orderData.totalAmount,
+      paymentMethod: orderData.paymentMethod
+    });
+
     // Insert order into database
     const { data: order, error } = await supabase
       .from("orders")
       .insert({
         customer_name: orderData.customerName,
-        customer_email: orderData.customerEmail,
-        customer_phone: orderData.customerPhone,
-        customer_address: orderData.customerAddress,
+        customer_email: orderData.customerEmail || '',
+        customer_phone: orderData.customerPhone || '',
         order_items: orderData.items,
         total_amount: Math.round(orderData.totalAmount * 100), // Convert to kobo
         payment_method: orderData.paymentMethod,
@@ -55,6 +62,8 @@ serve(async (req) => {
       })
       .select()
       .single();
+
+    console.log('Database insert result:', { order, error });
 
     if (error) {
       throw error;
