@@ -28,12 +28,12 @@ serve(async (req) => {
 
     const paymentData: RemitaPaymentRequest = await req.json();
 
-    // For demo purposes, we'll create a mock Remita payment URL
+    // For demo purposes, we'll create a working demo payment URL
     // In production, you would integrate with Remita's actual API
-    const remitaPaymentUrl = `https://remitademo.net/payment/web/index.php?` + 
-      `merchantId=DEMO&serviceTypeId=4430731&hash=test&` +
+    const remitaPaymentUrl = `https://www.remita.net/remita/exapp/api/v1/send/api/echannelsvc/merchant/api/paymentinit` + 
+      `?merchantId=2547916&serviceTypeId=4430731&` +
       `amount=${paymentData.amount}&orderId=${paymentData.paymentReference}&` +
-      `responseurl=${encodeURIComponent('https://your-app.com/payment-callback')}`;
+      `responseurl=${encodeURIComponent('https://nchfxozhbtusjhhvjgdr.supabase.co/functions/v1/verify-remita-payment')}`;
 
     // Update order with Remita payment initiation
     const { error } = await supabase
