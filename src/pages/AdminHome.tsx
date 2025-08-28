@@ -1,17 +1,55 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { Separator } from "@/components/ui/separator";
 import { formatNGN } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
+
+interface Order {
+  id: string;
+  customer_name: string;
+  customer_email: string;
+  customer_phone: string;
+  payment_reference: string;
+  total_amount: number;
+  payment_status: string;
+  created_at: string;
+  order_items: any;
+  user_id?: string;
+  payment_method?: string;
+  receipt_url?: string;
+  updated_at?: string;
+}
 
 const AdminHome = () => {
-  const [orders, setOrders] = useState<any[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
+  const { user, profile, loading: authLoading } = useAuth();
+
+  // Redirect if not admin
+  if (!authLoading && (!user || !profile?.is_admin)) {
+    return <Navigate to="/auth" replace />;
+  }
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-lg font-semibold">Loading...</div>
+        </div>
+      </div>
+    );
+  }
 
   useEffect(() => {
-    document.title = "Admin | Confidential Connect";
+    document.title = "Admin Dashboard | Confidential Connect";
     const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Admin dashboard for managing orders, payments, and products.");
+    if (meta) meta.setAttribute("content", "Admin dashboard for managing orders and payments.");
     
     fetchOrders();
   }, []);
@@ -27,6 +65,11 @@ const AdminHome = () => {
       setOrders(data || []);
     } catch (error) {
       console.error('Failed to fetch orders:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch orders",
+        variant: "destructive"
+      });
     } finally {
       setLoading(false);
     }
@@ -38,6 +81,36 @@ const AdminHome = () => {
       case 'pending': return 'bg-yellow-500';
       case 'failed': return 'bg-red-500';
       default: return 'bg-gray-500';
+    }
+  };
+
+  const updateOrderStatus = async (orderId: string, newStatus: string) => {
+    try {
+      const { error } = await supabase
+        .from('orders')
+        .update({ payment_status: newStatus })
+        .eq('id', orderId);
+
+      if (error) throw error;
+
+      // Update local state
+      setOrders(orders.map(order => 
+        order.id === orderId 
+          ? { ...order, payment_status: newStatus }
+          : order
+      ));
+
+      toast({
+        title: "Success",
+        description: `Order status updated to ${newStatus}`
+      });
+    } catch (error) {
+      console.error('Failed to update order:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update order status",
+        variant: "destructive"
+      });
     }
   };
 
@@ -94,9 +167,29 @@ const AdminHome = () => {
                   <div key={order.id} className="border rounded-lg p-4">
                     <div className="flex items-center justify-between mb-2">
                       <div className="font-medium">#{order.payment_reference}</div>
-                      <Badge className={`text-white ${getStatusColor(order.payment_status)}`}>
-                        {order.payment_status}
-                      </Badge>
+                      <div className="flex items-center gap-2">
+                        <Badge className={`text-white ${getStatusColor(order.payment_status)}`}>
+                          {order.payment_status}
+                        </Badge>
+                        <div className="flex gap-1">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => updateOrderStatus(order.id, 'completed')}
+                            disabled={order.payment_status === 'completed'}
+                          >
+                            Complete
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => updateOrderStatus(order.id, 'failed')}
+                            disabled={order.payment_status === 'failed'}
+                          >
+                            Fail
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                     <div className="grid md:grid-cols-2 gap-4 text-sm">
                       <div>
@@ -112,7 +205,10 @@ const AdminHome = () => {
                       </div>
                     </div>
                     <div className="mt-2 text-xs text-muted-foreground">
-                      Items: {order.order_items?.map((item: any) => `${item.name} (${item.quantity})`).join(', ')}
+                      Items: {Array.isArray(order.order_items) 
+                        ? order.order_items.map((item: any) => `${item.name} (${item.quantity})`).join(', ')
+                        : 'N/A'
+                      }
                     </div>
                   </div>
                 ))}

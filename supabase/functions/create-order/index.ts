@@ -6,21 +6,23 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-interface OrderItem {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-}
-
 interface CreateOrderRequest {
-  customerName: string;
-  customerEmail?: string;
-  customerPhone?: string;
-  customerAddress?: string;
-  items: OrderItem[];
+  customer: {
+    fullName: string;
+    email: string;
+    phone: string;
+    address?: string;
+    city?: string;
+    state?: string;
+  };
+  items: Array<{
+    id: number;
+    name: string;
+    price: number;
+    quantity: number;
+  }>;
   totalAmount: number;
-  paymentMethod: string;
+  userId?: string;
 }
 
 serve(async (req) => {
@@ -29,50 +31,88 @@ serve(async (req) => {
   }
 
   try {
+    console.log('=== CREATE ORDER FUNCTION STARTED ===');
+    
+    // Get user from auth header for authentication
+    const authHeader = req.headers.get('Authorization');
+    const token = authHeader?.replace('Bearer ', '');
+    
     const supabase = createClient(
-      Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const orderData: CreateOrderRequest = await req.json();
+    // Verify user if token provided
+    let userId = null;
+    if (token) {
+      const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+      if (!authError && user) {
+        userId = user.id;
+      }
+    }
 
-    // Generate payment reference
-    const paymentReference = `CC-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    const requestBody: CreateOrderRequest = await req.json();
+    const { customer, items, totalAmount } = requestBody;
 
-    console.log('Creating order with data:', {
-      customerName: orderData.customerName,
-      customerEmail: orderData.customerEmail || '',
-      customerPhone: orderData.customerPhone || '',
-      totalAmount: orderData.totalAmount,
-      paymentMethod: orderData.paymentMethod
+    console.log('Processing order for:', { 
+      customerName: customer.fullName, 
+      itemCount: items.length, 
+      total: totalAmount,
+      userId 
     });
 
-    // Insert order into database
-    const { data: order, error } = await supabase
-      .from("orders")
+    // Generate payment reference
+    const paymentReference = `CC-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+
+    // Create main order record
+    console.log('Creating order record...');
+    const { data: orderData, error: orderError } = await supabase
+      .from('orders')
       .insert({
-        customer_name: orderData.customerName,
-        customer_email: orderData.customerEmail || '',
-        customer_phone: orderData.customerPhone || '',
-        order_items: orderData.items,
-        total_amount: Math.round(orderData.totalAmount * 100), // Convert to kobo
-        payment_method: orderData.paymentMethod,
+        customer_name: customer.fullName,
+        customer_email: customer.email,
+        customer_phone: customer.phone,
         payment_reference: paymentReference,
-        payment_status: 'pending'
+        total_amount: totalAmount,
+        payment_status: 'pending',
+        order_items: items, // Store as JSONB for now
+        user_id: userId // Associate with authenticated user if available
       })
       .select()
       .single();
 
-    console.log('Database insert result:', { order, error });
-
-    if (error) {
-      throw error;
+    if (orderError) {
+      console.error('Order creation error:', orderError);
+      throw orderError;
     }
+
+    console.log('Order created successfully:', orderData.id);
+
+    // Create individual order items
+    console.log('Creating order items...');
+    const orderItems = items.map(item => ({
+      order_id: orderData.id,
+      name: item.name,
+      product_id: null, // We'll link this later if needed
+      price: item.price,
+      quantity: item.quantity
+    }));
+
+    const { error: itemsError } = await supabase
+      .from('order_items')
+      .insert(orderItems);
+
+    if (itemsError) {
+      console.error('Order items creation error:', itemsError);
+      // Don't throw here, as the main order was created successfully
+    }
+
+    console.log('Order processing completed successfully');
 
     return new Response(
       JSON.stringify({
         success: true,
-        order,
+        order: orderData,
         paymentReference,
         message: "Order created successfully"
       }),
@@ -82,10 +122,11 @@ serve(async (req) => {
       }
     );
   } catch (error) {
+    console.error('=== ORDER CREATION FAILED ===', error);
     return new Response(
       JSON.stringify({
         success: false,
-        error: error.message
+        error: error.message || 'Unknown error occurred'
       }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },

@@ -1,12 +1,17 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Phone, Mail, ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Menu, Phone, ShoppingCart, User, LogOut } from "lucide-react";
+import { Button } from "./ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
+
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { totalItems } = useCart();
+  const { user, profile, signOut } = useAuth();
+
   const navigation = [
     { name: "Home", href: "#home" },
     { name: "Products", href: "#products" },
@@ -49,19 +54,38 @@ export const Header = () => {
               <Phone className="h-4 w-4" />
               <span>07040294858</span>
             </div>
-            <Button asChild variant="outline" size="sm" className="hover-lift">
-              <Link to="/cart" aria-label={`Cart with ${totalItems} items`}>
-                <span className="inline-flex items-center">
-                  <ShoppingCart className="h-4 w-4 mr-2" />
-                  Cart
-                  {totalItems > 0 && (
-                    <span className="ml-2 inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground h-5 min-w-5 px-1 text-xs">
-                      {totalItems}
-                    </span>
-                  )}
-                </span>
+            <Button variant="outline" asChild>
+              <Link to="/cart" className="flex items-center gap-2">
+                <ShoppingCart className="h-4 w-4" />
+                Cart ({totalItems})
               </Link>
             </Button>
+            
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="flex items-center gap-2">
+                    <User className="h-4 w-4" />
+                    {profile?.full_name || user.email}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  {profile?.is_admin && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/admin">Admin Panel</Link>
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuItem onClick={signOut}>
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button asChild>
+                <Link to="/auth">Sign In</Link>
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu */}
@@ -100,21 +124,46 @@ export const Header = () => {
                     <Phone className="h-4 w-4" />
                     <span>07040294858</span>
                   </div>
-                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                    <Mail className="h-4 w-4" />
-                    <span>princejuniorokpo@gmail.com</span>
-                  </div>
-                  <Button asChild className="w-full hover-lift" onClick={() => setIsOpen(false)}>
-                    <Link to="/cart">
-                      <ShoppingCart className="h-4 w-4 mr-2" />
-                      View Cart
-                      {totalItems > 0 && (
-                        <span className="ml-2 inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground h-5 min-w-5 px-1 text-xs">
-                          {totalItems}
-                        </span>
-                      )}
+                  
+                  <Button variant="outline" asChild className="w-full justify-start">
+                    <Link to="/cart" onClick={() => setIsOpen(false)}>
+                      <ShoppingCart className="mr-2 h-4 w-4" />
+                      Cart ({totalItems})
                     </Link>
                   </Button>
+                  
+                  {user ? (
+                    <div className="space-y-2">
+                      <div className="px-2 py-1 text-sm text-muted-foreground">
+                        Signed in as {profile?.full_name || user.email}
+                      </div>
+                      {profile?.is_admin && (
+                        <Button variant="outline" asChild className="w-full justify-start">
+                          <Link to="/admin" onClick={() => setIsOpen(false)}>
+                            <User className="mr-2 h-4 w-4" />
+                            Admin Panel
+                          </Link>
+                        </Button>
+                      )}
+                      <Button 
+                        variant="outline" 
+                        onClick={() => {
+                          signOut();
+                          setIsOpen(false);
+                        }}
+                        className="w-full justify-start"
+                      >
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Sign Out
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button asChild className="w-full">
+                      <Link to="/auth" onClick={() => setIsOpen(false)}>
+                        Sign In
+                      </Link>
+                    </Button>
+                  )}
                 </div>
               </div>
             </SheetContent>
