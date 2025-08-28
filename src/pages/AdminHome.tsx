@@ -8,6 +8,9 @@ import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
 import { formatNGN } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { LiveCharts } from "@/components/LiveCharts";
+import { SupportChat } from "@/components/SupportChat";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface Order {
   id: string;
@@ -119,103 +122,121 @@ const AdminHome = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
         
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg">Total Orders</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{orders.length}</div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg">Pending Orders</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-yellow-600">
-                {orders.filter(o => o.payment_status === 'pending').length}
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg">Completed Orders</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-green-600">
-                {orders.filter(o => o.payment_status === 'completed').length}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        <Tabs defaultValue="analytics" className="space-y-6">
+          <TabsList>
+            <TabsTrigger value="analytics">Live Analytics</TabsTrigger>
+            <TabsTrigger value="orders">Orders Management</TabsTrigger>
+            <TabsTrigger value="support">Support Center</TabsTrigger>
+          </TabsList>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Orders</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {loading ? (
-              <div className="text-center py-8">Loading orders...</div>
-            ) : orders.length === 0 ? (
-              <div className="text-center py-8 text-muted-foreground">No orders yet</div>
-            ) : (
-              <div className="space-y-4">
-                {orders.map((order) => (
-                  <div key={order.id} className="border rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="font-medium">#{order.payment_reference}</div>
-                      <div className="flex items-center gap-2">
-                        <Badge className={`text-white ${getStatusColor(order.payment_status)}`}>
-                          {order.payment_status}
-                        </Badge>
-                        <div className="flex gap-1">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => updateOrderStatus(order.id, 'completed')}
-                            disabled={order.payment_status === 'completed'}
-                          >
-                            Complete
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => updateOrderStatus(order.id, 'failed')}
-                            disabled={order.payment_status === 'failed'}
-                          >
-                            Fail
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="grid md:grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <div className="font-medium">{order.customer_name}</div>
-                        <div className="text-muted-foreground">{order.customer_phone}</div>
-                        <div className="text-muted-foreground">{order.customer_email}</div>
-                      </div>
-                      <div className="text-right">
-                        <div className="font-medium">{formatNGN(order.total_amount / 100)}</div>
-                        <div className="text-muted-foreground">
-                          {new Date(order.created_at).toLocaleDateString()}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mt-2 text-xs text-muted-foreground">
-                      Items: {Array.isArray(order.order_items) 
-                        ? order.order_items.map((item: any) => `${item.name} (${item.quantity})`).join(', ')
-                        : 'N/A'
-                      }
-                    </div>
+          <TabsContent value="analytics">
+            <LiveCharts />
+          </TabsContent>
+
+          <TabsContent value="orders">
+            <div className="grid md:grid-cols-3 gap-6 mb-8">
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg">Total Orders</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{orders.length}</div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg">Pending Orders</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-yellow-600">
+                    {orders.filter(o => o.payment_status === 'pending').length}
                   </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg">Completed Orders</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-green-600">
+                    {orders.filter(o => o.payment_status === 'completed').length}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Recent Orders</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {loading ? (
+                  <div className="text-center py-8">Loading orders...</div>
+                ) : orders.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">No orders yet</div>
+                ) : (
+                  <div className="space-y-4">
+                    {orders.map((order) => (
+                      <div key={order.id} className="border rounded-lg p-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="font-medium">#{order.payment_reference}</div>
+                          <div className="flex items-center gap-2">
+                            <Badge className={`text-white ${getStatusColor(order.payment_status)}`}>
+                              {order.payment_status}
+                            </Badge>
+                            <div className="flex gap-1">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => updateOrderStatus(order.id, 'completed')}
+                                disabled={order.payment_status === 'completed'}
+                              >
+                                Complete
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => updateOrderStatus(order.id, 'failed')}
+                                disabled={order.payment_status === 'failed'}
+                              >
+                                Fail
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="grid md:grid-cols-2 gap-4 text-sm">
+                          <div>
+                            <div className="font-medium">{order.customer_name}</div>
+                            <div className="text-muted-foreground">{order.customer_phone}</div>
+                            <div className="text-muted-foreground">{order.customer_email}</div>
+                          </div>
+                          <div className="text-right">
+                            <div className="font-medium">{formatNGN(order.total_amount / 100)}</div>
+                            <div className="text-muted-foreground">
+                              {new Date(order.created_at).toLocaleDateString()}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="mt-2 text-xs text-muted-foreground">
+                          Items: {Array.isArray(order.order_items) 
+                            ? order.order_items.map((item: any) => `${item.name} (${item.quantity})`).join(', ')
+                            : 'N/A'
+                          }
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="support">
+            <SupportChat />
+          </TabsContent>
+        </Tabs>
       </div>
     </section>
   );

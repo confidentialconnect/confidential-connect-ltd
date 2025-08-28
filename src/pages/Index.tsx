@@ -4,6 +4,7 @@ import { ProductGrid } from "@/components/ProductGrid";
 import { ServicesSection } from "@/components/ServicesSection";
 import { ContactSection } from "@/components/ContactSection";
 import { Footer } from "@/components/Footer";
+import { SupportWidget } from "@/components/SupportWidget";
 
 const Index = () => {
   return (
@@ -16,6 +17,7 @@ const Index = () => {
         <ContactSection />
       </main>
       <Footer />
+      <SupportWidget />
     </div>
   );
 };
