@@ -44,7 +44,7 @@ serve(async (req) => {
     let newStatus = 'pending';
     
     try {
-      const verifyUrl = `https://www.remita.net/remita/exapp/api/v1/send/api/rpgsvc/rpgservice/status.json`;
+      const verifyUrl = `https://remita.net/remita/exapp/api/v1/send/api/rpgsvc/rpgservice/status.json`;
       const response = await fetch(`${verifyUrl}?merchantId=${merchantId}&orderId=${paymentReference}&apiKey=${apiKey}`);
       
       if (!response.ok) {

@@ -37,9 +37,9 @@ serve(async (req) => {
       throw new Error("Remita API key not configured");
     }
 
-    // Create proper Remita payment URL with all required parameters
+    // Create proper Remita payment URL with correct API endpoint
     const responseUrl = `https://nchfxozhbtusjhhvjgdr.supabase.co/functions/v1/verify-remita-payment`;
-    const remitaPaymentUrl = `https://www.remita.net/remita/exapp/api/v1/send/api/echannelsvc/merchant/api/paymentinit` + 
+    const remitaPaymentUrl = `https://remita.net/remita/exapp/api/v1/send/api/echannelsvc/merchant/api/paymentinit` + 
       `?merchantId=${merchantId}&serviceTypeId=${serviceTypeId}&` +
       `amount=${paymentData.amount}&orderId=${paymentData.paymentReference}&` +
       `payerName=${encodeURIComponent(paymentData.customerName)}&` +
