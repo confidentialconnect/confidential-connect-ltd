@@ -392,8 +392,21 @@ Please confirm this order and provide payment instructions.`;
                         disabled={isProcessing}
                       >
                         <CreditCard className="h-4 w-4 mr-2" />
-                        {isProcessing ? "Processing..." : "Pay with Remita (Cards/Bank Transfer)"}
+                        {isProcessing ? "Processing..." : "Pay with Remita"}
                       </Button>
+                    )}
+                      
+                    {/* Remita Payment Info */}
+                    {isSupabaseAvailable && (
+                      <div className="p-3 bg-muted/50 rounded-lg border">
+                        <h4 className="text-sm font-medium text-foreground mb-2">Remita Payment Options:</h4>
+                        <ul className="text-xs text-muted-foreground space-y-1">
+                          <li>• Accepts Visa, Mastercard, Verve cards</li>
+                          <li>• Bank transfer and USSD options available</li>
+                          <li>• Instant payment confirmation</li>
+                          <li>• 256-bit SSL encryption</li>
+                        </ul>
+                      </div>
                     )}
                     
                     <Button 
