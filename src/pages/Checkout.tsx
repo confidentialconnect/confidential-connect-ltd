@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, CreditCard } from "lucide-react";
 
 const Checkout = () => {
   const { items, subtotal, clearCart } = useCart();
@@ -128,25 +128,49 @@ Please confirm this order and provide payment instructions.`;
           customer: formData,
           items: items,
           totalAmount: subtotal,
-          userId: user.id  // Add user ID for order association
+          userId: user.id
         }
       });
 
       if (error) throw error;
 
-      // Store order data in localStorage for the payment page
-      localStorage.setItem('currentOrder', JSON.stringify({
-        paymentReference: data.paymentReference,
-        total: subtotal,
-        customerInfo: formData,
-        items: items
-      }));
+      // Initialize Remita payment directly
+      const { data: paymentData, error: paymentError } = await supabase.functions.invoke('create-remita-payment', {
+        body: {
+          paymentReference: data.paymentReference,
+          amount: subtotal,
+          customerName: formData.fullName,
+          customerEmail: formData.email,
+          customerPhone: formData.phone,
+          description: `Payment for Order #${data.paymentReference}`
+        }
+      });
 
-      // Navigate to payments page
-      navigate('/payments');
+      if (paymentError) throw paymentError;
+
+      // Redirect to Remita payment page
+      if (paymentData?.paymentUrl) {
+        window.open(paymentData.paymentUrl, '_blank');
+        
+        toast({
+          title: "Payment Initiated",
+          description: "Complete your payment in the new tab. We'll check the status automatically.",
+        });
+
+        // Store order data for verification
+        localStorage.setItem('currentOrder', JSON.stringify({
+          paymentReference: data.paymentReference,
+          total: subtotal,
+          customerInfo: formData,
+          items: items
+        }));
+
+        // Start checking payment status after a delay
+        setTimeout(() => checkPaymentStatus(data.paymentReference), 10000);
+      }
       
     } catch (error) {
-      console.error('Order creation failed:', error);
+      console.error('Order/Payment creation failed:', error);
       toast({
         title: "Order Creation Failed",
         description: "Could not create your order. Please try again or use alternative methods.",
@@ -154,6 +178,35 @@ Please confirm this order and provide payment instructions.`;
       });
     } finally {
       setIsProcessing(false);
+    }
+  };
+
+  const checkPaymentStatus = async (paymentRef: string) => {
+    try {
+      const { data } = await supabase.functions.invoke('verify-remita-payment', {
+        body: { paymentReference: paymentRef }
+      });
+
+      if (data?.status === 'completed') {
+        localStorage.removeItem('currentOrder');
+        clearCart();
+        navigate("/order-success");
+        toast({
+          title: "Payment Successful",
+          description: "Your payment has been confirmed!",
+        });
+      } else if (data?.status === 'failed') {
+        toast({
+          title: "Payment Failed",
+          description: "Payment was not successful. Please try again.",
+          variant: "destructive"
+        });
+      } else {
+        // Still pending, check again in 15 seconds
+        setTimeout(() => checkPaymentStatus(paymentRef), 15000);
+      }
+    } catch (error) {
+      console.error('Payment verification failed:', error);
     }
   };
 
@@ -338,7 +391,8 @@ Please confirm this order and provide payment instructions.`;
                         onClick={handleProceedToPayment}
                         disabled={isProcessing}
                       >
-                        {isProcessing ? "Processing..." : "Proceed to Payment"}
+                        <CreditCard className="h-4 w-4 mr-2" />
+                        {isProcessing ? "Processing..." : "Pay with Remita (Cards/Bank Transfer)"}
                       </Button>
                     )}
                     

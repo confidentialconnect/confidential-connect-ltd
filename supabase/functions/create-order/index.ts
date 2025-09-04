@@ -52,7 +52,13 @@ serve(async (req) => {
     }
 
     const requestBody: CreateOrderRequest = await req.json();
+    console.log('Request body received:', requestBody);
+    
     const { customer, items, totalAmount } = requestBody;
+    
+    if (!customer || !customer.fullName) {
+      throw new Error('Customer information is missing or invalid');
+    }
 
     console.log('Processing order for:', { 
       customerName: customer.fullName, 
