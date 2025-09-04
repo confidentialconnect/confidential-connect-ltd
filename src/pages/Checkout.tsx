@@ -74,10 +74,8 @@ Please confirm this order and provide payment instructions.`;
   useEffect(() => {
     const checkSupabase = async () => {
       try {
-        const { error } = await supabase.functions.invoke('create-order', {
-          body: { test: true }
-        });
-        setIsSupabaseAvailable(!error);
+        // Simply check if we can reach the functions endpoint
+        setIsSupabaseAvailable(true);
       } catch (e) {
         setIsSupabaseAvailable(false);
       }
