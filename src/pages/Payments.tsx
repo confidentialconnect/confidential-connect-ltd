@@ -216,35 +216,58 @@ const Payments = () => {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid gap-4">
-                  {/* Remita Online Payment */}
-                  <div className={`rounded-lg border p-4 ${method === "remita" ? "border-primary bg-primary/5" : "border-border"}`}>
-                    <div className="flex items-center justify-between mb-3">
+                  {/* Card Payment - Featured */}
+                  <div className={`rounded-lg border-2 border-primary bg-gradient-to-r from-primary/10 to-primary/5 p-6 ${method === "remita" ? "ring-2 ring-primary" : ""}`}>
+                    <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-3">
-                        <CreditCard className="h-5 w-5 text-primary" />
+                        <div className="p-2 bg-primary/20 rounded-full">
+                          <CreditCard className="h-6 w-6 text-primary" />
+                        </div>
                         <div>
-                          <div className="font-semibold">Remita (Recommended)</div>
-                          <div className="text-sm text-muted-foreground">Pay with Cards/Bank Transfer</div>
+                          <div className="font-bold text-lg">Pay with Card</div>
+                          <div className="text-sm text-muted-foreground">Instant & Secure Payment</div>
                         </div>
                       </div>
-                      <input
-                        type="radio"
-                        name="method"
-                        checked={method === "remita"}
-                        onChange={() => setMethod("remita")}
-                        aria-label="Select Remita"
-                      />
+                      <div className="flex items-center gap-2">
+                        <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">RECOMMENDED</span>
+                        <input
+                          type="radio"
+                          name="method"
+                          checked={method === "remita"}
+                          onChange={() => setMethod("remita")}
+                          aria-label="Select Card Payment"
+                        />
+                      </div>
                     </div>
-                    <div className="text-sm text-muted-foreground mb-3">
-                      Secure online payment with Visa, Mastercard, Verve cards and bank transfers
+                    
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                      <div className="bg-white rounded p-2 text-center border">
+                        <div className="text-xs font-medium text-blue-600">VISA</div>
+                      </div>
+                      <div className="bg-white rounded p-2 text-center border">
+                        <div className="text-xs font-medium text-red-600">MASTERCARD</div>
+                      </div>
+                      <div className="bg-white rounded p-2 text-center border">
+                        <div className="text-xs font-medium text-green-600">VERVE</div>
+                      </div>
+                      <div className="bg-white rounded p-2 text-center border">
+                        <div className="text-xs font-medium text-purple-600">BANK TRANSFER</div>
+                      </div>
                     </div>
+                    
+                    <div className="text-sm text-muted-foreground mb-4">
+                      ✓ 256-bit SSL encryption  ✓ Instant confirmation  ✓ All Nigerian banks supported
+                    </div>
+                    
                     {method === "remita" && (
                       <Button 
-                        className="w-full" 
+                        className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70" 
                         onClick={handleRemitaPayment}
                         disabled={isProcessingPayment}
+                        size="lg"
                       >
-                        <CreditCard className="h-4 w-4 mr-2" />
-                        {isProcessingPayment ? "Processing..." : "Pay Now"}
+                        <CreditCard className="h-5 w-5 mr-2" />
+                        {isProcessingPayment ? "Processing..." : "Pay Now with Card"}
                       </Button>
                     )}
                   </div>
