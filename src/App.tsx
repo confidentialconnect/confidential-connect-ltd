@@ -12,6 +12,7 @@ import Profile from "./pages/Profile";
 import Orders from "./pages/Orders";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Search from "./pages/Search";
 import { CartProvider } from "./contexts/CartContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import Cart from "./pages/Cart";
@@ -33,6 +34,7 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/search" element={<Search />} />
               <Route path="/categories" element={<Categories />} />
               <Route path="/product/:id" element={<Product />} />
               <Route path="/wishlist" element={<Wishlist />} />

@@ -1,9 +1,9 @@
 import { Header } from "@/components/Header";
-import { Hero } from "@/components/Hero";
+import { GoogleInspiredHero } from "@/components/GoogleInspiredHero";
 import { ProductGrid } from "@/components/ProductGrid";
 import { ServicesSection } from "@/components/ServicesSection";
 import { ContactSection } from "@/components/ContactSection";
-import { Footer } from "@/components/Footer";
+import { GoogleInspiredFooter } from "@/components/GoogleInspiredFooter";
 import { SupportWidget } from "@/components/SupportWidget";
 
 const Index = () => {
@@ -11,12 +11,12 @@ const Index = () => {
     <div className="min-h-screen">
       <Header />
       <main>
-        <Hero />
+        <GoogleInspiredHero />
         <ProductGrid />
         <ServicesSection />
         <ContactSection />
       </main>
-      <Footer />
+      <GoogleInspiredFooter />
       <SupportWidget />
     </div>
   );

@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, Phone, ShoppingCart, User, LogOut } from "lucide-react";
+import { Menu, Phone, ShoppingCart, User, LogOut, Mail } from "lucide-react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { GoogleAppsMenu } from "./GoogleAppsMenu";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -48,28 +49,50 @@ export const Header = () => {
             ))}
           </nav>
 
-          {/* Contact Info & Cart */}
-          <div className="hidden lg:flex items-center space-x-4">
-            <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-              <Phone className="h-4 w-4" />
-              <span>07040294858</span>
+          {/* Google-style Right Side */}
+          <div className="hidden lg:flex items-center space-x-2">
+            {/* Contact Info */}
+            <div className="flex items-center space-x-4 mr-4">
+              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                <Mail className="h-4 w-4" />
+                <span>support@confidentialconnect.ng</span>
+              </div>
+              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                <Phone className="h-4 w-4" />
+                <span>07040294858</span>
+              </div>
             </div>
-            <Button variant="outline" asChild>
-              <Link to="/cart" className="flex items-center gap-2">
-                <ShoppingCart className="h-4 w-4" />
-                Cart ({totalItems})
+
+            {/* Cart */}
+            <Button variant="ghost" size="sm" asChild className="relative">
+              <Link to="/cart" className="flex items-center gap-1">
+                <ShoppingCart className="h-5 w-5" />
+                {totalItems > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {totalItems}
+                  </span>
+                )}
               </Link>
             </Button>
+
+            {/* Google Apps Menu */}
+            <GoogleAppsMenu />
             
+            {/* User Account */}
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="flex items-center gap-2">
-                    <User className="h-4 w-4" />
-                    {profile?.full_name || user.email}
+                  <Button variant="ghost" size="sm" className="rounded-full">
+                    <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-medium">
+                      {(profile?.full_name || user.email)?.charAt(0).toUpperCase()}
+                    </div>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="w-56">
+                  <div className="px-3 py-2 border-b">
+                    <p className="text-sm font-medium">{profile?.full_name || "User"}</p>
+                    <p className="text-xs text-muted-foreground">{user.email}</p>
+                  </div>
                   <DropdownMenuItem asChild>
                     <Link to="/profile">Profile</Link>
                   </DropdownMenuItem>
@@ -91,7 +114,7 @@ export const Header = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button asChild>
+              <Button asChild size="sm">
                 <Link to="/auth">Sign In</Link>
               </Button>
             )}
