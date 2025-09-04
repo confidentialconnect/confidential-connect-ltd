@@ -384,30 +384,46 @@ Please confirm this order and provide payment instructions.`;
                     <span>{formatNGN(subtotal)}</span>
                   </div>
 
-                  <div className="space-y-3 pt-4">
-                    {isSupabaseAvailable && (
+                  {/* Remita Payment Section */}
+                  {isSupabaseAvailable && (
+                    <div className="space-y-3 pt-4">
+                      <div className="p-4 bg-primary/10 rounded-lg border border-primary/20">
+                        <div className="flex items-center gap-2 mb-3">
+                          <CreditCard className="h-5 w-5 text-primary" />
+                          <h4 className="text-sm font-semibold text-primary">Secure Payment with Remita</h4>
+                        </div>
+                        <ul className="text-xs text-muted-foreground space-y-1.5">
+                          <li className="flex items-center gap-2">
+                            <span className="w-1 h-1 bg-primary rounded-full"></span>
+                            Accepts Visa, Mastercard, Verve cards
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="w-1 h-1 bg-primary rounded-full"></span>
+                            Bank transfer and USSD options available
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="w-1 h-1 bg-primary rounded-full"></span>
+                            Instant payment confirmation
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="w-1 h-1 bg-primary rounded-full"></span>
+                            256-bit SSL encryption
+                          </li>
+                        </ul>
+                      </div>
+                      
                       <Button 
                         className="w-full" 
                         onClick={handleProceedToPayment}
                         disabled={isProcessing}
                       >
                         <CreditCard className="h-4 w-4 mr-2" />
-                        {isProcessing ? "Processing..." : "Pay with Remita"}
+                        {isProcessing ? "Processing..." : "Pay Securely with Remita"}
                       </Button>
-                    )}
-                      
-                    {/* Remita Payment Info */}
-                    {isSupabaseAvailable && (
-                      <div className="p-3 bg-muted/50 rounded-lg border">
-                        <h4 className="text-sm font-medium text-foreground mb-2">Remita Payment Options:</h4>
-                        <ul className="text-xs text-muted-foreground space-y-1">
-                          <li>• Accepts Visa, Mastercard, Verve cards</li>
-                          <li>• Bank transfer and USSD options available</li>
-                          <li>• Instant payment confirmation</li>
-                          <li>• 256-bit SSL encryption</li>
-                        </ul>
-                      </div>
-                    )}
+                    </div>
+                  )}
+                  
+                  <div className="space-y-3 pt-4">
                     
                     <Button 
                       variant="outline" 
