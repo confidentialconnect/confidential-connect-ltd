@@ -135,11 +135,11 @@ Please confirm this order and provide payment instructions.`;
       if (error) throw error;
 
       // Store order data in localStorage for the payment page
-      localStorage.setItem('orderData', JSON.stringify({
-        ...data,
-        customer: formData,
-        items: items,
-        totalAmount: subtotal
+      localStorage.setItem('currentOrder', JSON.stringify({
+        paymentReference: data.paymentReference,
+        total: subtotal,
+        customerInfo: formData,
+        items: items
       }));
 
       // Navigate to payments page
