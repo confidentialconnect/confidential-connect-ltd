@@ -13,10 +13,10 @@ export const Header = () => {
   const { user, profile, signOut } = useAuth();
 
   const navigation = [
-    { name: "Home", href: "#home" },
-    { name: "Products", href: "#products" },
-    { name: "Services", href: "#services" },
-    { name: "Contact", href: "#contact" },
+    { name: "Home", href: "/" },
+    { name: "Categories", href: "/categories" },
+    { name: "About", href: "/about" },
+    { name: "Contact", href: "/contact" },
   ];
 
   return (
@@ -38,13 +38,13 @@ export const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navigation.map((item) => (
-              <a
+              <Link
                 key={item.name}
-                href={item.href}
+                to={item.href}
                 className="text-foreground hover:text-primary transition-colors duration-200 font-medium"
               >
                 {item.name}
-              </a>
+              </Link>
             ))}
           </nav>
 
@@ -70,6 +70,15 @@ export const Header = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile">Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/orders">My Orders</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/wishlist">Wishlist</Link>
+                  </DropdownMenuItem>
                   {profile?.is_admin && (
                     <DropdownMenuItem asChild>
                       <Link to="/admin">Admin Panel</Link>
@@ -109,14 +118,14 @@ export const Header = () => {
                 </div>
                 <nav className="flex flex-col space-y-4">
                   {navigation.map((item) => (
-                    <a
+                    <Link
                       key={item.name}
-                      href={item.href}
+                      to={item.href}
                       onClick={() => setIsOpen(false)}
                       className="text-foreground hover:text-primary transition-colors duration-200 font-medium text-lg"
                     >
                       {item.name}
-                    </a>
+                    </Link>
                   ))}
                 </nav>
                 <div className="border-t pt-6 space-y-4">
@@ -137,6 +146,24 @@ export const Header = () => {
                       <div className="px-2 py-1 text-sm text-muted-foreground">
                         Signed in as {profile?.full_name || user.email}
                       </div>
+                      <Button variant="outline" asChild className="w-full justify-start">
+                        <Link to="/profile" onClick={() => setIsOpen(false)}>
+                          <User className="mr-2 h-4 w-4" />
+                          Profile
+                        </Link>
+                      </Button>
+                      <Button variant="outline" asChild className="w-full justify-start">
+                        <Link to="/orders" onClick={() => setIsOpen(false)}>
+                          <User className="mr-2 h-4 w-4" />
+                          My Orders
+                        </Link>
+                      </Button>
+                      <Button variant="outline" asChild className="w-full justify-start">
+                        <Link to="/wishlist" onClick={() => setIsOpen(false)}>
+                          <User className="mr-2 h-4 w-4" />
+                          Wishlist
+                        </Link>
+                      </Button>
                       {profile?.is_admin && (
                         <Button variant="outline" asChild className="w-full justify-start">
                           <Link to="/admin" onClick={() => setIsOpen(false)}>
