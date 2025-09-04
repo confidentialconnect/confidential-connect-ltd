@@ -23,9 +23,14 @@ serve(async (req) => {
 
     const { paymentReference }: VerifyRemitaPaymentRequest = await req.json();
 
-    // In production, you would verify payment status with Remita's API
-    // For demo purposes, we'll simulate payment verification
+    // Verify payment status with Remita's API
+    const merchantId = Deno.env.get("REMITA_MERCHANT_ID") || "2547916";
+    const apiKey = Deno.env.get("REMITA_API_KEY");
     
+    if (!apiKey) {
+      throw new Error("Remita API key not configured");
+    }
+
     // Fetch current order
     const { data: order, error: fetchError } = await supabase
       .from("orders")
@@ -35,11 +40,30 @@ serve(async (req) => {
 
     if (fetchError) throw fetchError;
 
-    // For demo purposes, randomly simulate payment success/failure
-    // In production, you would check with Remita's actual API
-    const isPaymentSuccessful = Math.random() > 0.2; // 80% success rate for demo
-
-    const newStatus = isPaymentSuccessful ? 'completed' : 'failed';
+    // Check payment status with Remita's transaction status API
+    let newStatus = 'pending';
+    
+    try {
+      const verifyUrl = `https://www.remita.net/remita/exapp/api/v1/send/api/rpgsvc/rpgservice/status.json`;
+      const response = await fetch(`${verifyUrl}?merchantId=${merchantId}&orderId=${paymentReference}&apiKey=${apiKey}`);
+      
+      if (!response.ok) {
+        throw new Error(`Remita API error: ${response.status}`);
+      }
+      
+      const remitaResponse = await response.json();
+      
+      // Check if payment was successful based on Remita's response
+      const isPaymentSuccessful = remitaResponse.status === "01" || remitaResponse.status === "00";
+      newStatus = isPaymentSuccessful ? 'completed' : 'failed';
+      
+      console.log(`Remita verification result for ${paymentReference}:`, remitaResponse);
+      
+    } catch (verifyError) {
+      console.error('Remita verification error:', verifyError);
+      // For now, if verification fails, mark as pending for manual review
+      newStatus = 'pending';
+    }
 
     // Update order payment status
     const { error: updateError } = await supabase

@@ -28,12 +28,25 @@ serve(async (req) => {
 
     const paymentData: RemitaPaymentRequest = await req.json();
 
-    // For demo purposes, we'll create a working demo payment URL
-    // In production, you would integrate with Remita's actual API
+    // Proper Remita API integration
+    const merchantId = Deno.env.get("REMITA_MERCHANT_ID") || "2547916";
+    const serviceTypeId = Deno.env.get("REMITA_SERVICE_TYPE_ID") || "4430731";
+    const apiKey = Deno.env.get("REMITA_API_KEY");
+    
+    if (!apiKey) {
+      throw new Error("Remita API key not configured");
+    }
+
+    // Create proper Remita payment URL with all required parameters
+    const responseUrl = `https://nchfxozhbtusjhhvjgdr.supabase.co/functions/v1/verify-remita-payment`;
     const remitaPaymentUrl = `https://www.remita.net/remita/exapp/api/v1/send/api/echannelsvc/merchant/api/paymentinit` + 
-      `?merchantId=2547916&serviceTypeId=4430731&` +
+      `?merchantId=${merchantId}&serviceTypeId=${serviceTypeId}&` +
       `amount=${paymentData.amount}&orderId=${paymentData.paymentReference}&` +
-      `responseurl=${encodeURIComponent('https://nchfxozhbtusjhhvjgdr.supabase.co/functions/v1/verify-remita-payment')}`;
+      `payerName=${encodeURIComponent(paymentData.customerName)}&` +
+      `payerEmail=${encodeURIComponent(paymentData.customerEmail)}&` +
+      `payerPhone=${encodeURIComponent(paymentData.customerPhone)}&` +
+      `description=${encodeURIComponent(paymentData.description)}&` +
+      `responseurl=${encodeURIComponent(responseUrl)}`;
 
     // Update order with Remita payment initiation
     const { error } = await supabase
