@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Categories from "./pages/Categories";
+import Products from "./pages/Products";
 import Product from "./pages/Product";
 import Wishlist from "./pages/Wishlist";
 import Profile from "./pages/Profile";
@@ -36,6 +37,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/search" element={<Search />} />
               <Route path="/categories" element={<Categories />} />
+              <Route path="/products" element={<Products />} />
               <Route path="/product/:id" element={<Product />} />
               <Route path="/wishlist" element={<Wishlist />} />
               <Route path="/profile" element={<Profile />} />
