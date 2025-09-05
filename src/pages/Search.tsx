@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { GoogleInspiredFooter } from "@/components/GoogleInspiredFooter";
 import { SearchBar } from "@/components/SearchBar";
+import { SmartSearch } from "@/components/SmartSearch";
 import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -135,6 +136,24 @@ const Search = () => {
               </div>
             )}
           </div>
+
+          {/* Global AI Search */}
+          {!query && (
+            <div className="mb-12">
+              <div className="flex items-center gap-2 mb-6">
+                <Globe className="h-6 w-6 text-primary" />
+                <h2 className="text-2xl font-bold">Global AI Search</h2>
+              </div>
+              <SmartSearch 
+                onSearchResults={(smartResults) => {
+                  setResults(smartResults);
+                  setLoading(false);
+                }}
+                placeholder="Search for anything in the world..."
+                className="w-full"
+              />
+            </div>
+          )}
 
           {/* Search Results */}
           <Tabs defaultValue="all" className="space-y-6">

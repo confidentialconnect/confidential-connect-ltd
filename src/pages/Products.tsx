@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Star, ArrowLeft } from "lucide-react";
 
-// Mock products data
+// Complete products data with all 12 cloud services
 const getAllProducts = () => [
   {
     id: "1",
@@ -44,6 +44,105 @@ const getAllProducts = () => [
   },
   {
     id: "4",
+    name: "AWS Cloud Migration",
+    description: "Seamless migration of your infrastructure to AWS cloud",
+    price: 400000,
+    category: "cloud",
+    image: "/placeholder.svg",
+    rating: 4.8,
+    reviews: 22,
+    inStock: true
+  },
+  {
+    id: "5",
+    name: "Azure Cloud Setup",
+    description: "Complete Microsoft Azure cloud infrastructure setup",
+    price: 350000,
+    category: "cloud",
+    image: "/placeholder.svg",
+    rating: 4.6,
+    reviews: 19,
+    inStock: true
+  },
+  {
+    id: "6",
+    name: "Google Cloud Platform Setup",
+    description: "Professional GCP cloud infrastructure deployment",
+    price: 370000,
+    category: "cloud",
+    image: "/placeholder.svg",
+    rating: 4.7,
+    reviews: 25,
+    inStock: true
+  },
+  {
+    id: "7",
+    name: "Multi-Cloud Strategy",
+    description: "Hybrid multi-cloud infrastructure management",
+    price: 600000,
+    category: "cloud",
+    image: "/placeholder.svg",
+    rating: 4.9,
+    reviews: 15,
+    inStock: true
+  },
+  {
+    id: "8",
+    name: "Cloud Security Audit",
+    description: "Comprehensive cloud security assessment and hardening",
+    price: 280000,
+    category: "cloud",
+    image: "/placeholder.svg",
+    rating: 4.8,
+    reviews: 21,
+    inStock: true
+  },
+  {
+    id: "9",
+    name: "Cloud Backup & Recovery",
+    description: "Enterprise-grade cloud backup and disaster recovery solution",
+    price: 220000,
+    category: "cloud",
+    image: "/placeholder.svg",
+    rating: 4.7,
+    reviews: 28,
+    inStock: true
+  },
+  {
+    id: "10",
+    name: "Cloud Cost Optimization",
+    description: "AI-powered cloud cost analysis and optimization",
+    price: 150000,
+    category: "cloud",
+    image: "/placeholder.svg",
+    rating: 4.6,
+    reviews: 17,
+    inStock: true
+  },
+  {
+    id: "11",
+    name: "Serverless Architecture",
+    description: "Serverless application development and deployment",
+    price: 320000,
+    category: "cloud",
+    image: "/placeholder.svg",
+    rating: 4.8,
+    reviews: 20,
+    inStock: true
+  },
+  {
+    id: "12",
+    name: "Cloud Native Development",
+    description: "Cloud-native application development with containers",
+    price: 480000,
+    category: "cloud",
+    image: "/placeholder.svg",
+    rating: 4.9,
+    reviews: 24,
+    inStock: true
+  },
+  {
+    id: "13",
     name: "Network Infrastructure Setup",
     description: "Complete network design and implementation",
     price: 350000,
@@ -54,7 +153,7 @@ const getAllProducts = () => [
     inStock: true
   },
   {
-    id: "5",
+    id: "14",
     name: "Database Optimization Service",
     description: "Performance tuning and optimization for your databases",
     price: 120000,
@@ -65,7 +164,7 @@ const getAllProducts = () => [
     inStock: true
   },
   {
-    id: "6",
+    id: "15",
     name: "Hardware Procurement & Setup",
     description: "Complete hardware solution with installation and configuration",
     price: 450000,
@@ -73,17 +172,6 @@ const getAllProducts = () => [
     image: "/placeholder.svg",
     rating: 4.5,
     reviews: 28,
-    inStock: true
-  },
-  {
-    id: "7",
-    name: "Cloud Migration Service", 
-    description: "Seamless migration of your infrastructure to the cloud",
-    price: 300000,
-    category: "cloud",
-    image: "/placeholder.svg",
-    rating: 4.9,
-    reviews: 19,
     inStock: true
   }
 ];
