@@ -106,7 +106,11 @@ export const GoogleInspiredHero = () => {
             {featuredServices.map((service, index) => {
               const IconComponent = service.icon;
               return (
-                <Card key={index} className="hover-lift cursor-pointer group">
+                <Card 
+                  key={index} 
+                  className="hover-lift cursor-pointer group" 
+                  onClick={() => window.location.href = `/categories?category=${service.title.toLowerCase().replace(' ', '-')}`}
+                >
                   <CardContent className="p-6 text-center">
                     <div className="relative mb-4">
                       <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full ${service.color}/10 group-hover:${service.color}/20 transition-colors`}>
@@ -141,16 +145,17 @@ export const GoogleInspiredHero = () => {
         {/* I'm Feeling Lucky Alternatives */}
         <div className="flex flex-wrap justify-center gap-2 mt-8">
           {[
-            "I'm Feeling Secure",
-            "I'm Feeling Innovative", 
-            "I'm Feeling Connected",
-            "I'm Feeling Technical"
+            { text: "I'm Feeling Secure", search: "cybersecurity" },
+            { text: "I'm Feeling Innovative", search: "software development" }, 
+            { text: "I'm Feeling Connected", search: "network solutions" },
+            { text: "I'm Feeling Technical", search: "technical support" }
           ].map((feeling, index) => (
             <button
               key={index}
-              className="px-4 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-muted/50 rounded-full transition-colors"
+              onClick={() => window.location.href = `/categories?search=${encodeURIComponent(feeling.search)}`}
+              className="px-4 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-muted/50 rounded-full transition-all duration-200 hover:scale-105"
             >
-              {feeling}
+              {feeling.text}
             </button>
           ))}
         </div>

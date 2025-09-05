@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
+import { GoogleInspiredFooter } from "@/components/GoogleInspiredFooter";
 import { SearchBar } from "@/components/SearchBar";
+import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -87,12 +89,17 @@ const Search = () => {
   };
 
   useEffect(() => {
-    const searchQuery = searchParams.get("q");
+    const searchQuery = searchParams.get("q") || searchParams.get("search");
     if (searchQuery) {
       performSearch(searchQuery);
     } else {
       setResults(mockResults);
     }
+
+    // Set SEO meta tags
+    document.title = searchQuery 
+      ? `Search results for "${searchQuery}" - Confidential Connect`
+      : "Search - Confidential Connect";
   }, [searchParams]);
 
   const resultStats = {
@@ -102,6 +109,7 @@ const Search = () => {
 
   return (
     <div className="min-h-screen">
+      <KeyboardShortcuts />
       <Header />
       
       <main className="pt-20 pb-12">
@@ -255,7 +263,8 @@ const Search = () => {
         </div>
       </main>
 
-      <Footer />
+      <GoogleInspiredFooter />
+      <ScrollToTop />
     </div>
   );
 };

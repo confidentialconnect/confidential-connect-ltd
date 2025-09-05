@@ -158,7 +158,23 @@ export const SearchBar = ({
             <Button
               variant="ghost"
               size="sm"
+              onClick={() => {
+                // Visual search functionality
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*';
+                input.onchange = (e) => {
+                  const file = (e.target as HTMLInputElement).files?.[0];
+                  if (file) {
+                    // For now, simulate visual search
+                    setQuery(`visual search: ${file.name}`);
+                    handleSearch(`visual search: ${file.name}`);
+                  }
+                };
+                input.click();
+              }}
               className="h-8 w-8 rounded-full hover:bg-muted"
+              title="Search by image"
             >
               <Camera className="h-4 w-4" />
             </Button>
