@@ -191,17 +191,65 @@ export const ContactSection = () => {
               </CardHeader>
               <CardContent>
                 <div className="flex space-x-4">
-                  <Button variant="outline" size="icon" className="hover-lift">
-                    <Facebook className="h-5 w-5" />
+                  <Button 
+                    variant="outline" 
+                    size="icon" 
+                    className="hover-lift hover-glow"
+                    asChild
+                  >
+                    <a 
+                      href="https://facebook.com/ConfidentialConnect" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      aria-label="Follow us on Facebook"
+                    >
+                      <Facebook className="h-5 w-5" />
+                    </a>
                   </Button>
-                  <Button variant="outline" size="icon" className="hover-lift">
-                    <Twitter className="h-5 w-5" />
+                  <Button 
+                    variant="outline" 
+                    size="icon" 
+                    className="hover-lift hover-glow"
+                    asChild
+                  >
+                    <a 
+                      href="https://twitter.com/ConfidentialConnect" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      aria-label="Follow us on Twitter"
+                    >
+                      <Twitter className="h-5 w-5" />
+                    </a>
                   </Button>
-                  <Button variant="outline" size="icon" className="hover-lift">
-                    <Instagram className="h-5 w-5" />
+                  <Button 
+                    variant="outline" 
+                    size="icon" 
+                    className="hover-lift hover-glow"
+                    asChild
+                  >
+                    <a 
+                      href="https://instagram.com/ConfidentialConnect" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      aria-label="Follow us on Instagram"
+                    >
+                      <Instagram className="h-5 w-5" />
+                    </a>
                   </Button>
-                  <Button variant="outline" size="icon" className="hover-lift">
-                    <Linkedin className="h-5 w-5" />
+                  <Button 
+                    variant="outline" 
+                    size="icon" 
+                    className="hover-lift hover-glow"
+                    asChild
+                  >
+                    <a 
+                      href="https://linkedin.com/company/ConfidentialConnect" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      aria-label="Follow us on LinkedIn"
+                    >
+                      <Linkedin className="h-5 w-5" />
+                    </a>
                   </Button>
                 </div>
               </CardContent>
