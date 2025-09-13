@@ -1,5 +1,7 @@
 import { Header } from "@/components/Header";
 import { GoogleInspiredHero } from "@/components/GoogleInspiredHero";
+import { PremiumFeatures } from "@/components/PremiumFeatures";
+import { InteractiveBackground } from "@/components/InteractiveBackground";
 import { ProductGrid } from "@/components/ProductGrid";
 import { ServicesSection } from "@/components/ServicesSection";
 import { ContactSection } from "@/components/ContactSection";
@@ -35,18 +37,22 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen">
-      <KeyboardShortcuts />
-      <Header />
-      <main>
-        <GoogleInspiredHero />
-        <ProductGrid />
-        <ServicesSection />
-        <ContactSection />
-      </main>
-      <GoogleInspiredFooter />
-      <SupportWidget />
-      <ScrollToTop />
+    <div className="min-h-screen relative bg-background">
+      <InteractiveBackground />
+      <div className="relative z-10">
+        <KeyboardShortcuts />
+        <Header />
+        <main>
+          <GoogleInspiredHero />
+          <PremiumFeatures />
+          <ProductGrid />
+          <ServicesSection />
+          <ContactSection />
+        </main>
+        <GoogleInspiredFooter />
+        <SupportWidget />
+        <ScrollToTop />
+      </div>
     </div>
   );
 };

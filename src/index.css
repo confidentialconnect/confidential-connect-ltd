@@ -8,44 +8,60 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
+    /* Premium color palette */
     --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --foreground: 222 84% 4.9%;
 
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 222 84% 4.9%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    --popover-foreground: 222 84% 4.9%;
 
-    --primary: 142 76% 36%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 240 5.9% 10%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
 
-    --accent: 142 76% 36%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 217 91% 60%;
+    --accent-foreground: 222 84% 4.9%;
 
-    /* Nigerian green theme colors */
-    --nigeria-green: 142 76% 36%;
-    --nigeria-green-light: 142 76% 55%;
-    --nigeria-green-dark: 142 76% 25%;
+    /* Premium gradient colors */
+    --gradient-primary: 221 83% 53%;
+    --gradient-secondary: 217 91% 60%;
+    --gradient-tertiary: 262 83% 58%;
+    --gradient-quaternary: 295 72% 39%;
     
-    /* Gradient colors for hero */
-    --gradient-start: 142 76% 36%;
-    --gradient-end: 200 100% 40%;
+    /* Brand colors */
+    --brand-blue: 221 83% 53%;
+    --brand-purple: 262 83% 58%;
+    --brand-pink: 316 71% 47%;
+    --brand-orange: 25 95% 53%;
+    --brand-red: 0 72% 51%;
+    --brand-green: 142 71% 45%;
     
-    /* Educational theme colors */
-    --education-blue: 200 100% 40%;
-    --education-purple: 260 100% 50%;
+    /* Status colors */
+    --success: 142 71% 45%;
+    --warning: 25 95% 53%;
+    --info: 217 91% 60%;
+    --error: 0 72% 51%;
     
-    /* Success and status colors */
-    --success: 142 76% 36%;
-    --warning: 35 91% 65%;
-    --info: 200 100% 40%;
+    /* Premium shadows and effects */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    --shadow-glow: 0 0 0 1px hsl(var(--primary) / 0.1), 0 4px 16px hsl(var(--primary) / 0.12);
+    
+    /* Glass morphism */
+    --glass-bg: 255 255 255 / 0.1;
+    --glass-border: 255 255 255 / 0.2;
+    --glass-blur: blur(16px);
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -74,30 +90,37 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
+    --background: 222 84% 4.9%;
+    --foreground: 210 40% 98%;
 
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
+    --card: 222 84% 4.9%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 222 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 142 76% 55%;
-    --primary-foreground: 240 10% 3.9%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 84% 4.9%;
 
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 217 32% 17%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
+    --muted: 217 32% 17%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 142 76% 55%;
-    --accent-foreground: 240 10% 3.9%;
+    --accent: 217 91% 60%;
+    --accent-foreground: 222 84% 4.9%;
 
-    /* Dark mode gradients */
-    --gradient-start: 142 76% 55%;
-    --gradient-end: 200 100% 60%;
+    /* Dark mode premium gradients */
+    --gradient-primary: 217 91% 60%;
+    --gradient-secondary: 262 83% 58%;
+    --gradient-tertiary: 316 71% 47%;
+    --gradient-quaternary: 25 95% 53%;
+    
+    /* Glass morphism dark */
+    --glass-bg: 0 0 0 / 0.2;
+    --glass-border: 255 255 255 / 0.1;
+    --glass-blur: blur(20px);
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
@@ -126,83 +149,182 @@ All colors MUST be HSL.
 
 
 @layer utilities {
-  /* Custom gradients */
+  /* Premium gradients */
   .gradient-primary {
-    background: linear-gradient(135deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)));
+    background: linear-gradient(135deg, hsl(var(--gradient-primary)), hsl(var(--gradient-secondary)));
   }
   
   .gradient-hero {
-    background: linear-gradient(135deg, hsl(var(--nigeria-green)), hsl(var(--education-blue)));
+    background: linear-gradient(135deg, hsl(var(--gradient-primary)), hsl(var(--gradient-tertiary)));
   }
   
-  /* Animation utilities */
+  .gradient-mesh {
+    background: 
+      radial-gradient(at 40% 20%, hsl(var(--gradient-primary)) 0px, transparent 50%),
+      radial-gradient(at 80% 0%, hsl(var(--gradient-secondary)) 0px, transparent 50%),
+      radial-gradient(at 0% 50%, hsl(var(--gradient-tertiary)) 0px, transparent 50%),
+      radial-gradient(at 80% 50%, hsl(var(--gradient-quaternary)) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, hsl(var(--gradient-primary)) 0px, transparent 50%),
+      radial-gradient(at 80% 100%, hsl(var(--gradient-secondary)) 0px, transparent 50%);
+  }
+  
+  /* Glass morphism */
+  .glass {
+    background: rgba(var(--glass-bg));
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid rgba(var(--glass-border));
+  }
+  
+  /* Premium animations */
   .animate-fade-in {
-    animation: fadeIn 0.6s ease-out forwards;
+    animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   
   .animate-slide-up {
-    animation: slideUp 0.8s ease-out forwards;
+    animation: slideUp 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   
   .animate-bounce-in {
-    animation: bounceIn 1s ease-out forwards;
+    animation: bounceIn 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
   }
   
-  /* Hover effects */
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite;
+  }
+  
+  .animate-shimmer {
+    animation: shimmer 2s linear infinite;
+  }
+  
+  /* Premium hover effects */
   .hover-lift {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .hover-lift:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-2xl);
   }
   
-  /* Text effects */
+  .hover-glow {
+    transition: all 0.3s ease;
+  }
+  
+  .hover-glow:hover {
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-2px);
+  }
+  
+  .hover-scale {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .hover-scale:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Premium text effects */
   .text-gradient {
-    background: linear-gradient(135deg, hsl(var(--nigeria-green)), hsl(var(--education-blue)));
+    background: linear-gradient(135deg, hsl(var(--gradient-primary)), hsl(var(--gradient-tertiary)));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+  
+  .text-shimmer {
+    background: linear-gradient(110deg, hsl(var(--gradient-primary)) 45%, hsl(var(--gradient-secondary)) 55%, hsl(var(--gradient-primary)) 65%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+  }
+  
+  /* Premium borders and shadows */
+  .border-gradient {
+    border: 2px solid transparent;
+    background: linear-gradient(hsl(var(--background)), hsl(var(--background))) padding-box,
+                linear-gradient(135deg, hsl(var(--gradient-primary)), hsl(var(--gradient-secondary))) border-box;
+  }
+  
+  .shadow-premium {
+    box-shadow: var(--shadow-xl);
+  }
+  
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
   }
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
+    filter: blur(4px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+    filter: blur(0);
   }
 }
 
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(50px);
+    transform: translateY(60px) rotateX(10deg);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) rotateX(0deg);
   }
 }
 
 @keyframes bounceIn {
   0% {
     opacity: 0;
-    transform: scale(0.3);
+    transform: scale(0.3) rotate(-10deg);
   }
   50% {
     opacity: 1;
-    transform: scale(1.05);
+    transform: scale(1.1) rotate(2deg);
   }
   70% {
-    transform: scale(0.9);
+    transform: scale(0.95) rotate(-1deg);
   }
   100% {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 5px hsl(var(--primary) / 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.8), 0 0 30px hsl(var(--primary) / 0.4);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
   }
 }
