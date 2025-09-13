@@ -174,6 +174,40 @@ const getAllProducts = () => [
     reviews: 28,
     inStock: true
   }
+,
+  {
+    id: "16",
+    name: "Birth Certificate",
+    description: "Official birth certificate processing with verification and authentication support.",
+    price: 5000,
+    category: "documentation",
+    image: "/assets/certificates-collection.jpg",
+    rating: 4.9,
+    reviews: 42,
+    inStock: true
+  },
+  {
+    id: "17",
+    name: "State of Origin Certificate",
+    description: "Authentic state of origin certificate with government endorsement and verification.",
+    price: 12000,
+    category: "documentation",
+    image: "/assets/origin-certificate.jpg",
+    rating: 4.8,
+    reviews: 37,
+    inStock: true
+  },
+  {
+    id: "18",
+    name: "WAEC Certificate Service",
+    description: "Complete WAEC certificate collection, verification, and authentication service.",
+    price: 12000,
+    category: "documentation",
+    image: "/assets/identification-certificate.jpg",
+    rating: 4.9,
+    reviews: 51,
+    inStock: true
+  }
 ];
 
 const categoryNames: Record<string, string> = {
@@ -182,7 +216,8 @@ const categoryNames: Record<string, string> = {
   network: "Network Solutions",
   database: "Database Services",
   hardware: "Hardware Solutions",
-  cloud: "Cloud Services"
+  cloud: "Cloud Services",
+  documentation: "Documentation Services"
 };
 
 const Products = () => {
