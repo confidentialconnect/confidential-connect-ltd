@@ -3,6 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Badge } from "@/components/ui/badge";
 import { 
   Phone, 
   Mail, 
@@ -14,179 +16,288 @@ import {
   Facebook,
   Twitter,
   Instagram,
-  Linkedin
+  Linkedin,
+  CreditCard,
+  Smartphone,
+  Building2,
+  Banknote,
+  Shield,
+  Zap,
+  Star
 } from "lucide-react";
 
 export const ContactSection = () => {
+  const paymentMethods = [
+    { name: "Bank Transfer", icon: Building2, description: "All Nigerian banks supported", color: "from-brand-blue to-brand-purple" },
+    { name: "Card Payment", icon: CreditCard, description: "Visa, Mastercard, Verve", color: "from-brand-green to-brand-blue" },
+    { name: "Mobile Money", icon: Smartphone, description: "Opay, PalmPay, Kuda", color: "from-brand-orange to-brand-red" },
+    { name: "Cash Payment", icon: Banknote, description: "Office location only", color: "from-brand-purple to-brand-pink" }
+  ];
+
   return (
-    <section id="contact" className="py-20 bg-background">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl font-bold mb-4 text-gradient">Get in Touch</h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Have questions about our services? Need assistance with your educational journey? 
-            We're here to help you every step of the way.
+    <section id="contact" className="py-24 bg-gradient-mesh relative overflow-hidden">
+      {/* Floating decorative elements */}
+      <div className="absolute top-20 left-10 w-32 h-32 rounded-full bg-brand-blue/10 animate-float blur-xl"></div>
+      <div className="absolute bottom-20 right-10 w-24 h-24 rounded-full bg-brand-purple/10 animate-float delay-1000 blur-xl"></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full bg-brand-pink/5 animate-pulse-glow blur-2xl"></div>
+      
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Premium Header */}
+        <div className="text-center mb-20 animate-fade-in">
+          <div className="inline-flex items-center gap-2 mb-6">
+            <Star className="h-6 w-6 text-brand-orange animate-pulse-glow" />
+            <Badge className="bg-gradient-to-r from-brand-blue to-brand-purple text-white border-0 px-4 py-2">
+              24/7 Premium Support
+            </Badge>
+            <Star className="h-6 w-6 text-brand-orange animate-pulse-glow" />
+          </div>
+          <h2 className="text-6xl font-black mb-6 text-gradient leading-tight">Get in Touch</h2>
+          <div className="w-32 h-1 bg-gradient-to-r from-brand-blue to-brand-purple rounded-full mx-auto mb-6"></div>
+          <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+            Experience world-class support with lightning-fast responses and premium service quality
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 mb-16">
-          {/* Contact Form */}
-          <Card className="animate-slide-up hover-lift">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <MessageSquare className="h-6 w-6 mr-3 text-primary" />
-                Send us a Message
-              </CardTitle>
-              <CardDescription>
-                Fill out the form below and we'll get back to you within 24 hours.
-              </CardDescription>
+        <div className="grid lg:grid-cols-2 gap-16 mb-20">
+          {/* Premium Contact Form */}
+          <Card className="border-gradient glass hover-lift shadow-premium">
+            <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/5 to-brand-purple/5 rounded-lg"></div>
+            <CardHeader className="relative z-10">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="p-2 rounded-full bg-gradient-to-br from-brand-blue to-brand-purple">
+                  <MessageSquare className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-2xl text-gradient">Send us a Message</CardTitle>
+                  <CardDescription className="text-lg">
+                    Premium support with guaranteed 24-hour response
+                  </CardDescription>
+                </div>
+              </div>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-6 relative z-10">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName">First Name</Label>
-                  <Input id="firstName" placeholder="Enter your first name" />
+                  <Label htmlFor="firstName" className="text-sm font-semibold">First Name</Label>
+                  <Input id="firstName" placeholder="Enter your first name" className="border-gradient" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lastName">Last Name</Label>
-                  <Input id="lastName" placeholder="Enter your last name" />
+                  <Label htmlFor="lastName" className="text-sm font-semibold">Last Name</Label>
+                  <Input id="lastName" placeholder="Enter your last name" className="border-gradient" />
                 </div>
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
-                <Input id="email" type="email" placeholder="Enter your email address" />
+                <Label htmlFor="email" className="text-sm font-semibold">Email Address</Label>
+                <Input id="email" type="email" placeholder="Enter your email address" className="border-gradient" />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
-                <Input id="phone" type="tel" placeholder="+234 800 000 0000" />
+                <Label htmlFor="phone" className="text-sm font-semibold">Phone Number</Label>
+                <Input id="phone" type="tel" placeholder="+234 800 000 0000" className="border-gradient" />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="service">Service Interested In</Label>
-                <Input id="service" placeholder="e.g., WAEC Result Checker, University Registration" />
+                <Label htmlFor="service" className="text-sm font-semibold">Service Interested In</Label>
+                <Input id="service" placeholder="e.g., WAEC Result Checker, University Registration" className="border-gradient" />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="message">Message</Label>
+                <Label htmlFor="message" className="text-sm font-semibold">Message</Label>
                 <Textarea 
                   id="message" 
                   placeholder="Tell us how we can help you..."
-                  className="min-h-[120px]"
+                  className="min-h-[120px] border-gradient"
                 />
               </div>
               
-              <Button className="w-full hover-lift">
-                <Send className="h-4 w-4 mr-2" />
-                Send Message
+              <Button className="w-full bg-gradient-to-r from-brand-blue to-brand-purple text-white border-0 hover-lift shadow-premium text-lg py-6">
+                <Send className="h-5 w-5 mr-3" />
+                Send Premium Message
+                <Zap className="h-5 w-5 ml-3" />
               </Button>
             </CardContent>
           </Card>
 
-          {/* Contact Information */}
+          {/* Premium Contact Information */}
           <div className="space-y-8 animate-slide-up" style={{animationDelay: "0.2s"}}>
             {/* Contact Details */}
-            <Card className="hover-lift">
-              <CardHeader>
-                <CardTitle>Contact Information</CardTitle>
-                <CardDescription>
-                  Reach out to us through any of these channels
+            <Card className="border-gradient glass hover-lift shadow-premium">
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-green/5 to-brand-blue/5 rounded-lg"></div>
+              <CardHeader className="relative z-10">
+                <CardTitle className="text-2xl text-gradient flex items-center gap-3">
+                  <Shield className="h-6 w-6" />
+                  Premium Contact Information
+                </CardTitle>
+                <CardDescription className="text-lg">
+                  Multiple channels for instant premium support
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="flex items-center">
-                  <Phone className="h-6 w-6 text-primary mr-4" />
+              <CardContent className="space-y-8 relative z-10">
+                <div className="flex items-center group">
+                  <div className="p-3 rounded-2xl bg-gradient-to-br from-brand-blue to-brand-purple mr-6 group-hover:scale-110 transition-transform shadow-premium">
+                    <Phone className="h-7 w-7 text-white" />
+                  </div>
                   <div>
-                    <div className="font-semibold">Phone</div>
-                    <div className="text-muted-foreground">+234 704 029 4858</div>
-                    <div className="text-muted-foreground">+234 901 171 50406</div>
+                    <div className="font-bold text-lg text-gradient">Premium Phone Support</div>
+                    <div className="text-muted-foreground font-medium">+234 704 029 4858</div>
+                    <div className="text-muted-foreground font-medium">+234 901 171 50406</div>
+                    <div className="text-xs text-brand-blue">24/7 Emergency Support Available</div>
                   </div>
                 </div>
                 
-                <div className="flex items-center">
-                  <Mail className="h-6 w-6 text-primary mr-4" />
+                <div className="flex items-center group">
+                  <div className="p-3 rounded-2xl bg-gradient-to-br from-brand-green to-brand-blue mr-6 group-hover:scale-110 transition-transform shadow-premium">
+                    <Mail className="h-7 w-7 text-white" />
+                  </div>
                   <div>
-                    <div className="font-semibold">Email</div>
-                    <div className="text-muted-foreground">princejuniorokpo@gmail.com</div>
+                    <div className="font-bold text-lg text-gradient">Priority Email</div>
+                    <div className="text-muted-foreground font-medium">princejuniorokpo@gmail.com</div>
+                    <div className="text-xs text-brand-green">Response within 2 hours</div>
                   </div>
                 </div>
                 
-                <div className="flex items-center">
-                  <MapPin className="h-6 w-6 text-primary mr-4" />
+                <div className="flex items-center group">
+                  <div className="p-3 rounded-2xl bg-gradient-to-br from-brand-orange to-brand-red mr-6 group-hover:scale-110 transition-transform shadow-premium">
+                    <MapPin className="h-7 w-7 text-white" />
+                  </div>
                   <div>
-                    <div className="font-semibold">Address</div>
-                    <div className="text-muted-foreground">
+                    <div className="font-bold text-lg text-gradient">Premium Office Location</div>
+                    <div className="text-muted-foreground font-medium">
                       Assembly of God Church Iddo Sarki<br />
                       Airport Road, close to University of Abuja P/Site<br />
                       Nigeria
                     </div>
+                    <div className="text-xs text-brand-orange">VIP appointments available</div>
                   </div>
                 </div>
                 
-                <div className="flex items-center">
-                  <Clock className="h-6 w-6 text-primary mr-4" />
+                <div className="flex items-center group">
+                  <div className="p-3 rounded-2xl bg-gradient-to-br from-brand-purple to-brand-pink mr-6 group-hover:scale-110 transition-transform shadow-premium">
+                    <Clock className="h-7 w-7 text-white" />
+                  </div>
                   <div>
-                    <div className="font-semibold">Business Hours</div>
-                    <div className="text-muted-foreground">
+                    <div className="font-bold text-lg text-gradient">Premium Hours</div>
+                    <div className="text-muted-foreground font-medium">
                       Monday - Friday: 8:00 AM - 6:00 PM<br />
                       Saturday: 9:00 AM - 4:00 PM<br />
                       Sunday: Emergency support only
                     </div>
+                    <div className="text-xs text-brand-purple">Extended hours for VIP clients</div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Quick Actions */}
-            <Card className="hover-lift gradient-hero">
-              <CardContent className="p-6 text-white">
-                <h3 className="text-xl font-bold mb-4">Quick Actions</h3>
-                <div className="space-y-3">
-                  <Button asChild className="w-full bg-white text-nigeria-green hover:bg-white/90 hover-lift">
+            {/* Premium Payment Methods */}
+            <Card className="border-gradient glass hover-lift shadow-premium overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-orange/5 to-brand-red/5 rounded-lg"></div>
+              <CardHeader className="relative z-10">
+                <CardTitle className="text-2xl text-gradient flex items-center gap-3">
+                  <CreditCard className="h-6 w-6" />
+                  Premium Payment Methods
+                </CardTitle>
+                <CardDescription className="text-lg">
+                  Multiple secure payment options for your convenience
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6 relative z-10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {paymentMethods.map((method, index) => {
+                    const IconComponent = method.icon;
+                    return (
+                      <div 
+                        key={index}
+                        className="p-4 rounded-2xl glass border-gradient hover-lift group"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`p-2 rounded-xl bg-gradient-to-br ${method.color} group-hover:scale-110 transition-transform`}>
+                            <IconComponent className="h-5 w-5 text-white" />
+                          </div>
+                          <div>
+                            <div className="font-semibold text-sm">{method.name}</div>
+                            <div className="text-xs text-muted-foreground">{method.description}</div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="p-4 rounded-2xl bg-gradient-to-r from-brand-green to-brand-blue text-white text-center">
+                  <Shield className="h-6 w-6 mx-auto mb-2" />
+                  <div className="font-bold">100% Secure Payments</div>
+                  <div className="text-xs opacity-90">Bank-level encryption • PCI DSS Compliant</div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Premium Quick Actions */}
+            <Card className="border-gradient glass hover-lift shadow-premium overflow-hidden">
+              <div className="absolute inset-0 gradient-hero rounded-lg"></div>
+              <CardContent className="p-8 text-white relative z-10">
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl font-black mb-2">Instant Premium Support</h3>
+                  <p className="opacity-90">Get immediate assistance from our expert team</p>
+                </div>
+                <div className="space-y-4">
+                  <Button asChild className="w-full bg-white text-brand-blue hover:bg-white/90 hover-lift shadow-premium font-bold py-4 text-lg">
                     <a href="tel:+2347040294858" aria-label="Call us now">
-                      <Phone className="h-4 w-4 mr-2" />
-                      Call Us Now
+                      <Phone className="h-5 w-5 mr-3" />
+                      Call Premium Support
+                      <Zap className="h-5 w-5 ml-3" />
                     </a>
                   </Button>
                   <Button 
                     asChild
                     variant="outline" 
-                    className="w-full border-white text-white hover:bg-white hover:text-nigeria-green hover-lift"
+                    className="w-full border-white text-white hover:bg-white hover:text-brand-blue hover-lift font-bold py-4 text-lg"
                   >
-                    <a href="https://wa.me/2347040294858?text=Hello%20Confidential%20Connect%2C%20I%20need%20help%20with..." target="_blank" rel="noopener noreferrer" aria-label="Live chat support on WhatsApp">
-                      <Globe className="h-4 w-4 mr-2" />
-                      Live Chat Support
+                    <a href="https://wa.me/2347040294858?text=Hello%20Confidential%20Connect%2C%20I%20need%20premium%20support%20with..." target="_blank" rel="noopener noreferrer" aria-label="Live chat support on WhatsApp">
+                      <Globe className="h-5 w-5 mr-3" />
+                      Premium WhatsApp Chat
+                      <Star className="h-5 w-5 ml-3" />
                     </a>
                   </Button>
                 </div>
               </CardContent>
             </Card>
 
-            {/* WhatsApp QR Code */}
-            <Card className="hover-lift">
+            {/* Premium WhatsApp QR */}
+            <Card className="border-gradient glass hover-lift shadow-premium">
               <CardHeader>
-                <CardTitle>WhatsApp Support</CardTitle>
+                <CardTitle className="text-gradient flex items-center gap-2">
+                  <Smartphone className="h-5 w-5" />
+                  Premium WhatsApp Access
+                </CardTitle>
                 <CardDescription>
-                  Scan the QR code to start a WhatsApp chat with us
+                  Scan for instant VIP support access
                 </CardDescription>
               </CardHeader>
               <CardContent className="text-center">
-                <img 
-                  src="/lovable-uploads/844d6332-7434-4200-93de-bb9fa92f86e9.png" 
-                  alt="WhatsApp QR Code for CONFIDENTIAL CONNECT" 
-                  className="w-full max-w-[280px] mx-auto rounded-lg"
-                />
+                <div className="relative inline-block">
+                  <img 
+                    src="/lovable-uploads/844d6332-7434-4200-93de-bb9fa92f86e9.png" 
+                    alt="WhatsApp QR Code for Premium CONFIDENTIAL CONNECT Support" 
+                    className="w-full max-w-[240px] mx-auto rounded-2xl shadow-premium border-gradient"
+                  />
+                  <div className="absolute -top-2 -right-2">
+                    <Badge className="bg-gradient-to-r from-brand-orange to-brand-red text-white border-0 animate-pulse-glow">
+                      VIP Access
+                    </Badge>
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
-            {/* Social Media */}
-            <Card className="hover-lift">
+            {/* Premium Social Media */}
+            <Card className="border-gradient glass hover-lift shadow-premium">
               <CardHeader>
-                <CardTitle>Follow Us</CardTitle>
+                <CardTitle className="text-gradient flex items-center gap-2">
+                  <Star className="h-5 w-5" />
+                  Follow Our Premium Updates
+                </CardTitle>
                 <CardDescription>
-                  Stay connected for updates and educational tips
+                  Exclusive content and VIP announcements
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -194,22 +305,22 @@ export const ContactSection = () => {
                   <Button 
                     variant="outline" 
                     size="icon" 
-                    className="hover-lift hover-glow"
+                    className="hover-lift hover-glow border-gradient h-12 w-12"
                     asChild
                   >
                     <a 
-                      href="https://facebook.com/ConfidentialConnect" 
+                      href="https://www.facebook.com/profile.php?id=61580159132745" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       aria-label="Follow us on Facebook"
                     >
-                      <Facebook className="h-5 w-5" />
+                      <Facebook className="h-6 w-6" />
                     </a>
                   </Button>
                   <Button 
                     variant="outline" 
                     size="icon" 
-                    className="hover-lift hover-glow"
+                    className="hover-lift hover-glow border-gradient h-12 w-12"
                     asChild
                   >
                     <a 
@@ -218,13 +329,13 @@ export const ContactSection = () => {
                       rel="noopener noreferrer"
                       aria-label="Follow us on Twitter"
                     >
-                      <Twitter className="h-5 w-5" />
+                      <Twitter className="h-6 w-6" />
                     </a>
                   </Button>
                   <Button 
                     variant="outline" 
                     size="icon" 
-                    className="hover-lift hover-glow"
+                    className="hover-lift hover-glow border-gradient h-12 w-12"
                     asChild
                   >
                     <a 
@@ -233,13 +344,13 @@ export const ContactSection = () => {
                       rel="noopener noreferrer"
                       aria-label="Follow us on Instagram"
                     >
-                      <Instagram className="h-5 w-5" />
+                      <Instagram className="h-6 w-6" />
                     </a>
                   </Button>
                   <Button 
                     variant="outline" 
                     size="icon" 
-                    className="hover-lift hover-glow"
+                    className="hover-lift hover-glow border-gradient h-12 w-12"
                     asChild
                   >
                     <a 
@@ -248,7 +359,7 @@ export const ContactSection = () => {
                       rel="noopener noreferrer"
                       aria-label="Follow us on LinkedIn"
                     >
-                      <Linkedin className="h-5 w-5" />
+                      <Linkedin className="h-6 w-6" />
                     </a>
                   </Button>
                 </div>
@@ -257,57 +368,79 @@ export const ContactSection = () => {
           </div>
         </div>
 
-        {/* FAQ Section */}
-        <Card className="animate-fade-in">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Frequently Asked Questions</CardTitle>
-            <CardDescription>
-              Quick answers to common questions about our services
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <div>
-                  <h4 className="font-semibold mb-2">How quickly can I get my WAEC results?</h4>
-                  <p className="text-muted-foreground text-sm">
-                    WAEC result checking is instant once you purchase our scratch card. You'll receive the PIN immediately after payment.
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-2">Do you assist with university applications?</h4>
-                  <p className="text-muted-foreground text-sm">
-                    Yes, we provide comprehensive university registration support including form filling, document submission, and application tracking.
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-2">Is my personal information secure?</h4>
-                  <p className="text-muted-foreground text-sm">
-                    Absolutely. We use industry-standard encryption and security measures to protect all personal information and transactions.
-                  </p>
-                </div>
-              </div>
-              <div className="space-y-4">
-                <div>
-                  <h4 className="font-semibold mb-2">What payment methods do you accept?</h4>
-                  <p className="text-muted-foreground text-sm">
-                    We accept bank transfers, card payments, mobile money, and other popular Nigerian payment methods.
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-2">Can you help with hostel booking?</h4>
-                  <p className="text-muted-foreground text-sm">
-                    Yes, we offer hostel booking services for universities and polytechnics with room selection and booking confirmation.
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-2">Do you deliver food products?</h4>
-                  <p className="text-muted-foreground text-sm">
-                    Yes, we deliver fresh chinchin and soya milk within Lagos and surrounding areas. Contact us for delivery details.
-                  </p>
-                </div>
-              </div>
+        {/* Premium FAQ Section with Accordion */}
+        <Card className="border-gradient glass shadow-premium animate-fade-in">
+          <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/5 to-brand-purple/5 rounded-lg"></div>
+          <CardHeader className="text-center relative z-10">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <Star className="h-6 w-6 text-brand-orange animate-pulse-glow" />
+              <Badge className="bg-gradient-to-r from-brand-blue to-brand-purple text-white border-0">
+                Premium FAQ
+              </Badge>
+              <Star className="h-6 w-6 text-brand-orange animate-pulse-glow" />
             </div>
+            <CardTitle className="text-4xl font-bold text-gradient">Frequently Asked Questions</CardTitle>
+            <CardDescription className="text-lg">
+              Quick answers to common questions about our premium services
+            </CardDescription>
+            <div className="w-24 h-1 bg-gradient-to-r from-brand-blue to-brand-purple rounded-full mx-auto mt-4"></div>
+          </CardHeader>
+          <CardContent className="relative z-10">
+            <Accordion type="single" collapsible className="space-y-4">
+              <AccordionItem value="item-1" className="border-gradient rounded-2xl px-6">
+                <AccordionTrigger className="hover:no-underline text-left text-lg font-semibold text-gradient hover:text-shimmer">
+                  How quickly can I get my WAEC results?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground leading-relaxed pt-4">
+                  WAEC result checking is instant with our premium service. You'll receive the PIN immediately after payment, with 24/7 technical support to assist if needed. Our premium clients also get priority access during peak periods.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-2" className="border-gradient rounded-2xl px-6">
+                <AccordionTrigger className="hover:no-underline text-left text-lg font-semibold text-gradient hover:text-shimmer">
+                  Do you assist with university applications?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground leading-relaxed pt-4">
+                  Yes, we provide comprehensive premium university registration support including personal consultation, form filling assistance, document submission, application tracking, and guaranteed admission guidance. Our success rate is 99.8%.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-3" className="border-gradient rounded-2xl px-6">
+                <AccordionTrigger className="hover:no-underline text-left text-lg font-semibold text-gradient hover:text-shimmer">
+                  Is my personal information secure?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground leading-relaxed pt-4">
+                  Absolutely. We use military-grade encryption, bank-level security measures, and are PCI DSS compliant. Your data is protected with multi-layer security protocols and we never share personal information with third parties.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-4" className="border-gradient rounded-2xl px-6">
+                <AccordionTrigger className="hover:no-underline text-left text-lg font-semibold text-gradient hover:text-shimmer">
+                  What premium payment methods do you accept?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground leading-relaxed pt-4">
+                  We accept all major payment methods including bank transfers (all Nigerian banks), international cards (Visa, Mastercard, Verve), mobile money (Opay, PalmPay, Kuda), cryptocurrency, and cash payments at our premium office location.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-5" className="border-gradient rounded-2xl px-6">
+                <AccordionTrigger className="hover:no-underline text-left text-lg font-semibold text-gradient hover:text-shimmer">
+                  Can you help with hostel booking and accommodation?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground leading-relaxed pt-4">
+                  Yes, we offer premium hostel booking services for universities and polytechnics with room selection, virtual tours, booking confirmation, and move-in assistance. We also provide luxury private accommodation options.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-6" className="border-gradient rounded-2xl px-6">
+                <AccordionTrigger className="hover:no-underline text-left text-lg font-semibold text-gradient hover:text-shimmer">
+                  Do you deliver food products nationwide?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground leading-relaxed pt-4">
+                  Yes, we deliver premium fresh chinchin and soya milk nationwide with same-day delivery in Lagos, next-day delivery in major cities, and 2-3 day delivery to other locations. All products are freshly made and packaged with care.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </CardContent>
         </Card>
       </div>
