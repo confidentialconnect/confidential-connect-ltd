@@ -249,6 +249,39 @@ const products = [
       "Quantity: 81-100 units | Unit Price: ₦1,250",
       "24/7 support"
     ]
+  },
+  {
+    id: 21,
+    name: "Birth Certificate",
+    description: "Official birth certificate documentation service with verification and authentication guarantee.",
+    price: 5000,
+    category: "Documentation",
+    icon: FileText,
+    rating: 4.9,
+    inStock: true,
+    features: ["Official documentation", "Authentication included", "Fast processing", "24/7 support"]
+  },
+  {
+    id: 22,
+    name: "State of Origin Certificate",
+    description: "Authentic state of origin certificate processing with official government endorsement and verification.",
+    price: 12000,
+    category: "Documentation", 
+    icon: Shield,
+    rating: 4.8,
+    inStock: true,
+    features: ["Government endorsed", "Official verification", "Secure processing", "24/7 support"]
+  },
+  {
+    id: 23,
+    name: "WAEC Certificate Service",
+    description: "Complete WAEC certificate collection, verification, and authentication service with guaranteed authenticity.",
+    price: 12000,
+    category: "Documentation",
+    icon: GraduationCap,
+    rating: 4.9,
+    inStock: true,
+    features: ["Certificate collection", "Full authentication", "Guaranteed authenticity", "24/7 support"]
   }
 ];
 
