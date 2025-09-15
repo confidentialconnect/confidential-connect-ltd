@@ -399,7 +399,7 @@ Please respond to this inquiry. Thank you!`;
                     asChild
                   >
                     <a 
-                      href="https://linkedin.com/company/ConfidentialConnect" 
+                      href="https://www.linkedin.com/in/okpo-confidence-oko-74ba152a5?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       aria-label="Follow us on LinkedIn"

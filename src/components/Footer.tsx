@@ -78,8 +78,15 @@ export const Footer = () => {
               <Button variant="ghost" size="icon" className="hover:bg-white/10 hover-lift">
                 <Instagram className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="icon" className="hover:bg-white/10 hover-lift">
-                <Linkedin className="h-5 w-5" />
+              <Button variant="ghost" size="icon" className="hover:bg-white/10 hover-lift" asChild>
+                <a 
+                  href="https://www.linkedin.com/in/okpo-confidence-oko-74ba152a5?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-label="Follow us on LinkedIn"
+                >
+                  <Linkedin className="h-5 w-5" />
+                </a>
               </Button>
             </div>
           </div>
