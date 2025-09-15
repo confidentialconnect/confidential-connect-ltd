@@ -37,14 +37,14 @@ const Payments = () => {
       // Show bank transfer details with account information
       toast({
         title: "Bank Transfer Details",
-        description: "Bank: First Bank of Nigeria | Account: 3014621626 | Name: Prince Confidential Connect. Send receipt to WhatsApp after payment.",
+        description: "Bank: First Bank of Nigeria | Account: 3014621626 | Name: Prince Confidential Connect. After payment, send receipt to WhatsApp: +2347040294858.",
         duration: 10000
       });
     } else {
       // For mobile payments (OPay, PalmPay), show transfer instructions
       toast({
         title: "Transfer Instructions",
-        description: "Use the displayed account details to make payment, then send receipt confirmation.",
+        description: "Use the displayed account details to make payment, then send your receipt to WhatsApp: +2347040294858 for confirmation.",
         duration: 8000
       });
     }

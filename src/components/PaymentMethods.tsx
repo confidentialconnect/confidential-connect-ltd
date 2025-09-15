@@ -53,7 +53,7 @@ const paymentMethods: PaymentMethod[] = [
     icon: Smartphone,
     type: 'mobile',
     details: {
-      phoneNumber: '09876543210',
+      phoneNumber: '07040294858',
       accountName: 'Prince Confidential Connect'
     },
     fees: 'Free',
@@ -66,7 +66,7 @@ const paymentMethods: PaymentMethod[] = [
     icon: Smartphone,
     type: 'mobile',
     details: {
-      phoneNumber: '09876543210',
+      phoneNumber: '07040294858',
       accountName: 'Prince Confidential Connect'
     },
     fees: 'Free',
@@ -242,10 +242,21 @@ export const PaymentMethods = ({ selectedMethod, onMethodSelect, orderAmount }: 
                      
                      {(method.type === 'bank' || method.type === 'mobile') && (
                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mt-3">
-                         <p className="text-sm font-medium text-yellow-800 mb-1">📲 Important:</p>
+                         <p className="text-sm font-medium text-yellow-800 mb-2">📲 Important:</p>
                          <p className="text-xs text-yellow-700">
-                           After payment, send your receipt to WhatsApp: +234-XXX-XXX-XXXX for instant confirmation
+                           After payment, send your receipt to WhatsApp: +2347040294858 for instant confirmation.
                          </p>
+                         <div className="mt-3">
+                           <Button size="sm" className="w-full" asChild>
+                             <a 
+                               href={`https://wa.me/2347040294858?text=${encodeURIComponent('Hello, I have made a payment. Amount: ₦' + (orderAmount / 100).toLocaleString() + '. Please confirm my receipt.')}`} 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                             >
+                               Send receipt on WhatsApp
+                             </a>
+                           </Button>
+                         </div>
                        </div>
                      )}
                   </div>
