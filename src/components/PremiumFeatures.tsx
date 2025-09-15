@@ -142,6 +142,11 @@ export const PremiumFeatures = () => {
               <Button 
                 size="lg"
                 className="bg-gradient-to-r from-brand-blue to-brand-purple text-white border-0 hover-lift shadow-premium text-lg px-8 py-4"
+                onClick={() => {
+                  const whatsappMessage = `Hello Confidential Connect! I'm ready to get started with your premium technology solutions. Can you help me transform my business?`;
+                  const whatsappUrl = `https://wa.me/2347040294858?text=${encodeURIComponent(whatsappMessage)}`;
+                  window.open(whatsappUrl, '_blank');
+                }}
               >
                 <Zap className="h-5 w-5 mr-2" />
                 Get Started Now
@@ -150,6 +155,11 @@ export const PremiumFeatures = () => {
                 size="lg"
                 variant="outline"
                 className="border-gradient hover-lift text-lg px-8 py-4"
+                onClick={() => {
+                  const whatsappMessage = `Hello Confidential Connect! I would like to schedule a demo of your technology solutions to see how they can benefit my business.`;
+                  const whatsappUrl = `https://wa.me/2347040294858?text=${encodeURIComponent(whatsappMessage)}`;
+                  window.open(whatsappUrl, '_blank');
+                }}
               >
                 Schedule Demo
               </Button>

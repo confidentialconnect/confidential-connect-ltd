@@ -2,6 +2,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { 
   Shield, 
   Users, 
@@ -243,6 +244,29 @@ const About = () => {
               Join hundreds of satisfied clients who trust Confidential Connect for their technology needs.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                size="lg" 
+                className="bg-white text-primary hover:bg-white/90"
+                onClick={() => {
+                  const whatsappMessage = `Hello Confidential Connect! I'm ready to transform my business with your technology solutions. Can you help me get started?`;
+                  const whatsappUrl = `https://wa.me/2347040294858?text=${encodeURIComponent(whatsappMessage)}`;
+                  window.open(whatsappUrl, '_blank');
+                }}
+              >
+                Get Started Today
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-white text-white hover:bg-white hover:text-primary"
+                onClick={() => {
+                  const whatsappMessage = `Hello Confidential Connect! I would like to learn more about your services. Can we schedule a consultation?`;
+                  const whatsappUrl = `https://wa.me/2347040294858?text=${encodeURIComponent(whatsappMessage)}`;
+                  window.open(whatsappUrl, '_blank');
+                }}
+              >
+                Learn More
+              </Button>
               <a 
                 href="/categories" 
                 className="inline-flex items-center justify-center px-6 py-3 bg-white text-primary font-medium rounded-md hover:bg-white/90 transition-colors"

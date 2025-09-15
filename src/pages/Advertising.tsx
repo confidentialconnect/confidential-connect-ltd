@@ -28,8 +28,17 @@ const Advertising = () => {
               <Button size="lg" className="hover-lift" asChild>
                 <a href="#plans" aria-label="View advertising plans">View Plans</a>
               </Button>
-              <Button size="lg" variant="secondary" className="hover-lift" asChild>
-                <a href="/contact" aria-label="Contact sales">Contact Sales</a>
+              <Button 
+                size="lg" 
+                variant="secondary" 
+                className="hover-lift" 
+                onClick={() => {
+                  const whatsappMessage = `Hello Confidential Connect! I'm interested in your advertising services and would like to speak with your sales team about growing my business.`;
+                  const whatsappUrl = `https://wa.me/2347040294858?text=${encodeURIComponent(whatsappMessage)}`;
+                  window.open(whatsappUrl, '_blank');
+                }}
+              >
+                Contact Sales
               </Button>
             </div>
           </div>
@@ -94,7 +103,16 @@ const Advertising = () => {
                         <li key={idx}>• {p}</li>
                       ))}
                     </ul>
-                    <Button className="w-full">Start Now</Button>
+                    <Button 
+                      className="w-full"
+                      onClick={() => {
+                        const whatsappMessage = `Hello Confidential Connect! I'm interested in the ${plan.name} advertising plan (₦${plan.price}). Can you help me get started?`;
+                        const whatsappUrl = `https://wa.me/2347040294858?text=${encodeURIComponent(whatsappMessage)}`;
+                        window.open(whatsappUrl, '_blank');
+                      }}
+                    >
+                      Start Now
+                    </Button>
                   </CardContent>
                 </Card>
               ))}

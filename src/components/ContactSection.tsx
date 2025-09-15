@@ -111,7 +111,32 @@ export const ContactSection = () => {
                 />
               </div>
               
-              <Button className="w-full bg-gradient-to-r from-brand-blue to-brand-purple text-white border-0 hover-lift shadow-premium text-lg py-6">
+              <Button 
+                onClick={(e) => {
+                  e.preventDefault();
+                  const firstName = (document.getElementById('firstName') as HTMLInputElement)?.value || '';
+                  const lastName = (document.getElementById('lastName') as HTMLInputElement)?.value || '';
+                  const email = (document.getElementById('email') as HTMLInputElement)?.value || '';
+                  const phone = (document.getElementById('phone') as HTMLInputElement)?.value || '';
+                  const service = (document.getElementById('service') as HTMLInputElement)?.value || '';
+                  const message = (document.getElementById('message') as HTMLTextAreaElement)?.value || '';
+                  
+                  const whatsappMessage = `Hello Confidential Connect! 
+*New Message from Contact Form*
+
+*Name:* ${firstName} ${lastName}
+*Email:* ${email}
+*Phone:* ${phone}
+*Service Interest:* ${service}
+*Message:* ${message}
+
+Please respond to this inquiry. Thank you!`;
+                  
+                  const whatsappUrl = `https://wa.me/2347040294858?text=${encodeURIComponent(whatsappMessage)}`;
+                  window.open(whatsappUrl, '_blank');
+                }}
+                className="w-full bg-gradient-to-r from-brand-blue to-brand-purple text-white border-0 hover-lift shadow-premium text-lg py-6"
+              >
                 <Send className="h-5 w-5 mr-3" />
                 Send Premium Message
                 <Zap className="h-5 w-5 ml-3" />
@@ -152,7 +177,7 @@ export const ContactSection = () => {
                   </div>
                   <div>
                     <div className="font-bold text-lg text-gradient">Priority Email</div>
-                    <div className="text-muted-foreground font-medium">princejuniorokpo@gmail.com</div>
+                    <div className="text-muted-foreground font-medium">princeconfidentialconnect@gmail.com</div>
                     <div className="text-xs text-brand-green">Response within 2 hours</div>
                   </div>
                 </div>
@@ -166,7 +191,7 @@ export const ContactSection = () => {
                     <div className="text-muted-foreground font-medium">
                       Assembly of God Church Iddo Sarki<br />
                       Airport Road, close to University of Abuja P/Site<br />
-                      Nigeria
+                      Abuja, Nigeria
                     </div>
                     <div className="text-xs text-brand-orange">VIP appointments available</div>
                   </div>
@@ -198,7 +223,7 @@ export const ContactSection = () => {
                   Premium Payment Methods
                 </CardTitle>
                 <CardDescription className="text-lg">
-                  Multiple secure payment options for your convenience
+                  We accept all major payment methods including bank transfers (all Nigerian banks), international cards (Visa, Mastercard, Verve), mobile money (Opay, PalmPay, Kuda), cryptocurrency, and cash payments at our premium office location.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6 relative z-10">
@@ -223,10 +248,30 @@ export const ContactSection = () => {
                     );
                   })}
                 </div>
-                <div className="p-4 rounded-2xl bg-gradient-to-r from-brand-green to-brand-blue text-white text-center">
-                  <Shield className="h-6 w-6 mx-auto mb-2" />
-                  <div className="font-bold">100% Secure Payments</div>
-                  <div className="text-xs opacity-90">Bank-level encryption • PCI DSS Compliant</div>
+                <div className="p-6 rounded-2xl bg-gradient-to-r from-brand-green to-brand-blue text-white">
+                  <div className="text-center mb-4">
+                    <Shield className="h-6 w-6 mx-auto mb-2" />
+                    <div className="font-bold">Bank Account Details</div>
+                    <div className="text-xs opacity-90">For direct bank transfers</div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="opacity-90">Account Name:</span>
+                      <span className="font-semibold">Confidential Connect</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="opacity-90">Account Number:</span>
+                      <span className="font-semibold">1234567890</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="opacity-90">Bank:</span>
+                      <span className="font-semibold">First Bank Nigeria</span>
+                    </div>
+                  </div>
+                  <div className="mt-4 p-3 bg-white/10 rounded-xl text-center">
+                    <div className="text-xs font-semibold">📲 Send payment receipt to WhatsApp</div>
+                    <div className="text-xs opacity-90 mt-1">+234 704 029 4858</div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
