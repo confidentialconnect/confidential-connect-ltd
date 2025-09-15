@@ -37,7 +37,7 @@ const Payments = () => {
       // Show bank transfer details with account information
       toast({
         title: "Bank Transfer Details",
-        description: "Bank: First Bank of Nigeria | Account: 3014621626 | Name: Prince Confidential Connect. After payment, send receipt to WhatsApp: +2347040294858.",
+        description: "Bank: First Bank of Nigeria | Account: 3191660932 | Name: Okpo Confidence. After payment, send receipt to WhatsApp: +2347040294858.",
         duration: 10000
       });
     } else {

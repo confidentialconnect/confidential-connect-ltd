@@ -39,8 +39,8 @@ const paymentMethods: PaymentMethod[] = [
     icon: Building2,
     type: 'bank',
     details: {
-      accountNumber: '3014621626',
-      accountName: 'Prince Confidential Connect',
+      accountNumber: '3191660932',
+      accountName: 'Okpo Confidence',
       bankName: 'First Bank of Nigeria'
     },
     fees: 'Free',
@@ -53,8 +53,8 @@ const paymentMethods: PaymentMethod[] = [
     icon: Smartphone,
     type: 'mobile',
     details: {
-      phoneNumber: '07040294858',
-      accountName: 'Prince Confidential Connect'
+      phoneNumber: '6113224110',
+      accountName: 'Okpo Confidence'
     },
     fees: 'Free',
     processingTime: 'Instant'
@@ -67,7 +67,7 @@ const paymentMethods: PaymentMethod[] = [
     type: 'mobile',
     details: {
       phoneNumber: '07040294858',
-      accountName: 'Prince Confidential Connect'
+      accountName: 'Okpo Confidence'
     },
     fees: 'Free',
     processingTime: 'Instant'
