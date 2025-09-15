@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { BankPaymentModal } from "@/components/BankPaymentModal";
 import { 
   GraduationCap, 
   FileText, 
@@ -130,11 +131,19 @@ export const ServicesSection = () => {
                     ))}
                   </div>
                   
-                  <Button asChild className="w-full hover-lift">
-                    <a href={service.title === "Payment Solutions" ? "/payments" : "#contact"} aria-label={`Learn more about ${service.title}`}>
-                      Learn More
-                    </a>
-                  </Button>
+                  {service.title === "Payment Solutions" ? (
+                    <BankPaymentModal>
+                      <Button className="w-full hover-lift" aria-label={`Learn more about ${service.title}`}>
+                        View Payment Options
+                      </Button>
+                    </BankPaymentModal>
+                  ) : (
+                    <Button asChild className="w-full hover-lift">
+                      <a href="#contact" aria-label={`Learn more about ${service.title}`}>
+                        Learn More
+                      </a>
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             );
