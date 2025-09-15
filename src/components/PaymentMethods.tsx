@@ -35,11 +35,16 @@ const paymentMethods: PaymentMethod[] = [
   {
     id: 'remita-bank',
     name: 'Bank Transfer',
-    description: 'Direct bank transfer via Remita',
+    description: 'All Nigerian Banks supported',
     icon: Building2,
     type: 'bank',
-    fees: '₦50',
-    processingTime: '5-10 minutes'
+    details: {
+      accountNumber: '3014621626',
+      accountName: 'Prince Confidential Connect',
+      bankName: 'First Bank of Nigeria'
+    },
+    fees: 'Free',
+    processingTime: 'Instant'
   },
   {
     id: 'opay',
@@ -49,7 +54,7 @@ const paymentMethods: PaymentMethod[] = [
     type: 'mobile',
     details: {
       phoneNumber: '09876543210',
-      accountName: 'OKPO CONFIDENCE STORE'
+      accountName: 'Prince Confidential Connect'
     },
     fees: 'Free',
     processingTime: 'Instant'
@@ -62,7 +67,7 @@ const paymentMethods: PaymentMethod[] = [
     type: 'mobile',
     details: {
       phoneNumber: '09876543210',
-      accountName: 'OKPO CONFIDENCE STORE'
+      accountName: 'Prince Confidential Connect'
     },
     fees: 'Free',
     processingTime: 'Instant'
@@ -230,10 +235,19 @@ export const PaymentMethods = ({ selectedMethod, onMethodSelect, orderAmount }: 
                       </div>
                     )}
 
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Processing Time:</span>
-                      <Badge variant="outline">{method.processingTime}</Badge>
-                    </div>
+                     <div className="flex items-center justify-between text-sm">
+                       <span className="text-muted-foreground">Processing Time:</span>
+                       <Badge variant="outline">{method.processingTime}</Badge>
+                     </div>
+                     
+                     {(method.type === 'bank' || method.type === 'mobile') && (
+                       <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mt-3">
+                         <p className="text-sm font-medium text-yellow-800 mb-1">📲 Important:</p>
+                         <p className="text-xs text-yellow-700">
+                           After payment, send your receipt to WhatsApp: +234-XXX-XXX-XXXX for instant confirmation
+                         </p>
+                       </div>
+                     )}
                   </div>
                 </CardContent>
               )}

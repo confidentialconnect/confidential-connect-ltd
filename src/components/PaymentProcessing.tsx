@@ -34,6 +34,8 @@ export const PaymentProcessing = ({ orderData, onSuccess, onError }: PaymentProc
 
   const initiateRemitaPayment = async () => {
     try {
+      setStatus('processing');
+      
       const { data, error } = await supabase.functions.invoke('create-remita-payment', {
         body: {
           paymentReference: orderData.payment_reference,
@@ -45,25 +47,37 @@ export const PaymentProcessing = ({ orderData, onSuccess, onError }: PaymentProc
         }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw new Error(error.message || 'Payment service unavailable');
+      }
 
-      if (data.success) {
+      if (data?.success) {
         setPaymentUrl(data.paymentUrl);
-        // Open payment page in new window
-        const paymentWindow = window.open(data.paymentUrl, '_blank', 'width=800,height=600');
+        toast({
+          title: "Payment Gateway Ready",
+          description: "Opening secure payment window...",
+        });
         
-        // Start verification process
+        // Open payment page in new window
+        const paymentWindow = window.open(data.paymentUrl, '_blank', 'width=900,height=700,scrollbars=yes,resizable=yes');
+        
+        if (!paymentWindow) {
+          throw new Error('Payment window blocked. Please allow popups and try again.');
+        }
+        
+        // Start verification process after user has time to complete payment
         setTimeout(() => {
           setStatus('verifying');
-          if (paymentWindow) paymentWindow.close();
-        }, 3000);
+          setCountdown(30);
+        }, 5000);
       } else {
-        throw new Error(data.error || 'Payment initiation failed');
+        throw new Error(data?.error || 'Payment initiation failed');
       }
     } catch (error: any) {
       console.error('Payment initiation error:', error);
       setStatus('failed');
-      onError(error.message);
+      onError(error.message || 'Payment initiation failed');
     }
   };
 

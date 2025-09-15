@@ -30,13 +30,22 @@ const Payments = () => {
   }, [navigate]);
 
   const handlePayment = () => {
-    if (selectedMethod === 'remita-card' || selectedMethod === 'remita-bank') {
+    if (selectedMethod === 'remita-card') {
+      // Show processing for card payments via Remita
       setShowProcessing(true);
+    } else if (selectedMethod === 'remita-bank') {
+      // Show bank transfer details with account information
+      toast({
+        title: "Bank Transfer Details",
+        description: "Bank: First Bank of Nigeria | Account: 3014621626 | Name: Prince Confidential Connect. Send receipt to WhatsApp after payment.",
+        duration: 10000
+      });
     } else {
-      // For mobile payments, show manual transfer instructions
+      // For mobile payments (OPay, PalmPay), show transfer instructions
       toast({
         title: "Transfer Instructions",
-        description: "Please transfer the amount and confirm payment",
+        description: "Use the displayed account details to make payment, then send receipt confirmation.",
+        duration: 8000
       });
     }
   };
