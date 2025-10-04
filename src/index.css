@@ -200,6 +200,14 @@ All colors MUST be HSL.
     animation: shimmer 2s linear infinite;
   }
   
+  .animate-pulse-slow {
+    animation: pulse-slow 4s ease-in-out infinite;
+  }
+  
+  .animate-gradient {
+    animation: gradient-shift 15s ease infinite;
+  }
+  
   /* Premium hover effects */
   .hover-lift {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -326,5 +334,23 @@ All colors MUST be HSL.
   }
   100% {
     background-position: 200% 0;
+  }
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(5deg);
   }
 }
