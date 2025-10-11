@@ -40,7 +40,7 @@ const PaymentInfo = () => {
 
   const bankDetails = {
     accountNumber: '3191660932',
-    accountName: 'Okpo Confidence',
+    accountName: 'Okpo Confidence Oko',
     bankName: 'First Bank of Nigeria',
     opayNumber: '6113224110'
   };
