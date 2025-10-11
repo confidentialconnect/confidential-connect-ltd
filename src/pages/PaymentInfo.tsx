@@ -42,7 +42,8 @@ const PaymentInfo = () => {
     accountNumber: '3191660932',
     accountName: 'Okpo Confidence Oko',
     bankName: 'First Bank of Nigeria',
-    opayNumber: '6113224110'
+    opayNumber: '6113224110',
+    opayName: 'Okpo Confidence Oko'
   };
 
   return (
@@ -138,22 +139,49 @@ const PaymentInfo = () => {
                   </Badge>
                 </div>
                 
-                <div className="flex items-center justify-between bg-muted/50 p-4 rounded-lg">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground mb-1">OPay Number</p>
-                    <p className="text-lg font-mono font-semibold">{bankDetails.opayNumber}</p>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between bg-muted/50 p-4 rounded-lg">
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground mb-1">OPay Number</p>
+                      <p className="text-lg font-mono font-semibold">{bankDetails.opayNumber}</p>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleCopy(bankDetails.opayNumber, 'OPay Number')}
+                    >
+                      {copiedField === 'OPay Number' ? (
+                        <Check className="h-4 w-4" />
+                      ) : (
+                        <Copy className="h-4 w-4" />
+                      )}
+                    </Button>
                   </div>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => handleCopy(bankDetails.opayNumber, 'OPay Number')}
-                  >
-                    {copiedField === 'OPay Number' ? (
-                      <Check className="h-4 w-4" />
-                    ) : (
-                      <Copy className="h-4 w-4" />
-                    )}
-                  </Button>
+
+                  <div className="flex items-center justify-between bg-muted/50 p-4 rounded-lg">
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground mb-1">Account Name</p>
+                      <p className="text-lg font-semibold">{bankDetails.opayName}</p>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleCopy(bankDetails.opayName, 'OPay Name')}
+                    >
+                      {copiedField === 'OPay Name' ? (
+                        <Check className="h-4 w-4" />
+                      ) : (
+                        <Copy className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </div>
+
+                  <div className="bg-purple-50 dark:bg-purple-950/30 p-3 rounded-lg">
+                    <p className="text-xs text-purple-700 dark:text-purple-400 flex items-start gap-2">
+                      <Shield className="h-4 w-4 flex-shrink-0 mt-0.5" />
+                      <span>Ensure the account name matches exactly before completing your transfer</span>
+                    </p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -207,17 +235,17 @@ const PaymentInfo = () => {
           </Card>
 
           {/* WhatsApp Confirmation */}
-          <div className="bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-900/50 rounded-lg p-6">
+          <div className="bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-900/50 rounded-lg p-6 mb-8">
             <div className="flex items-start gap-4">
               <div className="flex-shrink-0">
                 <ExternalLink className="h-6 w-6 text-yellow-700 dark:text-yellow-500" />
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-yellow-800 dark:text-yellow-400 mb-2">
-                  📲 Send Your Payment Receipt
+                  📲 Payment Confirmation Required
                 </h3>
                 <p className="text-sm text-yellow-700 dark:text-yellow-500 mb-4">
-                  After making payment, send your receipt to WhatsApp for instant confirmation and order processing.
+                  After making payment, you MUST send your receipt to WhatsApp for instant confirmation and order processing. Include your order number if you have one.
                 </p>
                 <Button 
                   size="lg" 
@@ -237,6 +265,42 @@ const PaymentInfo = () => {
               </div>
             </div>
           </div>
+
+          {/* Important Notes */}
+          <Card className="mb-8 border-blue-200 dark:border-blue-900/30">
+            <CardContent className="p-6">
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <Shield className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                Important Payment Information
+              </h2>
+              <div className="space-y-3 text-sm text-muted-foreground">
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                  <p><strong className="text-foreground">Verify Account Name:</strong> Always confirm the account name matches "Okpo Confidence Oko" exactly before transferring to avoid sending money to the wrong account.</p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                  <p><strong className="text-foreground">Keep Your Receipt:</strong> Save or screenshot your payment confirmation. You'll need to send this to us via WhatsApp.</p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                  <p><strong className="text-foreground">Include Order Details:</strong> When sending your receipt, include your order number (if you have one) and the items you purchased.</p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                  <p><strong className="text-foreground">Processing Time:</strong> Orders are typically confirmed within 5-30 minutes after we receive your payment receipt on WhatsApp.</p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                  <p><strong className="text-foreground">Business Hours:</strong> While payments can be made 24/7, confirmations are fastest during business hours (9AM - 6PM WAT, Monday - Saturday).</p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                  <p><strong className="text-foreground">Security:</strong> We will never ask for your bank PIN, password, or OTP. Only share your payment receipt.</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Security & Features */}
           <div className="grid md:grid-cols-3 gap-6 mt-12">
