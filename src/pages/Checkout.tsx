@@ -132,43 +132,25 @@ Please confirm this order and provide payment instructions.`;
 
       if (error) throw error;
 
-      // Initialize Remita payment directly
-      const { data: paymentData, error: paymentError } = await supabase.functions.invoke('create-remita-payment', {
-        body: {
-          paymentReference: data.paymentReference,
-          amount: subtotal,
-          customerName: formData.fullName,
-          customerEmail: formData.email,
-          customerPhone: formData.phone,
-          description: `Payment for Order #${data.paymentReference}`
-        }
-      });
+      // Store order data for payment page
+      localStorage.setItem('orderData', JSON.stringify({
+        payment_reference: data.paymentReference,
+        total_amount: subtotal,
+        customer_name: formData.fullName,
+        customer_email: formData.email,
+        customer_phone: formData.phone,
+        order_items: items.map(item => ({
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price
+        }))
+      }));
 
-      if (paymentError) throw paymentError;
-
-      // Redirect to Remita payment page
-      if (paymentData?.paymentUrl) {
-        window.open(paymentData.paymentUrl, '_blank');
-        
-        toast({
-          title: "Payment Initiated",
-          description: "Complete your payment in the new tab. We'll check the status automatically.",
-        });
-
-        // Store order data for verification
-        localStorage.setItem('currentOrder', JSON.stringify({
-          paymentReference: data.paymentReference,
-          total: subtotal,
-          customerInfo: formData,
-          items: items
-        }));
-
-        // Start checking payment status after a delay
-        setTimeout(() => checkPaymentStatus(data.paymentReference), 10000);
-      }
+      // Navigate to payments page where user can choose payment method
+      navigate('/payments');
       
     } catch (error) {
-      console.error('Order/Payment creation failed:', error);
+      console.error('Order creation failed:', error);
       toast({
         title: "Order Creation Failed",
         description: "Could not create your order. Please try again or use alternative methods.",
@@ -179,34 +161,6 @@ Please confirm this order and provide payment instructions.`;
     }
   };
 
-  const checkPaymentStatus = async (paymentRef: string) => {
-    try {
-      const { data } = await supabase.functions.invoke('verify-remita-payment', {
-        body: { paymentReference: paymentRef }
-      });
-
-      if (data?.status === 'completed') {
-        localStorage.removeItem('currentOrder');
-        clearCart();
-        navigate("/order-success");
-        toast({
-          title: "Payment Successful",
-          description: "Your payment has been confirmed!",
-        });
-      } else if (data?.status === 'failed') {
-        toast({
-          title: "Payment Failed",
-          description: "Payment was not successful. Please try again.",
-          variant: "destructive"
-        });
-      } else {
-        // Still pending, check again in 15 seconds
-        setTimeout(() => checkPaymentStatus(paymentRef), 15000);
-      }
-    } catch (error) {
-      console.error('Payment verification failed:', error);
-    }
-  };
 
   const handleWhatsApp = () => {
     const whatsappUrl = `https://wa.me/2347040294858?text=${encodeURIComponent(orderMessage)}`;
@@ -410,13 +364,13 @@ Please confirm this order and provide payment instructions.`;
                         </ul>
                       </div>
                       
-                      <Button 
+                       <Button 
                         className="w-full" 
                         onClick={handleProceedToPayment}
                         disabled={isProcessing}
                       >
                         <CreditCard className="h-4 w-4 mr-2" />
-                        {isProcessing ? "Processing..." : "Pay Securely with Remita"}
+                        {isProcessing ? "Processing..." : "Proceed to Payment"}
                       </Button>
                     </div>
                   )}
