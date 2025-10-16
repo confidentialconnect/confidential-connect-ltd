@@ -176,9 +176,20 @@ Please respond to this inquiry. Thank you!`;
                     <Mail className="h-7 w-7 text-white" />
                   </div>
                   <div>
-                    <div className="font-bold text-lg text-gradient">Priority Email</div>
-                    <div className="text-muted-foreground font-medium">faceofconfidentialconnect@gmail.com</div>
+                    <div className="font-bold text-lg text-gradient">Support Email</div>
+                    <div className="text-muted-foreground font-medium">support@confidentialconnect.ng</div>
                     <div className="text-xs text-brand-green">Response within 2 hours</div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center group">
+                  <div className="p-3 rounded-2xl bg-gradient-to-br from-brand-purple to-brand-pink mr-6 group-hover:scale-110 transition-transform shadow-premium">
+                    <Mail className="h-7 w-7 text-white" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-lg text-gradient">Contact Email</div>
+                    <div className="text-muted-foreground font-medium">faceofconfidentialconnect@gmail.com</div>
+                    <div className="text-xs text-brand-purple">General Inquiries</div>
                   </div>
                 </div>
                 

@@ -265,7 +265,10 @@ export const SupportWidget = () => {
                   <strong>Phone:</strong> 07040294858
                 </p>
                 <p className="text-sm">
-                  <strong>Email:</strong> faceofconfidentialconnect@gmail.com
+                  <strong>Support:</strong> support@confidentialconnect.ng
+                </p>
+                <p className="text-sm">
+                  <strong>Contact:</strong> faceofconfidentialconnect@gmail.com
                 </p>
                 <p className="text-sm text-muted-foreground">
                   For urgent matters, please call or send a WhatsApp message.

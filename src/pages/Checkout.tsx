@@ -171,7 +171,7 @@ Please confirm this order and provide payment instructions.`;
 
   const handleEmail = () => {
     const subject = 'New Order Request';
-    const mailtoUrl = `mailto:faceofconfidentialconnect@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(orderMessage)}`;
+    const mailtoUrl = `mailto:support@confidentialconnect.ng?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(orderMessage)}`;
     window.location.href = mailtoUrl;
     clearCart();
     navigate('/order-success');
