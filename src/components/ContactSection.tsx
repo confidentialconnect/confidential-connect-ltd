@@ -177,7 +177,7 @@ Please respond to this inquiry. Thank you!`;
                   </div>
                   <div>
                     <div className="font-bold text-lg text-gradient">Support Email</div>
-                    <div className="text-muted-foreground font-medium">support@confidentialconnect.ng</div>
+                    <div className="text-muted-foreground font-medium">faceofconfidentialconnect@gmail.com</div>
                     <div className="text-xs text-brand-green">Response within 2 hours</div>
                   </div>
                 </div>

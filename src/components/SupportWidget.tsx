@@ -265,7 +265,7 @@ export const SupportWidget = () => {
                   <strong>Phone:</strong> 07040294858
                 </p>
                 <p className="text-sm">
-                  <strong>Support:</strong> support@confidentialconnect.ng
+                  <strong>Support:</strong> faceofconfidentialconnect@gmail.com
                 </p>
                 <p className="text-sm">
                   <strong>Contact:</strong> faceofconfidentialconnect@gmail.com
