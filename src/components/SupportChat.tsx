@@ -34,7 +34,7 @@ interface SupportMessage {
 }
 
 export const SupportChat = () => {
-  const { user, profile } = useAuth();
+  const { user, profile, isAdmin } = useAuth();
   const { toast } = useToast();
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(null);
@@ -149,7 +149,7 @@ export const SupportChat = () => {
           ticket_id: selectedTicket.id,
           user_id: user.id,
           message: newMessage.trim(),
-          is_admin: profile?.is_admin || false
+          is_admin: isAdmin
         });
 
       if (error) throw error;
@@ -167,7 +167,7 @@ export const SupportChat = () => {
   };
 
   const updateTicketStatus = async (ticketId: string, status: string) => {
-    if (!profile?.is_admin) return;
+    if (!isAdmin) return;
 
     try {
       const { error } = await supabase
@@ -398,7 +398,7 @@ export const SupportChat = () => {
                   </Badge>
                 </div>
               </div>
-              {profile?.is_admin && (
+              {isAdmin && (
                 <Select value={selectedTicket.status} onValueChange={(value) => updateTicketStatus(selectedTicket.id, value)}>
                   <SelectTrigger className="w-32">
                     <SelectValue />

@@ -32,10 +32,10 @@ const AdminHome = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
-  const { user, profile, loading: authLoading } = useAuth();
+  const { user, isAdmin, loading: authLoading } = useAuth();
 
   // Redirect if not admin
-  if (!authLoading && (!user || !profile?.is_admin)) {
+  if (!authLoading && (!user || !isAdmin)) {
     return <Navigate to="/auth" replace />;
   }
 

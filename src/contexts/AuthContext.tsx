@@ -15,6 +15,8 @@ interface AuthContextType {
   session: Session | null;
   profile: Profile | null;
   loading: boolean;
+  isAdmin: boolean;
+  hasRole: (role: 'admin' | 'moderator' | 'user') => Promise<boolean>;
   signUp: (email: string, password: string, fullName?: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
@@ -35,6 +37,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -120,26 +123,61 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setProfile(null);
   };
 
+  const hasRole = async (role: 'admin' | 'moderator' | 'user'): Promise<boolean> => {
+    if (!user) return false;
+    
+    try {
+      const { data, error } = await supabase.rpc('has_role', {
+        _user_id: user.id,
+        _role: role
+      });
+      
+      if (error) throw error;
+      return data === true;
+    } catch (error) {
+      console.error('Role check failed:', error);
+      return false;
+    }
+  };
+
   const updateProfile = async (updates: Partial<Profile>) => {
     if (!user) return { error: new Error('No user logged in') };
 
+    // Remove is_admin from updates to prevent manipulation
+    const { is_admin, ...safeUpdates } = updates;
+
     const { error } = await supabase
       .from('profiles')
-      .update(updates)
+      .update(safeUpdates)
       .eq('id', user.id);
 
     if (!error && profile) {
-      setProfile({ ...profile, ...updates });
+      setProfile({ ...profile, ...safeUpdates });
     }
 
     return { error };
   };
+
+  // Check admin status when user changes
+  useEffect(() => {
+    const checkAdmin = async () => {
+      if (user) {
+        const admin = await hasRole('admin');
+        setIsAdmin(admin);
+      } else {
+        setIsAdmin(false);
+      }
+    };
+    checkAdmin();
+  }, [user?.id]);
 
   const value = {
     user,
     session,
     profile,
     loading,
+    isAdmin,
+    hasRole,
     signUp,
     signIn,
     signOut,

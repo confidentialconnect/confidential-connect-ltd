@@ -16,6 +16,18 @@ serve(async (req) => {
   }
 
   try {
+    // Verify webhook token for security
+    const webhookToken = req.headers.get('X-Webhook-Token');
+    const expectedToken = Deno.env.get('REMITA_WEBHOOK_TOKEN');
+    
+    if (!webhookToken || webhookToken !== expectedToken) {
+      console.error('Unauthorized webhook attempt');
+      return new Response(
+        JSON.stringify({ success: false, error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
@@ -29,6 +41,20 @@ serve(async (req) => {
     
     if (!apiKey) {
       throw new Error("Remita API key not configured");
+    }
+
+    // Check if payment was already processed (idempotency)
+    const { data: existingOrder } = await supabase
+      .from('orders')
+      .select('payment_status')
+      .eq('payment_reference', paymentReference)
+      .single();
+
+    if (existingOrder?.payment_status === 'completed') {
+      return new Response(
+        JSON.stringify({ success: true, message: 'Payment already processed' }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     // Fetch current order

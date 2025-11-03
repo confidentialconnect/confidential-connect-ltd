@@ -11,7 +11,7 @@ import { useAuth } from "@/contexts/AuthContext";
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { totalItems } = useCart();
-  const { user, profile, signOut } = useAuth();
+  const { user, profile, isAdmin, signOut } = useAuth();
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -104,7 +104,7 @@ export const Header = () => {
                   <DropdownMenuItem asChild>
                     <Link to="/wishlist">Wishlist</Link>
                   </DropdownMenuItem>
-                  {profile?.is_admin && (
+                  {isAdmin && (
                     <DropdownMenuItem asChild>
                       <Link to="/admin">Admin Panel</Link>
                     </DropdownMenuItem>
@@ -186,18 +186,18 @@ export const Header = () => {
                       <Button variant="outline" asChild className="w-full justify-start">
                         <Link to="/wishlist" onClick={() => setIsOpen(false)}>
                           <User className="mr-2 h-4 w-4" />
-                          Wishlist
-                        </Link>
-                      </Button>
-                      {profile?.is_admin && (
-                        <Button variant="outline" asChild className="w-full justify-start">
-                          <Link to="/admin" onClick={() => setIsOpen(false)}>
-                            <User className="mr-2 h-4 w-4" />
-                            Admin Panel
-                          </Link>
-                        </Button>
-                      )}
-                      <Button 
+                      Wishlist
+                    </Link>
+                  </Button>
+                  {isAdmin && (
+                    <Button variant="outline" asChild className="w-full justify-start">
+                      <Link to="/admin" onClick={() => setIsOpen(false)}>
+                        <User className="mr-2 h-4 w-4" />
+                        Admin Panel
+                      </Link>
+                    </Button>
+                  )}
+                  <Button
                         variant="outline" 
                         onClick={() => {
                           signOut();
