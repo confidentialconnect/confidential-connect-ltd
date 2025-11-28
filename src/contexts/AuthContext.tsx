@@ -16,7 +16,7 @@ interface AuthContextType {
   profile: Profile | null;
   loading: boolean;
   isAdmin: boolean;
-  hasRole: (role: 'admin' | 'moderator' | 'user') => Promise<boolean>;
+  hasRole: (role: 'admin' | 'user') => Promise<boolean>;
   signUp: (email: string, password: string, fullName?: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
@@ -123,7 +123,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setProfile(null);
   };
 
-  const hasRole = async (role: 'admin' | 'moderator' | 'user'): Promise<boolean> => {
+  const hasRole = async (role: 'admin' | 'user'): Promise<boolean> => {
     if (!user) return false;
     
     try {
