@@ -17,15 +17,12 @@ interface Order {
   customer_name: string;
   customer_email: string;
   customer_phone: string;
-  payment_reference: string;
+  payment_reference: string | null;
   total_amount: number;
-  payment_status: string;
-  created_at: string;
-  order_items: any;
-  user_id?: string;
-  payment_method?: string;
-  receipt_url?: string;
-  updated_at?: string;
+  payment_status: string | null;
+  created_at: string | null;
+  user_id: string;
+  updated_at?: string | null;
 }
 
 const AdminHome = () => {
@@ -220,10 +217,7 @@ const AdminHome = () => {
                           </div>
                         </div>
                         <div className="mt-2 text-xs text-muted-foreground">
-                          Items: {Array.isArray(order.order_items) 
-                            ? order.order_items.map((item: any) => `${item.name} (${item.quantity})`).join(', ')
-                            : 'N/A'
-                          }
+                          Order ID: {order.id.slice(0, 8)}...
                         </div>
                       </div>
                     ))}

@@ -15,11 +15,11 @@ import { formatDistanceToNow } from 'date-fns';
 
 interface SupportTicket {
   id: string;
-  title: string;
-  description: string;
+  subject: string;
   status: string;
-  priority: string;
   created_at: string;
+  updated_at: string;
+  user_id: string;
 }
 
 export const SupportWidget = () => {
@@ -31,9 +31,8 @@ export const SupportWidget = () => {
   const [loading, setLoading] = useState(false);
 
   const [newTicket, setNewTicket] = useState({
-    title: '',
-    description: '',
-    priority: 'medium'
+    subject: '',
+    message: ''
   });
 
   const fetchTickets = async () => {
@@ -58,7 +57,7 @@ export const SupportWidget = () => {
   };
 
   const createTicket = async () => {
-    if (!user || !newTicket.title || !newTicket.description) {
+    if (!user || !newTicket.subject || !newTicket.message) {
       toast({
         title: "Missing Information",
         description: "Please fill in all fields",
@@ -72,9 +71,7 @@ export const SupportWidget = () => {
         .from('support_tickets')
         .insert({
           user_id: user.id,
-          title: newTicket.title,
-          description: newTicket.description,
-          priority: newTicket.priority
+          subject: newTicket.subject
         })
         .select()
         .single();
@@ -87,11 +84,11 @@ export const SupportWidget = () => {
         .insert({
           ticket_id: data.id,
           user_id: user.id,
-          message: newTicket.description,
+          message: newTicket.message,
           is_admin: false
         });
 
-      setNewTicket({ title: '', description: '', priority: 'medium' });
+      setNewTicket({ subject: '', message: '' });
       setIsCreating(false);
       fetchTickets();
 
@@ -115,23 +112,13 @@ export const SupportWidget = () => {
     }
   }, [user, isOpen]);
 
-  const getStatusIcon = (status: string) => {
+  const getStatusIcon = (status: string | null) => {
     switch (status) {
       case 'open': return <AlertCircle className="h-4 w-4 text-red-500" />;
       case 'in_progress': return <Clock className="h-4 w-4 text-yellow-500" />;
       case 'resolved': return <CheckCircle className="h-4 w-4 text-green-500" />;
       case 'closed': return <X className="h-4 w-4 text-gray-500" />;
       default: return <AlertCircle className="h-4 w-4" />;
-    }
-  };
-
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'urgent': return 'bg-red-500';
-      case 'high': return 'bg-orange-500';
-      case 'medium': return 'bg-yellow-500';
-      case 'low': return 'bg-green-500';
-      default: return 'bg-gray-500';
     }
   };
 
@@ -172,34 +159,20 @@ export const SupportWidget = () => {
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="ticket-title">Title</Label>
+                    <Label htmlFor="ticket-subject">Subject</Label>
                     <Input
-                      id="ticket-title"
-                      value={newTicket.title}
-                      onChange={(e) => setNewTicket({ ...newTicket, title: e.target.value })}
+                      id="ticket-subject"
+                      value={newTicket.subject}
+                      onChange={(e) => setNewTicket({ ...newTicket, subject: e.target.value })}
                       placeholder="Brief description of your issue"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="ticket-priority">Priority</Label>
-                    <Select value={newTicket.priority} onValueChange={(value) => setNewTicket({ ...newTicket, priority: value })}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="low">Low</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="high">High</SelectItem>
-                        <SelectItem value="urgent">Urgent</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label htmlFor="ticket-description">Description</Label>
+                    <Label htmlFor="ticket-message">Message</Label>
                     <Textarea
-                      id="ticket-description"
-                      value={newTicket.description}
-                      onChange={(e) => setNewTicket({ ...newTicket, description: e.target.value })}
+                      id="ticket-message"
+                      value={newTicket.message}
+                      onChange={(e) => setNewTicket({ ...newTicket, message: e.target.value })}
                       placeholder="Detailed description of your issue"
                       rows={4}
                     />
@@ -228,17 +201,11 @@ export const SupportWidget = () => {
                     {tickets.map((ticket) => (
                       <div key={ticket.id} className="border rounded-lg p-3">
                         <div className="flex items-start justify-between mb-2">
-                          <h4 className="font-medium text-sm">{ticket.title}</h4>
+                          <h4 className="font-medium text-sm">{ticket.subject}</h4>
                           <div className="flex items-center gap-1">
                             {getStatusIcon(ticket.status)}
-                            <Badge className={`text-white text-xs ${getPriorityColor(ticket.priority)}`}>
-                              {ticket.priority}
-                            </Badge>
                           </div>
                         </div>
-                        <p className="text-xs text-muted-foreground mb-2 line-clamp-2">
-                          {ticket.description}
-                        </p>
                         <div className="flex items-center justify-between">
                           <span className="text-xs text-muted-foreground">
                             {formatDistanceToNow(new Date(ticket.created_at), { addSuffix: true })}
