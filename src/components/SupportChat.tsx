@@ -15,10 +15,8 @@ import { formatDistanceToNow } from 'date-fns';
 
 interface SupportTicket {
   id: string;
-  title: string;
-  description: string;
+  subject: string;
   status: string;
-  priority: string;
   created_at: string;
   updated_at: string;
   user_id: string;
@@ -45,9 +43,8 @@ export const SupportChat = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const [newTicket, setNewTicket] = useState({
-    title: '',
-    description: '',
-    priority: 'medium'
+    subject: '',
+    message: ''
   });
 
   const scrollToBottom = () => {
@@ -88,7 +85,7 @@ export const SupportChat = () => {
   };
 
   const createTicket = async () => {
-    if (!user || !newTicket.title || !newTicket.description) {
+    if (!user || !newTicket.subject || !newTicket.message) {
       toast({
         title: "Missing Information",
         description: "Please fill in all required fields",
@@ -102,9 +99,7 @@ export const SupportChat = () => {
         .from('support_tickets')
         .insert({
           user_id: user.id,
-          title: newTicket.title,
-          description: newTicket.description,
-          priority: newTicket.priority
+          subject: newTicket.subject
         })
         .select()
         .single();
@@ -117,11 +112,11 @@ export const SupportChat = () => {
         .insert({
           ticket_id: data.id,
           user_id: user.id,
-          message: newTicket.description,
+          message: newTicket.message,
           is_admin: false
         });
 
-      setNewTicket({ title: '', description: '', priority: 'medium' });
+      setNewTicket({ subject: '', message: '' });
       setIsCreatingTicket(false);
       fetchTickets();
       
@@ -255,23 +250,13 @@ export const SupportChat = () => {
     };
   }, []);
 
-  const getStatusIcon = (status: string) => {
+  const getStatusIcon = (status: string | null) => {
     switch (status) {
       case 'open': return <AlertCircle className="h-4 w-4 text-red-500" />;
       case 'in_progress': return <Clock className="h-4 w-4 text-yellow-500" />;
       case 'resolved': return <CheckCircle className="h-4 w-4 text-green-500" />;
       case 'closed': return <X className="h-4 w-4 text-gray-500" />;
       default: return <AlertCircle className="h-4 w-4" />;
-    }
-  };
-
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'urgent': return 'bg-red-500';
-      case 'high': return 'bg-orange-500';
-      case 'medium': return 'bg-yellow-500';
-      case 'low': return 'bg-green-500';
-      default: return 'bg-gray-500';
     }
   };
 
@@ -305,34 +290,20 @@ export const SupportChat = () => {
               </DialogHeader>
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="title">Title</Label>
+                  <Label htmlFor="subject">Subject</Label>
                   <Input
-                    id="title"
-                    value={newTicket.title}
-                    onChange={(e) => setNewTicket({ ...newTicket, title: e.target.value })}
+                    id="subject"
+                    value={newTicket.subject}
+                    onChange={(e) => setNewTicket({ ...newTicket, subject: e.target.value })}
                     placeholder="Brief description of your issue"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="priority">Priority</Label>
-                  <Select value={newTicket.priority} onValueChange={(value) => setNewTicket({ ...newTicket, priority: value })}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="low">Low</SelectItem>
-                      <SelectItem value="medium">Medium</SelectItem>
-                      <SelectItem value="high">High</SelectItem>
-                      <SelectItem value="urgent">Urgent</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="description">Description</Label>
+                  <Label htmlFor="message">Message</Label>
                   <Textarea
-                    id="description"
-                    value={newTicket.description}
-                    onChange={(e) => setNewTicket({ ...newTicket, description: e.target.value })}
+                    id="message"
+                    value={newTicket.message}
+                    onChange={(e) => setNewTicket({ ...newTicket, message: e.target.value })}
                     placeholder="Detailed description of your issue"
                     rows={4}
                   />
@@ -362,15 +333,11 @@ export const SupportChat = () => {
                   onClick={() => setSelectedTicket(ticket)}
                 >
                   <div className="flex items-start justify-between mb-2">
-                    <h4 className="font-medium text-sm truncate">{ticket.title}</h4>
+                    <h4 className="font-medium text-sm truncate">{ticket.subject}</h4>
                     <div className="flex items-center gap-1">
                       {getStatusIcon(ticket.status)}
-                      <Badge className={`text-white text-xs ${getPriorityColor(ticket.priority)}`}>
-                        {ticket.priority}
-                      </Badge>
                     </div>
                   </div>
-                  <p className="text-xs text-muted-foreground truncate">{ticket.description}</p>
                   <p className="text-xs text-muted-foreground mt-1">
                     {formatDistanceToNow(new Date(ticket.created_at), { addSuffix: true })}
                   </p>
@@ -387,19 +354,16 @@ export const SupportChat = () => {
           <>
             <CardHeader className="flex flex-row items-center justify-between">
               <div>
-                <CardTitle className="text-lg">{selectedTicket.title}</CardTitle>
+                <CardTitle className="text-lg">{selectedTicket.subject}</CardTitle>
                 <div className="flex items-center gap-2 mt-1">
                   <Badge variant="outline" className="flex items-center gap-1">
                     {getStatusIcon(selectedTicket.status)}
                     {selectedTicket.status}
                   </Badge>
-                  <Badge className={`text-white ${getPriorityColor(selectedTicket.priority)}`}>
-                    {selectedTicket.priority}
-                  </Badge>
                 </div>
               </div>
               {isAdmin && (
-                <Select value={selectedTicket.status} onValueChange={(value) => updateTicketStatus(selectedTicket.id, value)}>
+                <Select value={selectedTicket.status || 'open'} onValueChange={(value) => updateTicketStatus(selectedTicket.id, value)}>
                   <SelectTrigger className="w-32">
                     <SelectValue />
                   </SelectTrigger>

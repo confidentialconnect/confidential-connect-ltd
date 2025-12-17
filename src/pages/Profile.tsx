@@ -14,7 +14,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 
 const Profile = () => {
-  const { user, profile, updateProfile } = useAuth();
+  const { user, profile, updateProfile, isAdmin } = useAuth();
   const { toast } = useToast();
   
   const [isEditing, setIsEditing] = useState(false);
@@ -127,7 +127,7 @@ const Profile = () => {
                     <p className="text-muted-foreground mb-2">{user.email}</p>
                     <div className="flex gap-2">
                       <Badge variant="secondary">Customer</Badge>
-                      {profile?.is_admin && (
+                      {isAdmin && (
                         <Badge variant="default">Admin</Badge>
                       )}
                     </div>
