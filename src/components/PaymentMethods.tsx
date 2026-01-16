@@ -54,7 +54,7 @@ const paymentMethods: PaymentMethod[] = [
     type: 'mobile',
     details: {
       phoneNumber: '7040294858',
-      accountName: 'Okpo Confidence'
+      accountName: 'Okpo Confidence O'
     },
     fees: 'Free',
     processingTime: 'Instant'
