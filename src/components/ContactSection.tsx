@@ -1,3 +1,4 @@
+import whatsappQrCode from "@/assets/whatsapp-qr-code.jpg";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -332,8 +333,8 @@ Please respond to this inquiry. Thank you!`;
               <CardContent className="text-center">
                 <div className="relative inline-block">
                   <img 
-                    src="/lovable-uploads/844d6332-7434-4200-93de-bb9fa92f86e9.png" 
-                    alt="WhatsApp QR Code for Premium CONFIDENTIAL CONNECT Support" 
+                    src={whatsappQrCode}
+                    alt="WhatsApp QR Code for Confidential Connect Ltd Support" 
                     className="w-full max-w-[240px] mx-auto rounded-2xl shadow-premium border-gradient"
                   />
                   <div className="absolute -top-2 -right-2">
