@@ -85,7 +85,7 @@ const About = () => {
         <section className="py-16 gradient-hero text-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              About Confidential Connect
+              About Confidential Connect Ltd
             </h1>
             <p className="text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed">
               Your trusted partner in technology solutions, cybersecurity, and digital transformation
@@ -100,7 +100,7 @@ const About = () => {
               <h2 className="text-3xl font-bold text-center mb-8 text-gradient">Our Story</h2>
               <div className="prose prose-lg mx-auto text-muted-foreground">
                 <p className="text-lg leading-relaxed mb-6">
-                  Founded in 2014, Confidential Connect emerged from a vision to bridge the gap between 
+                  Founded in 2014, Confidential Connect Ltd emerged from a vision to bridge the gap between 
                   businesses and cutting-edge technology solutions. What started as a small cybersecurity 
                   consultancy has evolved into a comprehensive technology service provider, serving clients 
                   across Nigeria and beyond.
@@ -241,14 +241,14 @@ const About = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Business?</h2>
             <p className="text-xl mb-8 max-w-2xl mx-auto">
-              Join hundreds of satisfied clients who trust Confidential Connect for their technology needs.
+              Join hundreds of satisfied clients who trust Confidential Connect Ltd for their technology needs.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 size="lg" 
                 className="bg-white text-primary hover:bg-white/90"
                 onClick={() => {
-                  const whatsappMessage = `Hello Confidential Connect! I'm ready to transform my business with your technology solutions. Can you help me get started?`;
+                  const whatsappMessage = `Hello Confidential Connect Ltd! I'm ready to transform my business with your technology solutions. Can you help me get started?`;
                   const whatsappUrl = `https://wa.me/2347040294858?text=${encodeURIComponent(whatsappMessage)}`;
                   window.open(whatsappUrl, '_blank');
                 }}
@@ -260,7 +260,7 @@ const About = () => {
                 variant="outline" 
                 className="border-white text-white hover:bg-white hover:text-primary"
                 onClick={() => {
-                  const whatsappMessage = `Hello Confidential Connect! I would like to learn more about your services. Can we schedule a consultation?`;
+                  const whatsappMessage = `Hello Confidential Connect Ltd! I would like to learn more about your services. Can we schedule a consultation?`;
                   const whatsappUrl = `https://wa.me/2347040294858?text=${encodeURIComponent(whatsappMessage)}`;
                   window.open(whatsappUrl, '_blank');
                 }}

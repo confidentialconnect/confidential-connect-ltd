@@ -77,6 +77,10 @@ export const GoogleInspiredHero = () => {
               <span className="text-brand-purple hover-scale inline-block cursor-pointer animate-bounce-in delay-1600">e</span>
               <span className="text-brand-blue hover-scale inline-block cursor-pointer animate-bounce-in delay-1700">c</span>
               <span className="text-brand-green hover-scale inline-block cursor-pointer animate-bounce-in delay-1800">t</span>
+              {" "}
+              <span className="text-brand-orange hover-scale inline-block cursor-pointer animate-bounce-in delay-1900">L</span>
+              <span className="text-brand-purple hover-scale inline-block cursor-pointer animate-bounce-in delay-2000">t</span>
+              <span className="text-brand-blue hover-scale inline-block cursor-pointer animate-bounce-in delay-2100">d</span>
             </h1>
             <div className="relative">
               <p className="text-2xl text-muted-foreground max-w-3xl mx-auto font-light leading-relaxed animate-slide-up">

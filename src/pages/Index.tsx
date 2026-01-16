@@ -14,7 +14,7 @@ import { useEffect } from "react";
 const Index = () => {
   useEffect(() => {
     // Set SEO meta tags
-    document.title = "Confidential Connect - Your Trusted Technology Partner";
+    document.title = "Confidential Connect Ltd - Your Trusted Technology Partner";
     
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {

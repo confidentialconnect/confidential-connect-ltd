@@ -13,10 +13,10 @@ const PaymentInfo = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    document.title = "Payment Methods | Confidential Connect";
+    document.title = "Payment Methods | Confidential Connect Ltd";
     const meta = document.querySelector('meta[name="description"]');
     if (meta) {
-      meta.setAttribute("content", "Secure payment options for Confidential Connect. Pay via bank transfer or OPay for your orders and services.");
+      meta.setAttribute("content", "Secure payment options for Confidential Connect Ltd. Pay via bank transfer or OPay for your orders and services.");
     }
   }, []);
 

@@ -121,7 +121,7 @@ export const ContactSection = () => {
                   const service = (document.getElementById('service') as HTMLInputElement)?.value || '';
                   const message = (document.getElementById('message') as HTMLTextAreaElement)?.value || '';
                   
-                  const whatsappMessage = `Hello Confidential Connect! 
+                  const whatsappMessage = `Hello Confidential Connect Ltd! 
 *New Message from Contact Form*
 
 *Name:* ${firstName} ${lastName}
@@ -268,7 +268,7 @@ Please respond to this inquiry. Thank you!`;
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="opacity-90">Account Name:</span>
-                      <span className="font-semibold">Confidential Connect</span>
+                      <span className="font-semibold">Confidential Connect Ltd</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="opacity-90">Account Number:</span>

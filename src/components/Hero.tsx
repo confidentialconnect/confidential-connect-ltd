@@ -67,7 +67,7 @@ export const Hero = () => {
               <div className="flex items-center mb-6">
                 <img 
                   src="/lovable-uploads/3657742a-fb6a-4c1a-a6c1-7bf4cf61cd8e.png" 
-                  alt="Confidential Connect Logo" 
+                  alt="Confidential Connect Ltd Logo" 
                   className="h-12 w-auto mr-4"
                 />
                 <div>

@@ -94,7 +94,7 @@ export const GoogleAppsMenu = () => {
         sideOffset={8}
       >
         <div className="mb-3">
-          <h3 className="font-semibold text-sm">Confidential Connect Services</h3>
+          <h3 className="font-semibold text-sm">Confidential Connect Ltd Services</h3>
         </div>
         
         <div className="grid grid-cols-3 gap-3">

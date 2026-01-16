@@ -256,7 +256,7 @@ const Contact = () => {
                 {/* Why Contact Us */}
                 <Card className="hover-lift">
                   <CardHeader>
-                    <CardTitle className="text-xl">Why Choose Confidential Connect?</CardTitle>
+                    <CardTitle className="text-xl">Why Choose Confidential Connect Ltd?</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="flex items-center gap-3">
