@@ -33,8 +33,8 @@ export const Header = () => {
               alt="Confidential Connect Logo" 
               className="h-10 w-auto"
             />
-            <div className="text-lg font-bold text-gradient">
-              Confidential Connect
+            <div className="text-lg font-extrabold text-gradient">
+              CONFIDENTIAL CONNECT LTD
             </div>
           </div>
 
@@ -137,8 +137,8 @@ export const Header = () => {
                     alt="Confidential Connect Logo" 
                     className="h-8 w-auto"
                   />
-                  <span className="text-lg font-bold text-gradient">
-                    Confidential Connect
+                  <span className="text-lg font-extrabold text-gradient">
+                    CONFIDENTIAL CONNECT LTD
                   </span>
                 </div>
                 <nav className="flex flex-col space-y-4">
