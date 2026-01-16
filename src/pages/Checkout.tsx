@@ -43,7 +43,7 @@ const Checkout = () => {
   }, [user, profile]);
 
   useEffect(() => {
-    document.title = "Checkout | Confidential Connect";
+    document.title = "Checkout | Confidential Connect Ltd";
     const meta = document.querySelector('meta[name="description"]');
     if (meta) meta.setAttribute("content", "Complete your order securely with our educational services checkout.");
   }, []);

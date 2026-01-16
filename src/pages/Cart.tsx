@@ -9,7 +9,7 @@ const Cart = () => {
   const { items, updateQuantity, removeItem, subtotal } = useCart();
 
   useEffect(() => {
-    document.title = "Cart | Confidential Connect";
+    document.title = "Cart | Confidential Connect Ltd";
     const meta = document.querySelector('meta[name="description"]');
     if (meta) meta.setAttribute("content", "View and manage items in your cart before secure checkout.");
   }, []);

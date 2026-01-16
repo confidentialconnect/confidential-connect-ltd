@@ -8,7 +8,7 @@ import { Megaphone, Sparkles, LineChart, Users } from "lucide-react";
 
 const Advertising = () => {
   useEffect(() => {
-    document.title = "Advertising Services | Confidential Connect";
+    document.title = "Advertising Services | Confidential Connect Ltd";
     const desc = document.querySelector('meta[name="description"]');
     if (desc) desc.setAttribute("content", "Advertising and promotions – grow your brand with targeted campaigns, social reach, and conversion-optimized creatives.");
   }, []);
@@ -33,7 +33,7 @@ const Advertising = () => {
                 variant="secondary" 
                 className="hover-lift" 
                 onClick={() => {
-                  const whatsappMessage = `Hello Confidential Connect! I'm interested in your advertising services and would like to speak with your sales team about growing my business.`;
+                  const whatsappMessage = `Hello Confidential Connect Ltd! I'm interested in your advertising services and would like to speak with your sales team about growing my business.`;
                   const whatsappUrl = `https://wa.me/2347040294858?text=${encodeURIComponent(whatsappMessage)}`;
                   window.open(whatsappUrl, '_blank');
                 }}
@@ -106,7 +106,7 @@ const Advertising = () => {
                     <Button 
                       className="w-full"
                       onClick={() => {
-                        const whatsappMessage = `Hello Confidential Connect! I'm interested in the ${plan.name} advertising plan (₦${plan.price}). Can you help me get started?`;
+                        const whatsappMessage = `Hello Confidential Connect Ltd! I'm interested in the ${plan.name} advertising plan (₦${plan.price}). Can you help me get started?`;
                         const whatsappUrl = `https://wa.me/2347040294858?text=${encodeURIComponent(whatsappMessage)}`;
                         window.open(whatsappUrl, '_blank');
                       }}

@@ -99,8 +99,8 @@ const Search = () => {
 
     // Set SEO meta tags
     document.title = searchQuery 
-      ? `Search results for "${searchQuery}" - Confidential Connect`
-      : "Search - Confidential Connect";
+      ? `Search results for "${searchQuery}" - Confidential Connect Ltd`
+      : "Search - Confidential Connect Ltd";
   }, [searchParams]);
 
   const resultStats = {
@@ -119,7 +119,7 @@ const Search = () => {
           <div className="mb-8">
             <div className="flex items-center gap-8 mb-6">
               <Link to="/" className="text-2xl font-bold text-gradient">
-                Confidential Connect
+                Confidential Connect Ltd
               </Link>
               <div className="flex-1 max-w-2xl">
                 <SearchBar 

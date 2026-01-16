@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const OrderSuccess = () => {
   useEffect(() => {
-    document.title = "Order Sent | Confidential Connect";
+    document.title = "Order Sent | Confidential Connect Ltd";
     const meta = document.querySelector('meta[name="description"]');
     if (meta) meta.setAttribute("content", "Your order details have been sent. We'll contact you shortly.");
   }, []);

@@ -58,11 +58,11 @@ export const Footer = () => {
             <div className="flex items-center space-x-3 mb-6">
               <img 
                 src="/lovable-uploads/3657742a-fb6a-4c1a-a6c1-7bf4cf61cd8e.png" 
-                alt="Confidential Connect Logo" 
+                alt="Confidential Connect Ltd Logo" 
                 className="h-10 w-auto"
               />
               <div className="text-xl font-bold">
-                Confidential Connect
+                Confidential Connect Ltd
               </div>
             </div>
             <p className="text-primary-foreground/80 mb-6 leading-relaxed">
@@ -208,7 +208,7 @@ export const Footer = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-primary-foreground/60 text-sm mb-4 md:mb-0">
-              © {currentYear} Confidential Connect. All rights reserved.
+              © {currentYear} Confidential Connect Ltd. All rights reserved.
             </div>
             <div className="flex flex-wrap gap-6 text-sm">
               <a href="#" className="text-primary-foreground/60 hover:text-white transition-colors duration-200">

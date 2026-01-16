@@ -154,7 +154,7 @@ export const ServicesSection = () => {
         <div className="bg-white rounded-2xl p-8 md:p-12 animate-fade-in">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h3 className="text-3xl font-bold mb-6 text-gradient">Why Choose Confidential Connect?</h3>
+              <h3 className="text-3xl font-bold mb-6 text-gradient">Why Choose Confidential Connect Ltd?</h3>
               <div className="space-y-6">
                 <div className="flex items-start">
                   <Shield className="h-6 w-6 text-primary mt-1 mr-4 flex-shrink-0" />
