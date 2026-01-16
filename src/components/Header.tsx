@@ -7,6 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { GoogleAppsMenu } from "./GoogleAppsMenu";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
+import officialLogo from "@/assets/official-logo.png";
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,9 +30,9 @@ export const Header = () => {
           {/* Logo */}
           <div className="flex items-center space-x-3">
             <img 
-              src="/lovable-uploads/3657742a-fb6a-4c1a-a6c1-7bf4cf61cd8e.png" 
-              alt="Confidential Connect Logo" 
-              className="h-10 w-auto"
+              src={officialLogo} 
+              alt="Confidential Connect LTD Logo" 
+              className="h-12 w-auto"
             />
             <div className="text-lg font-extrabold text-gradient">
               CONFIDENTIAL CONNECT LTD
@@ -133,9 +134,9 @@ export const Header = () => {
               <div className="flex flex-col space-y-6 mt-8">
                 <div className="flex items-center space-x-3">
                   <img 
-                    src="/lovable-uploads/3657742a-fb6a-4c1a-a6c1-7bf4cf61cd8e.png" 
-                    alt="Confidential Connect Logo" 
-                    className="h-8 w-auto"
+                    src={officialLogo} 
+                    alt="Confidential Connect LTD Logo" 
+                    className="h-10 w-auto"
                   />
                   <span className="text-lg font-extrabold text-gradient">
                     CONFIDENTIAL CONNECT LTD
