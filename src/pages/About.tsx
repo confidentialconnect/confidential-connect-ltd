@@ -11,8 +11,10 @@ import {
   Globe, 
   Code,
   CheckCircle,
-  Star
+  Star,
+  Building2
 } from "lucide-react";
+import cacCertificate from "@/assets/cac-certificate.jpg";
 
 const About = () => {
   const stats = [
@@ -116,6 +118,99 @@ const About = () => {
                   innovation. Every project we undertake is a testament to our commitment to delivering 
                   solutions that not only meet but exceed our clients' expectations.
                 </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Company Registration Section */}
+        <section className="py-16 bg-gradient-to-br from-primary/5 to-primary/10">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-5xl mx-auto">
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center gap-2 mb-4">
+                  <Building2 className="h-6 w-6 text-primary" />
+                  <Badge className="bg-primary/10 text-primary border-primary/20">
+                    Officially Registered
+                  </Badge>
+                </div>
+                <h2 className="text-3xl font-bold mb-4 text-gradient">
+                  CAC Registered Company
+                </h2>
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                  Confidential Connect Ltd is a legally registered private company under the 
+                  Companies and Allied Matters Act 2020 of the Federal Republic of Nigeria.
+                </p>
+              </div>
+              
+              <div className="grid lg:grid-cols-2 gap-8 items-center">
+                {/* Certificate Image */}
+                <Card className="hover-lift overflow-hidden border-2 border-primary/20">
+                  <CardContent className="p-4">
+                    <img 
+                      src={cacCertificate} 
+                      alt="CAC Certificate of Incorporation - Confidential Connect Ltd" 
+                      className="w-full h-auto rounded-lg shadow-lg"
+                    />
+                  </CardContent>
+                </Card>
+                
+                {/* Company Details */}
+                <div className="space-y-6">
+                  <Card className="hover-lift">
+                    <CardContent className="p-6">
+                      <h3 className="text-xl font-bold mb-4 text-gradient">Company Details</h3>
+                      <div className="space-y-4">
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="h-5 w-5 text-success mt-0.5 shrink-0" />
+                          <div>
+                            <p className="font-medium">Company Name</p>
+                            <p className="text-muted-foreground">CONFIDENTIAL CONNECT LTD</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="h-5 w-5 text-success mt-0.5 shrink-0" />
+                          <div>
+                            <p className="font-medium">Registration Number</p>
+                            <p className="text-muted-foreground">RC 9081270</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="h-5 w-5 text-success mt-0.5 shrink-0" />
+                          <div>
+                            <p className="font-medium">Company Type</p>
+                            <p className="text-muted-foreground">Private Company Limited by Shares</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="h-5 w-5 text-success mt-0.5 shrink-0" />
+                          <div>
+                            <p className="font-medium">Date of Incorporation</p>
+                            <p className="text-muted-foreground">16th December, 2025</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="h-5 w-5 text-success mt-0.5 shrink-0" />
+                          <div>
+                            <p className="font-medium">Registered Under</p>
+                            <p className="text-muted-foreground">Companies and Allied Matters Act 2020</p>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <div className="p-4 bg-success/10 border border-success/20 rounded-lg">
+                    <div className="flex items-center gap-2 text-success">
+                      <Shield className="h-5 w-5" />
+                      <span className="font-semibold">Verified & Trusted</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground mt-2">
+                      Our company is duly registered with the Corporate Affairs Commission (CAC) 
+                      of Nigeria, ensuring legal compliance and trustworthiness.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
