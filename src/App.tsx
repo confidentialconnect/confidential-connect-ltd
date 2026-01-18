@@ -22,6 +22,7 @@ import OrderSuccess from "./pages/OrderSuccess";
 import Payments from "./pages/Payments";
 import PaymentInfo from "./pages/PaymentInfo";
 import AdminHome from "./pages/AdminHome";
+import AdminOrders from "./pages/AdminOrders";
 import Auth from "./pages/Auth";
 import Advertising from "./pages/Advertising";
 
@@ -53,6 +54,7 @@ const App = () => (
               <Route path="/payments" element={<Payments />} />
               <Route path="/payment-info" element={<PaymentInfo />} />
               <Route path="/admin" element={<AdminHome />} />
+              <Route path="/admin/orders" element={<AdminOrders />} />
               <Route path="/advertising" element={<Advertising />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
