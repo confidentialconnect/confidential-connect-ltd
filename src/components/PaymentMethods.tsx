@@ -22,20 +22,25 @@ interface PaymentMethod {
   processingTime?: string;
 }
 
-const paymentMethods: PaymentMethod[] = [
+// Remita payment methods (online gateway)
+const remitaPaymentMethods: PaymentMethod[] = [
   {
     id: 'remita-card',
-    name: 'Credit/Debit Card',
-    description: 'Pay securely with Visa, Mastercard, or Verve',
+    name: 'Credit/Debit Card (Remita)',
+    description: 'Pay securely with Visa, Mastercard, or Verve via Remita',
     icon: CreditCard,
     type: 'card',
     fees: 'Free',
     processingTime: 'Instant'
-  },
+  }
+];
+
+// Normal payment methods (direct transfers)
+const normalPaymentMethods: PaymentMethod[] = [
   {
     id: 'remita-bank',
     name: 'Bank Transfer',
-    description: 'All Nigerian Banks supported',
+    description: 'Transfer to First Bank of Nigeria',
     icon: Building2,
     type: 'bank',
     details: {
@@ -48,8 +53,8 @@ const paymentMethods: PaymentMethod[] = [
   },
   {
     id: 'opay',
-    name: 'OPay',
-    description: 'Pay with your OPay wallet',
+    name: 'OPay Transfer',
+    description: 'Send money via OPay',
     icon: Smartphone,
     type: 'mobile',
     details: {
@@ -61,8 +66,8 @@ const paymentMethods: PaymentMethod[] = [
   },
   {
     id: 'palmpay',
-    name: 'PalmPay',
-    description: 'Pay with your PalmPay wallet',
+    name: 'PalmPay Transfer',
+    description: 'Send money via PalmPay',
     icon: Smartphone,
     type: 'mobile',
     details: {
@@ -111,8 +116,173 @@ export const PaymentMethods = ({ selectedMethod, onMethodSelect, orderAmount }: 
     }
   };
 
+  const renderPaymentCard = (method: PaymentMethod) => {
+    const Icon = method.icon;
+    const isSelected = selectedMethod === method.id;
+    
+    return (
+      <Card 
+        key={method.id}
+        className={`cursor-pointer transition-all hover:shadow-md ${
+          isSelected ? 'ring-2 ring-primary bg-primary/5' : ''
+        }`}
+        onClick={() => onMethodSelect(method.id)}
+      >
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Icon className="h-8 w-8 text-primary" />
+              <div>
+                <CardTitle className="text-lg">{method.name}</CardTitle>
+                <CardDescription>{method.description}</CardDescription>
+              </div>
+            </div>
+            <div className="text-right space-y-1">
+              <Badge className={getMethodBadgeColor(method.type)}>
+                {method.type.charAt(0).toUpperCase() + method.type.slice(1)}
+              </Badge>
+              {method.fees && (
+                <p className="text-xs text-muted-foreground">Fee: {method.fees}</p>
+              )}
+            </div>
+          </div>
+        </CardHeader>
+
+        {isSelected && method.details && (
+          <CardContent className="pt-0">
+            <Separator className="mb-4" />
+            <div className="space-y-3">
+              <h4 className="font-semibold text-sm">Payment Details:</h4>
+              
+              {method.details.phoneNumber && (
+                <div className="flex items-center justify-between bg-muted/50 p-3 rounded-lg">
+                  <div>
+                    <p className="text-sm font-medium">Phone Number</p>
+                    <p className="text-lg font-mono">{method.details.phoneNumber}</p>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCopy(method.details!.phoneNumber!, 'Phone Number');
+                    }}
+                  >
+                    {copiedField === 'Phone Number' ? (
+                      <Check className="h-4 w-4" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+              )}
+
+              {method.details.accountName && (
+                <div className="flex items-center justify-between bg-muted/50 p-3 rounded-lg">
+                  <div>
+                    <p className="text-sm font-medium">Account Name</p>
+                    <p className="font-medium">{method.details.accountName}</p>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCopy(method.details!.accountName!, 'Account Name');
+                    }}
+                  >
+                    {copiedField === 'Account Name' ? (
+                      <Check className="h-4 w-4" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+              )}
+
+              {method.details.accountNumber && (
+                <div className="flex items-center justify-between bg-muted/50 p-3 rounded-lg">
+                  <div>
+                    <p className="text-sm font-medium">Account Number</p>
+                    <p className="text-lg font-mono">{method.details.accountNumber}</p>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCopy(method.details!.accountNumber!, 'Account Number');
+                    }}
+                  >
+                    {copiedField === 'Account Number' ? (
+                      <Check className="h-4 w-4" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+              )}
+
+              {method.details.bankName && (
+                <div className="bg-muted/50 p-3 rounded-lg">
+                  <p className="text-sm font-medium">Bank</p>
+                  <p className="font-medium">{method.details.bankName}</p>
+                </div>
+              )}
+
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Processing Time:</span>
+                <Badge variant="outline">{method.processingTime}</Badge>
+              </div>
+              
+              {(method.type === 'bank' || method.type === 'mobile') && (
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mt-3">
+                  <p className="text-sm font-medium text-yellow-800 mb-2">📲 Important:</p>
+                  <p className="text-xs text-yellow-700">
+                    After payment, send your receipt to WhatsApp: +2347040294858 for instant confirmation.
+                  </p>
+                  <div className="mt-3">
+                    <Button size="sm" className="w-full" asChild>
+                      <a 
+                        href={`https://wa.me/2347040294858?text=${encodeURIComponent('Hello, I have made a payment. Amount: ₦' + (orderAmount / 100).toLocaleString() + '. Please confirm my receipt.')}`} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                      >
+                        Send receipt on WhatsApp
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        )}
+
+        {isSelected && method.id === 'remita-card' && (
+          <CardContent className="pt-0">
+            <Separator className="mb-4" />
+            <div className="space-y-3 text-center">
+              <div className="flex justify-center gap-2">
+                <div className="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded">VISA</div>
+                <div className="px-3 py-1 bg-red-600 text-white text-xs font-bold rounded">MC</div>
+                <div className="px-3 py-1 bg-green-600 text-white text-xs font-bold rounded">VERVE</div>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Secure payment powered by Remita
+              </p>
+              <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
+                <ExternalLink className="h-3 w-3" />
+                <span>Opens in secure payment window</span>
+              </div>
+            </div>
+          </CardContent>
+        )}
+      </Card>
+    );
+  };
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="text-center mb-6">
         <h2 className="text-2xl font-bold mb-2">Choose Payment Method</h2>
         <p className="text-muted-foreground">
@@ -120,171 +290,43 @@ export const PaymentMethods = ({ selectedMethod, onMethodSelect, orderAmount }: 
         </p>
       </div>
 
-      <div className="grid gap-4">
-        {paymentMethods.map((method) => {
-          const Icon = method.icon;
-          const isSelected = selectedMethod === method.id;
-          
-          return (
-            <Card 
-              key={method.id}
-              className={`cursor-pointer transition-all hover:shadow-md ${
-                isSelected ? 'ring-2 ring-primary bg-primary/5' : ''
-              }`}
-              onClick={() => onMethodSelect(method.id)}
-            >
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Icon className="h-8 w-8 text-primary" />
-                    <div>
-                      <CardTitle className="text-lg">{method.name}</CardTitle>
-                      <CardDescription>{method.description}</CardDescription>
-                    </div>
-                  </div>
-                  <div className="text-right space-y-1">
-                    <Badge className={getMethodBadgeColor(method.type)}>
-                      {method.type.charAt(0).toUpperCase() + method.type.slice(1)}
-                    </Badge>
-                    {method.fees && (
-                      <p className="text-xs text-muted-foreground">Fee: {method.fees}</p>
-                    )}
-                  </div>
-                </div>
-              </CardHeader>
+      {/* Remita Payment Section */}
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+            <CreditCard className="h-4 w-4 text-blue-600" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-lg">Remita Payment Gateway</h3>
+            <p className="text-xs text-muted-foreground">Pay with cards via secure Remita gateway</p>
+          </div>
+        </div>
+        <div className="grid gap-3">
+          {remitaPaymentMethods.map(renderPaymentCard)}
+        </div>
+      </div>
 
-              {isSelected && method.details && (
-                <CardContent className="pt-0">
-                  <Separator className="mb-4" />
-                  <div className="space-y-3">
-                    <h4 className="font-semibold text-sm">Payment Details:</h4>
-                    
-                    {method.details.phoneNumber && (
-                      <div className="flex items-center justify-between bg-muted/50 p-3 rounded-lg">
-                        <div>
-                          <p className="text-sm font-medium">Phone Number</p>
-                          <p className="text-lg font-mono">{method.details.phoneNumber}</p>
-                        </div>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleCopy(method.details.phoneNumber!, 'Phone Number');
-                          }}
-                        >
-                          {copiedField === 'Phone Number' ? (
-                            <Check className="h-4 w-4" />
-                          ) : (
-                            <Copy className="h-4 w-4" />
-                          )}
-                        </Button>
-                      </div>
-                    )}
+      {/* Separator */}
+      <div className="flex items-center gap-4">
+        <Separator className="flex-1" />
+        <span className="text-sm text-muted-foreground font-medium">OR</span>
+        <Separator className="flex-1" />
+      </div>
 
-                    {method.details.accountName && (
-                      <div className="flex items-center justify-between bg-muted/50 p-3 rounded-lg">
-                        <div>
-                          <p className="text-sm font-medium">Account Name</p>
-                          <p className="font-medium">{method.details.accountName}</p>
-                        </div>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleCopy(method.details.accountName!, 'Account Name');
-                          }}
-                        >
-                          {copiedField === 'Account Name' ? (
-                            <Check className="h-4 w-4" />
-                          ) : (
-                            <Copy className="h-4 w-4" />
-                          )}
-                        </Button>
-                      </div>
-                    )}
-
-                    {method.details.accountNumber && (
-                      <div className="flex items-center justify-between bg-muted/50 p-3 rounded-lg">
-                        <div>
-                          <p className="text-sm font-medium">Account Number</p>
-                          <p className="text-lg font-mono">{method.details.accountNumber}</p>
-                        </div>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleCopy(method.details.accountNumber!, 'Account Number');
-                          }}
-                        >
-                          {copiedField === 'Account Number' ? (
-                            <Check className="h-4 w-4" />
-                          ) : (
-                            <Copy className="h-4 w-4" />
-                          )}
-                        </Button>
-                      </div>
-                    )}
-
-                    {method.details.bankName && (
-                      <div className="bg-muted/50 p-3 rounded-lg">
-                        <p className="text-sm font-medium">Bank</p>
-                        <p className="font-medium">{method.details.bankName}</p>
-                      </div>
-                    )}
-
-                     <div className="flex items-center justify-between text-sm">
-                       <span className="text-muted-foreground">Processing Time:</span>
-                       <Badge variant="outline">{method.processingTime}</Badge>
-                     </div>
-                     
-                     {(method.type === 'bank' || method.type === 'mobile') && (
-                       <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mt-3">
-                         <p className="text-sm font-medium text-yellow-800 mb-2">📲 Important:</p>
-                         <p className="text-xs text-yellow-700">
-                           After payment, send your receipt to WhatsApp: +2347040294858 for instant confirmation.
-                         </p>
-                         <div className="mt-3">
-                           <Button size="sm" className="w-full" asChild>
-                             <a 
-                               href={`https://wa.me/2347040294858?text=${encodeURIComponent('Hello, I have made a payment. Amount: ₦' + (orderAmount / 100).toLocaleString() + '. Please confirm my receipt.')}`} 
-                               target="_blank" 
-                               rel="noopener noreferrer"
-                             >
-                               Send receipt on WhatsApp
-                             </a>
-                           </Button>
-                         </div>
-                       </div>
-                     )}
-                  </div>
-                </CardContent>
-              )}
-
-              {isSelected && method.id === 'remita-card' && (
-                <CardContent className="pt-0">
-                  <Separator className="mb-4" />
-                  <div className="space-y-3 text-center">
-                    <div className="flex justify-center gap-2">
-                      <img src="/api/placeholder/40/25" alt="Visa" className="h-6" />
-                      <img src="/api/placeholder/40/25" alt="Mastercard" className="h-6" />
-                      <img src="/api/placeholder/40/25" alt="Verve" className="h-6" />
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      Secure payment powered by Remita
-                    </p>
-                    <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
-                      <ExternalLink className="h-3 w-3" />
-                      <span>Opens in secure payment window</span>
-                    </div>
-                  </div>
-                </CardContent>
-              )}
-            </Card>
-          );
-        })}
+      {/* Normal Payment Options Section */}
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
+            <Building2 className="h-4 w-4 text-green-600" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-lg">Direct Transfer Options</h3>
+            <p className="text-xs text-muted-foreground">Bank transfer & mobile money payments</p>
+          </div>
+        </div>
+        <div className="grid gap-3">
+          {normalPaymentMethods.map(renderPaymentCard)}
+        </div>
       </div>
     </div>
   );
