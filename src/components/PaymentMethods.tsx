@@ -53,8 +53,8 @@ const paymentMethods: PaymentMethod[] = [
     icon: Smartphone,
     type: 'mobile',
     details: {
-      phoneNumber: '7040294858',
-      accountName: 'Okpo Confidence O'
+      phoneNumber: '6113224110',
+      accountName: 'Okpo Confidence'
     },
     fees: 'Free',
     processingTime: 'Instant'
