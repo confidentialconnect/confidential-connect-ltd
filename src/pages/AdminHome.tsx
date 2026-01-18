@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -117,7 +117,14 @@ const AdminHome = () => {
   return (
     <section className="pt-24 pb-16 bg-background min-h-screen">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
+          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+          <Button asChild>
+            <Link to="/admin/orders">
+              📊 Payment Tracking Dashboard
+            </Link>
+          </Button>
+        </div>
         
         <Tabs defaultValue="analytics" className="space-y-6">
           <TabsList>
