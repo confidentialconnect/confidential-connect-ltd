@@ -3,13 +3,25 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
-import { Search, Brain, Loader2 } from "lucide-react";
+import { Search, Brain, Loader2, LogIn } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { Link } from "react-router-dom";
 
 interface SmartSearchProps {
-  onSearchResults?: (results: any[]) => void;
+  onSearchResults?: (results: SearchResult[]) => void;
   placeholder?: string;
   className?: string;
+}
+
+interface SearchResult {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  source?: string;
+  relevance?: number;
 }
 
 interface PerplexityResponse {
@@ -27,16 +39,15 @@ export const SmartSearch = ({
 }: SmartSearchProps) => {
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [results, setResults] = useState<any[]>([]);
-  const [apiKey, setApiKey] = useState("");
-  const [showApiKeyInput, setShowApiKeyInput] = useState(true);
+  const [results, setResults] = useState<SearchResult[]>([]);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const performPerplexitySearch = async (searchQuery: string) => {
-    if (!apiKey) {
+    if (!user) {
       toast({
-        title: "API Key Required",
-        description: "Please enter your Perplexity API key to search",
+        title: "Authentication Required",
+        description: "Please sign in to use the AI-powered search feature",
         variant: "destructive"
       });
       return;
@@ -44,40 +55,15 @@ export const SmartSearch = ({
 
     setIsLoading(true);
     try {
-      const response = await fetch('https://api.perplexity.ai/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'llama-3.1-sonar-small-128k-online',
-          messages: [
-            {
-              role: 'system',
-              content: 'You are a helpful assistant that provides accurate, up-to-date information. Format your response as a JSON array of search results with title, description, and category fields.'
-            },
-            {
-              role: 'user',
-              content: `Search for information about: ${searchQuery}. Provide 5-10 relevant results with title, description, and category.`
-            }
-          ],
-          temperature: 0.2,
-          top_p: 0.9,
-          max_tokens: 1000,
-          return_images: false,
-          return_related_questions: false,
-          search_recency_filter: 'month',
-          frequency_penalty: 1,
-          presence_penalty: 0
-        }),
+      // Call the edge function instead of exposing API key client-side
+      const { data, error } = await supabase.functions.invoke('perplexity-search', {
+        body: { query: searchQuery }
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (error) {
+        throw new Error(error.message);
       }
 
-      const data: PerplexityResponse = await response.json();
       const searchResults = parseSearchResults(data.choices[0].message.content, searchQuery);
       
       setResults(searchResults);
@@ -93,7 +79,7 @@ export const SmartSearch = ({
       console.error('Search error:', error);
       toast({
         title: "Search Error",
-        description: "Failed to perform search. Please check your API key and try again.",
+        description: "Failed to perform search. Please try again later.",
         variant: "destructive"
       });
     } finally {
@@ -101,14 +87,14 @@ export const SmartSearch = ({
     }
   };
 
-  const parseSearchResults = (content: string, query: string) => {
+  const parseSearchResults = (content: string, searchQuery: string): SearchResult[] => {
     try {
       // Try to parse JSON if the AI returned it
       const jsonMatch = content.match(/\[[\s\S]*\]/);
       if (jsonMatch) {
         return JSON.parse(jsonMatch[0]);
       }
-    } catch (e) {
+    } catch {
       // If JSON parsing fails, create results from the text content
     }
 
@@ -116,7 +102,7 @@ export const SmartSearch = ({
     const sentences = content.split(/[.!?]+/).filter(s => s.trim().length > 20);
     return sentences.slice(0, 5).map((sentence, index) => ({
       id: `search-${index}`,
-      title: `Result ${index + 1}: ${query}`,
+      title: `Result ${index + 1}: ${searchQuery}`,
       description: sentence.trim(),
       category: "web",
       source: "Perplexity AI",
@@ -130,19 +116,9 @@ export const SmartSearch = ({
     }
   };
 
-  const handleApiKeySubmit = () => {
-    if (apiKey.trim()) {
-      setShowApiKeyInput(false);
-      toast({
-        title: "API Key Set",
-        description: "You can now search for anything in the world!",
-      });
-    }
-  };
-
   return (
     <div className={`space-y-6 ${className}`}>
-      {showApiKeyInput && (
+      {!user && (
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -152,31 +128,14 @@ export const SmartSearch = ({
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-sm text-muted-foreground">
-              Enter your Perplexity API key to search for real-time information about anything in the world.
+              Sign in to access our AI-powered search feature and search for real-time information about anything in the world.
             </p>
-            <div className="flex gap-2">
-              <Input
-                type="password"
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-                placeholder="Enter your Perplexity API key..."
-                className="flex-1"
-              />
-              <Button onClick={handleApiKeySubmit} disabled={!apiKey.trim()}>
-                Set API Key
-              </Button>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Get your API key from{" "}
-              <a 
-                href="https://www.perplexity.ai/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-primary hover:underline"
-              >
-                perplexity.ai
-              </a>
-            </p>
+            <Button asChild>
+              <Link to="/auth">
+                <LogIn className="h-4 w-4 mr-2" />
+                Sign In to Search
+              </Link>
+            </Button>
           </CardContent>
         </Card>
       )}
@@ -195,12 +154,12 @@ export const SmartSearch = ({
               }}
               placeholder={placeholder}
               className="pl-10"
-              disabled={showApiKeyInput}
+              disabled={!user}
             />
           </div>
           <Button 
             onClick={handleSearch} 
-            disabled={isLoading || !query.trim() || showApiKeyInput}
+            disabled={isLoading || !query.trim() || !user}
           >
             {isLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
