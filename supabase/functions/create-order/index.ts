@@ -17,12 +17,12 @@ const CreateOrderSchema = z.object({
     state: z.string().max(100).optional()
   }),
   items: z.array(z.object({
-    id: z.number().positive("Invalid item ID"),
+    id: z.union([z.string(), z.number()]), // Accept both string UUIDs and numeric IDs
     name: z.string().min(1, "Item name required").max(200, "Item name too long"),
-    price: z.number().positive("Price must be positive").int("Price must be integer"),
+    price: z.number().positive("Price must be positive"),
     quantity: z.number().positive("Quantity must be positive").int("Quantity must be integer").max(1000, "Quantity too large")
   })).min(1, "At least one item required").max(100, "Too many items"),
-  totalAmount: z.number().positive("Total must be positive").int("Total must be integer").max(100000000, "Total too large"),
+  totalAmount: z.number().positive("Total must be positive").max(100000000, "Total too large"),
   userId: z.string().uuid().optional()
 });
 
