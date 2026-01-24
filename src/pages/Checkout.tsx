@@ -132,19 +132,34 @@ Please confirm this order and provide payment instructions.`;
 
       if (error) throw error;
 
-      // Store order data for payment page
+      // Store order data for payment page and success page
+      const orderData = {
+        id: data.order?.id,
+        paymentReference: data.paymentReference,
+        totalAmount: subtotal,
+        customer: {
+          name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone
+        },
+        items: items.map(item => ({
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price
+        }))
+      };
+      
       localStorage.setItem('orderData', JSON.stringify({
         payment_reference: data.paymentReference,
         total_amount: subtotal,
         customer_name: formData.fullName,
         customer_email: formData.email,
         customer_phone: formData.phone,
-        order_items: items.map(item => ({
-          name: item.name,
-          quantity: item.quantity,
-          price: item.price
-        }))
+        order_items: orderData.items
       }));
+      
+      // Also store for success page
+      localStorage.setItem('lastOrder', JSON.stringify(orderData));
 
       // Navigate to payments page where user can choose payment method
       navigate('/payments');

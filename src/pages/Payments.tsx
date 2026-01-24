@@ -51,9 +51,10 @@ const Payments = () => {
   };
 
   const handlePaymentSuccess = () => {
-    // Clear order data and navigate to success page
+    // Clear order data and navigate to success page with reference
+    const ref = orderData?.payment_reference;
     localStorage.removeItem('orderData');
-    navigate('/order-success');
+    navigate(`/order-success${ref ? `?ref=${ref}` : ''}`);
   };
 
   const handlePaymentError = (error: string) => {
