@@ -1,13 +1,62 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { createHmac } from "https://deno.land/std@0.190.0/node/crypto.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-remita-signature, x-remita-timestamp",
 };
 
 interface VerifyRemitaPaymentRequest {
   paymentReference: string;
+}
+
+// Store processed webhook IDs to prevent replay attacks (in-memory for simplicity)
+const processedWebhooks = new Set<string>();
+
+// Verify HMAC signature with timestamp validation
+function verifyWebhookSignature(
+  payload: string,
+  signature: string | null,
+  timestamp: string | null,
+  secret: string
+): { valid: boolean; reason?: string } {
+  if (!signature || !timestamp) {
+    return { valid: false, reason: "Missing signature or timestamp" };
+  }
+
+  // Check timestamp is recent (within 5 minutes)
+  const requestTime = parseInt(timestamp);
+  const currentTime = Math.floor(Date.now() / 1000);
+  
+  if (isNaN(requestTime)) {
+    return { valid: false, reason: "Invalid timestamp format" };
+  }
+  
+  if (Math.abs(currentTime - requestTime) > 300) {
+    return { valid: false, reason: "Request timestamp too old or in future" };
+  }
+
+  // Verify HMAC signature
+  const expectedSignature = createHmac("sha256", secret)
+    .update(timestamp + payload)
+    .digest("hex");
+
+  // Use timing-safe comparison
+  if (signature.length !== expectedSignature.length) {
+    return { valid: false, reason: "Signature mismatch" };
+  }
+  
+  let mismatch = 0;
+  for (let i = 0; i < signature.length; i++) {
+    mismatch |= signature.charCodeAt(i) ^ expectedSignature.charCodeAt(i);
+  }
+  
+  if (mismatch !== 0) {
+    return { valid: false, reason: "Signature mismatch" };
+  }
+
+  return { valid: true };
 }
 
 serve(async (req) => {
@@ -16,24 +65,68 @@ serve(async (req) => {
   }
 
   try {
-    // Verify webhook token for security
-    const webhookToken = req.headers.get('X-Webhook-Token');
-    const expectedToken = Deno.env.get('REMITA_WEBHOOK_TOKEN');
+    // Read body as text first for signature verification
+    const bodyText = await req.text();
     
-    if (!webhookToken || webhookToken !== expectedToken) {
-      console.error('Unauthorized webhook attempt');
+    // Get signature headers
+    const signature = req.headers.get("X-Remita-Signature");
+    const timestamp = req.headers.get("X-Remita-Timestamp");
+    const webhookSecret = Deno.env.get("REMITA_WEBHOOK_SECRET");
+    
+    // Fallback to simple token if HMAC secret not configured (for backwards compatibility)
+    // But log a warning
+    if (!webhookSecret) {
+      console.warn("REMITA_WEBHOOK_SECRET not configured, falling back to simple token verification");
+      const webhookToken = req.headers.get("X-Webhook-Token");
+      const expectedToken = Deno.env.get("REMITA_WEBHOOK_TOKEN");
+      
+      if (!webhookToken || webhookToken !== expectedToken) {
+        console.error("Unauthorized webhook attempt - token mismatch");
+        return new Response(
+          JSON.stringify({ success: false, error: "Unauthorized" }),
+          { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+    } else {
+      // Use HMAC verification when secret is configured
+      const verification = verifyWebhookSignature(bodyText, signature, timestamp, webhookSecret);
+      
+      if (!verification.valid) {
+        console.error(`Webhook signature verification failed: ${verification.reason}`);
+        return new Response(
+          JSON.stringify({ success: false, error: "Invalid signature" }),
+          { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+    }
+
+    // Parse the body
+    const requestData: VerifyRemitaPaymentRequest = JSON.parse(bodyText);
+    const { paymentReference } = requestData;
+    
+    // Generate unique webhook ID for replay protection
+    const webhookId = `${timestamp || Date.now()}-${paymentReference}`;
+    
+    // Check for replay attack
+    if (processedWebhooks.has(webhookId)) {
+      console.warn(`Potential replay attack detected for webhook: ${webhookId}`);
       return new Response(
-        JSON.stringify({ success: false, error: 'Unauthorized' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({ success: true, message: "Already processed" }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+    
+    // Add to processed set (limit size to prevent memory issues)
+    if (processedWebhooks.size > 10000) {
+      const firstItem = processedWebhooks.values().next().value;
+      if (firstItem) processedWebhooks.delete(firstItem);
+    }
+    processedWebhooks.add(webhookId);
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
-
-    const { paymentReference }: VerifyRemitaPaymentRequest = await req.json();
 
     // Verify payment status with Remita's API
     const merchantId = Deno.env.get("REMITA_MERCHANT_ID") || "2547916";
@@ -115,6 +208,7 @@ serve(async (req) => {
       }
     );
   } catch (error) {
+    console.error("Webhook processing error:", error);
     return new Response(
       JSON.stringify({
         success: false,
