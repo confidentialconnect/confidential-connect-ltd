@@ -1,6 +1,5 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
-import { createHmac } from "https://deno.land/std@0.190.0/node/crypto.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -14,13 +13,25 @@ interface VerifyRemitaPaymentRequest {
 // Store processed webhook IDs to prevent replay attacks (in-memory for simplicity)
 const processedWebhooks = new Set<string>();
 
-// Verify HMAC signature with timestamp validation
-function verifyWebhookSignature(
+// Convert string to Uint8Array
+function stringToUint8Array(str: string): Uint8Array {
+  return new TextEncoder().encode(str);
+}
+
+// Convert ArrayBuffer to hex string
+function bufferToHex(buffer: ArrayBuffer): string {
+  return Array.from(new Uint8Array(buffer))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+// Verify HMAC signature with timestamp validation using Web Crypto API
+async function verifyWebhookSignature(
   payload: string,
   signature: string | null,
   timestamp: string | null,
   secret: string
-): { valid: boolean; reason?: string } {
+): Promise<{ valid: boolean; reason?: string }> {
   if (!signature || !timestamp) {
     return { valid: false, reason: "Missing signature or timestamp" };
   }
@@ -37,10 +48,23 @@ function verifyWebhookSignature(
     return { valid: false, reason: "Request timestamp too old or in future" };
   }
 
-  // Verify HMAC signature
-  const expectedSignature = createHmac("sha256", secret)
-    .update(timestamp + payload)
-    .digest("hex");
+  // Create HMAC key using Web Crypto API
+  const key = await crypto.subtle.importKey(
+    "raw",
+    stringToUint8Array(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+
+  // Sign the message
+  const signatureBuffer = await crypto.subtle.sign(
+    "HMAC",
+    key,
+    stringToUint8Array(timestamp + payload)
+  );
+
+  const expectedSignature = bufferToHex(signatureBuffer);
 
   // Use timing-safe comparison
   if (signature.length !== expectedSignature.length) {
@@ -74,7 +98,6 @@ serve(async (req) => {
     const webhookSecret = Deno.env.get("REMITA_WEBHOOK_SECRET");
     
     // Fallback to simple token if HMAC secret not configured (for backwards compatibility)
-    // But log a warning
     if (!webhookSecret) {
       console.warn("REMITA_WEBHOOK_SECRET not configured, falling back to simple token verification");
       const webhookToken = req.headers.get("X-Webhook-Token");
@@ -89,7 +112,7 @@ serve(async (req) => {
       }
     } else {
       // Use HMAC verification when secret is configured
-      const verification = verifyWebhookSignature(bodyText, signature, timestamp, webhookSecret);
+      const verification = await verifyWebhookSignature(bodyText, signature, timestamp, webhookSecret);
       
       if (!verification.valid) {
         console.error(`Webhook signature verification failed: ${verification.reason}`);
@@ -180,7 +203,6 @@ serve(async (req) => {
       
     } catch (verifyError) {
       console.error('Remita verification error:', verifyError);
-      // For now, if verification fails, mark as pending for manual review
       newStatus = 'pending';
     }
 
