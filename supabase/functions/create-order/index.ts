@@ -11,7 +11,7 @@ const CreateOrderSchema = z.object({
   customer: z.object({
     fullName: z.string().trim().min(1, "Name is required").max(100, "Name too long"),
     email: z.string().email("Invalid email").max(255, "Email too long"),
-    phone: z.string().regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number"),
+    phone: z.string().min(10, "Phone number must be at least 10 digits").max(20, "Phone number too long").regex(/^[\d\s\-+()]+$/, "Invalid phone number format"),
     address: z.string().max(500).optional(),
     city: z.string().max(100).optional(),
     state: z.string().max(100).optional()
