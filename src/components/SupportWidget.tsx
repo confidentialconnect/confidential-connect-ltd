@@ -232,10 +232,10 @@ export const SupportWidget = () => {
                   <strong>Phone:</strong> 07040294858
                 </p>
                 <p className="text-sm">
-                  <strong>Support:</strong> faceofconfidentialconnect@gmail.com
+                  <strong>Support:</strong> confidentialconnectltd@gmail.com
                 </p>
                 <p className="text-sm">
-                  <strong>Contact:</strong> faceofconfidentialconnect@gmail.com
+                  <strong>Contact:</strong> confidentialconnectltd@gmail.com
                 </p>
                 <p className="text-sm text-muted-foreground">
                   For urgent matters, please call or send a WhatsApp message.
