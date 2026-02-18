@@ -21,7 +21,7 @@ export const Footer = () => {
   const handleSubscribe = () => {
     const subject = "Newsletter Subscription";
     const body = `Please subscribe this email: ${email || "(email not provided)"}`;
-    window.location.href = `mailto:faceofconfidentialconnect@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:confidentialconnectltd@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   return (
@@ -177,7 +177,7 @@ export const Footer = () => {
               <div className="flex items-start">
                 <Mail className="h-5 w-5 mr-3 text-primary-foreground/60 mt-1" />
                 <div>
-                  <div className="text-primary-foreground/80">faceofconfidentialconnect@gmail.com</div>
+                  <div className="text-primary-foreground/80">confidentialconnectltd@gmail.com</div>
                   <div className="text-primary-foreground/60 text-sm">Support Email</div>
                 </div>
               </div>
@@ -185,7 +185,7 @@ export const Footer = () => {
               <div className="flex items-start">
                 <Mail className="h-5 w-5 mr-3 text-primary-foreground/60 mt-1" />
                 <div>
-                  <div className="text-primary-foreground/80">faceofconfidentialconnect@gmail.com</div>
+                  <div className="text-primary-foreground/80">confidentialconnectltd@gmail.com</div>
                   <div className="text-primary-foreground/60 text-sm">General Inquiries</div>
                 </div>
               </div>
