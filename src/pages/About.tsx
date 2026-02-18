@@ -15,6 +15,7 @@ import {
   Building2
 } from "lucide-react";
 import cacCertificate from "@/assets/cac-certificate.jpg";
+import ceoPhoto from "@/assets/ceo-photo.jpg";
 
 const About = () => {
   const stats = [
@@ -53,7 +54,7 @@ const About = () => {
       role: "Founder & CEO",
       specialization: "Cybersecurity & Software Architecture",
       experience: "15+ years",
-      image: "/placeholder.svg"
+      image: ceoPhoto
     },
     {
       name: "Sarah Johnson",
