@@ -50,7 +50,7 @@ const About = () => {
 
   const team = [
     {
-      name: "Dr. Emmanuel Okoro",
+      name: "Mr. Okpo Confidence Oko",
       role: "Founder & CEO",
       specialization: "Cybersecurity & Software Architecture",
       experience: "15+ years",
@@ -109,7 +109,7 @@ const About = () => {
                   across Nigeria and beyond.
                 </p>
                 <p className="text-lg leading-relaxed mb-6">
-                  Our journey began when our founder, Dr. Emmanuel Okoro, recognized the growing need for 
+                  Our journey began when our founder, Mr. Okpo Confidence Oko, recognized the growing need for 
                   reliable, secure, and innovative technology solutions in the Nigerian market. With a 
                   background in cybersecurity and software engineering, he assembled a team of passionate 
                   experts dedicated to protecting and empowering businesses through technology.
