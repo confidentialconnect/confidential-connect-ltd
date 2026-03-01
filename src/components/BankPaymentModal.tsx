@@ -36,7 +36,9 @@ export const BankPaymentModal = ({ children }: BankPaymentModalProps) => {
     accountNumber: '3191660932',
     accountName: 'Okpo Confidence Oko',
     bankName: 'First Bank of Nigeria',
-    opayNumber: '6113224110'
+    opayNumber: '6113224110',
+    moniepointNumber: '6919053477',
+    moniepointName: 'Confidential Connect Ltd'
   };
 
   return (
@@ -142,6 +144,44 @@ export const BankPaymentModal = ({ children }: BankPaymentModalProps) => {
                     <Copy className="h-4 w-4" />
                   )}
                 </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Moniepoint Option */}
+          <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-transparent">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Building2 className="h-8 w-8 text-blue-600" />
+                <div>
+                  <h3 className="text-xl font-semibold">Moniepoint Transfer</h3>
+                  <p className="text-muted-foreground">Transfer to company account</p>
+                </div>
+                <Badge variant="outline" className="ml-auto border-blue-200 text-blue-700">Bank</Badge>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="flex items-center justify-between bg-muted/50 p-4 rounded-lg">
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">Account Number</p>
+                    <p className="text-lg font-mono font-semibold">{bankDetails.moniepointNumber}</p>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleCopy(bankDetails.moniepointNumber, 'Moniepoint Number')}
+                  >
+                    {copiedField === 'Moniepoint Number' ? (
+                      <Check className="h-4 w-4" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <p className="text-sm font-medium text-muted-foreground">Account Name</p>
+                  <p className="text-lg font-semibold">{bankDetails.moniepointName}</p>
+                </div>
               </div>
             </CardContent>
           </Card>
