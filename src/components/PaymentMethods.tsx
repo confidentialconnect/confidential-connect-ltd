@@ -22,8 +22,17 @@ interface PaymentMethod {
   processingTime?: string;
 }
 
-// Remita payment methods (online gateway)
-const remitaPaymentMethods: PaymentMethod[] = [
+// Online payment gateways
+const onlinePaymentMethods: PaymentMethod[] = [
+  {
+    id: 'paystack',
+    name: 'Pay with Paystack',
+    description: 'Pay securely with Visa, Mastercard, Verve, or Bank Transfer via Paystack',
+    icon: CreditCard,
+    type: 'card',
+    fees: 'Free',
+    processingTime: 'Instant'
+  },
   {
     id: 'remita-card',
     name: 'Credit/Debit Card (Remita)',
@@ -272,6 +281,27 @@ export const PaymentMethods = ({ selectedMethod, onMethodSelect, orderAmount }: 
           </CardContent>
         )}
 
+      {isSelected && method.id === 'paystack' && (
+          <CardContent className="pt-0">
+            <Separator className="mb-4" />
+            <div className="space-y-3 text-center">
+              <div className="flex justify-center gap-2">
+                <div className="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded">VISA</div>
+                <div className="px-3 py-1 bg-red-600 text-white text-xs font-bold rounded">MC</div>
+                <div className="px-3 py-1 bg-green-600 text-white text-xs font-bold rounded">VERVE</div>
+                <div className="px-3 py-1 bg-indigo-600 text-white text-xs font-bold rounded">BANK</div>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Secure payment powered by Paystack
+              </p>
+              <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
+                <ExternalLink className="h-3 w-3" />
+                <span>Opens secure inline payment popup</span>
+              </div>
+            </div>
+          </CardContent>
+        )}
+
         {isSelected && method.id === 'remita-card' && (
           <CardContent className="pt-0">
             <Separator className="mb-4" />
@@ -304,19 +334,19 @@ export const PaymentMethods = ({ selectedMethod, onMethodSelect, orderAmount }: 
         </p>
       </div>
 
-      {/* Remita Payment Section */}
+      {/* Online Payment Gateways */}
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
             <CreditCard className="h-4 w-4 text-blue-600" />
           </div>
           <div>
-            <h3 className="font-semibold text-lg">Remita Payment Gateway</h3>
-            <p className="text-xs text-muted-foreground">Pay with cards via secure Remita gateway</p>
+            <h3 className="font-semibold text-lg">Online Payment Gateways</h3>
+            <p className="text-xs text-muted-foreground">Pay with cards or bank transfer via secure gateways</p>
           </div>
         </div>
         <div className="grid gap-3">
-          {remitaPaymentMethods.map(renderPaymentCard)}
+          {onlinePaymentMethods.map(renderPaymentCard)}
         </div>
       </div>
 

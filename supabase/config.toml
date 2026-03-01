@@ -2,3 +2,6 @@ project_id = "adoyxkmqcpzdrfihngeb"
 
 [functions.perplexity-search]
 verify_jwt = false
+
+[functions.verify-paystack]
+verify_jwt = false
