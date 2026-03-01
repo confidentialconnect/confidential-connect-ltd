@@ -4,13 +4,11 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { PaymentMethods } from "@/components/PaymentMethods";
-import { PaymentProcessing } from "@/components/PaymentProcessing";
 import { supabase } from "@/integrations/supabase/client";
 
 const Payments = () => {
   const [selectedMethod, setSelectedMethod] = useState<string>('paystack');
   const [orderData, setOrderData] = useState<any>(null);
-  const [showProcessing, setShowProcessing] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -69,14 +67,6 @@ const Payments = () => {
   const handlePayment = () => {
     if (selectedMethod === 'paystack') {
       handlePaystackPayment();
-    } else if (selectedMethod === 'remita-card') {
-      setShowProcessing(true);
-    } else if (selectedMethod === 'remita-bank') {
-      toast({
-        title: "Bank Transfer Details",
-        description: "Bank: First Bank of Nigeria | Account: 3191660932 | Name: Okpo Confidence. After payment, send receipt to WhatsApp: +2347040294858.",
-        duration: 10000
-      });
     } else {
       toast({
         title: "Transfer Instructions",
@@ -99,7 +89,6 @@ const Payments = () => {
       description: error,
       variant: "destructive"
     });
-    setShowProcessing(false);
   };
 
   if (!orderData) {
@@ -113,19 +102,8 @@ const Payments = () => {
     );
   }
 
-  if (showProcessing) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-background to-muted/20 p-4">
-        <div className="max-w-md mx-auto pt-20">
-          <PaymentProcessing
-            orderData={orderData}
-            onSuccess={handlePaymentSuccess}
-            onError={handlePaymentError}
-          />
-        </div>
-      </div>
-    );
-  }
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-background p-4">
@@ -241,11 +219,10 @@ const Payments = () => {
                 disabled={!selectedMethod}
               >
                 {selectedMethod === 'paystack' && '💳 Pay with Paystack'}
-                {selectedMethod === 'remita-card' && '💳 Pay with Remita'}
-                {selectedMethod === 'remita-bank' && '🏦 View Bank Details'}
                 {selectedMethod === 'opay' && '📱 Pay with OPay'}
                 {selectedMethod === 'palmpay' && '📱 Pay with PalmPay'}
                 {selectedMethod === 'moniepoint' && '🏦 Pay with Moniepoint'}
+                {selectedMethod === 'remita-bank' && '🏦 View Bank Details'}
                 {!selectedMethod && 'Select Payment Method'}
               </Button>
               
