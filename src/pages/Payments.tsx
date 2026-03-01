@@ -5,9 +5,10 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { PaymentMethods } from "@/components/PaymentMethods";
 import { PaymentProcessing } from "@/components/PaymentProcessing";
+import { supabase } from "@/integrations/supabase/client";
 
 const Payments = () => {
-  const [selectedMethod, setSelectedMethod] = useState<string>('remita-card');
+  const [selectedMethod, setSelectedMethod] = useState<string>('paystack');
   const [orderData, setOrderData] = useState<any>(null);
   const [showProcessing, setShowProcessing] = useState(false);
   const navigate = useNavigate();
@@ -29,19 +30,54 @@ const Payments = () => {
     }
   }, [navigate]);
 
+  const handlePaystackPayment = () => {
+    const handler = (window as any).PaystackPop.setup({
+      key: 'pk_live_258b0e0fcab902ea3361ef5affa8110b925badc1',
+      email: orderData.customer_email,
+      amount: orderData.total_amount, // already in kobo
+      currency: 'NGN',
+      ref: orderData.payment_reference,
+      metadata: {
+        custom_fields: [
+          { display_name: "Customer Name", variable_name: "customer_name", value: orderData.customer_name },
+          { display_name: "Phone", variable_name: "phone", value: orderData.customer_phone },
+        ]
+      },
+      callback: async (response: any) => {
+        toast({ title: "Verifying payment...", description: "Please wait while we confirm your payment." });
+        try {
+          const { data, error } = await supabase.functions.invoke('verify-paystack', {
+            body: { reference: response.reference }
+          });
+          if (error) throw error;
+          if (data?.success) {
+            handlePaymentSuccess();
+          } else {
+            handlePaymentError(data?.message || 'Payment verification failed');
+          }
+        } catch (err: any) {
+          handlePaymentError(err.message || 'Payment verification failed');
+        }
+      },
+      onClose: () => {
+        toast({ title: "Payment Cancelled", description: "You closed the payment window.", variant: "destructive" });
+      },
+    });
+    handler.openIframe();
+  };
+
   const handlePayment = () => {
-    if (selectedMethod === 'remita-card') {
-      // Show processing for card payments via Remita
+    if (selectedMethod === 'paystack') {
+      handlePaystackPayment();
+    } else if (selectedMethod === 'remita-card') {
       setShowProcessing(true);
     } else if (selectedMethod === 'remita-bank') {
-      // Show bank transfer details with account information
       toast({
         title: "Bank Transfer Details",
         description: "Bank: First Bank of Nigeria | Account: 3191660932 | Name: Okpo Confidence. After payment, send receipt to WhatsApp: +2347040294858.",
         duration: 10000
       });
     } else {
-      // For mobile payments (OPay, PalmPay), show transfer instructions
       toast({
         title: "Transfer Instructions",
         description: "Use the displayed account details to make payment, then send your receipt to WhatsApp: +2347040294858 for confirmation.",
@@ -204,10 +240,12 @@ const Payments = () => {
                 size="lg"
                 disabled={!selectedMethod}
               >
-                {selectedMethod.includes('remita-card') && '💳 Pay with Card'}
-                {selectedMethod.includes('remita-bank') && '🏦 View Bank Details'}
-                {selectedMethod.includes('opay') && '📱 Pay with OPay'}
-                {selectedMethod.includes('palmpay') && '📱 Pay with PalmPay'}
+                {selectedMethod === 'paystack' && '💳 Pay with Paystack'}
+                {selectedMethod === 'remita-card' && '💳 Pay with Remita'}
+                {selectedMethod === 'remita-bank' && '🏦 View Bank Details'}
+                {selectedMethod === 'opay' && '📱 Pay with OPay'}
+                {selectedMethod === 'palmpay' && '📱 Pay with PalmPay'}
+                {selectedMethod === 'moniepoint' && '🏦 Pay with Moniepoint'}
                 {!selectedMethod && 'Select Payment Method'}
               </Button>
               
