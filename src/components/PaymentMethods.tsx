@@ -76,6 +76,20 @@ const normalPaymentMethods: PaymentMethod[] = [
     },
     fees: 'Free',
     processingTime: 'Instant'
+  },
+  {
+    id: 'moniepoint',
+    name: 'Moniepoint Transfer',
+    description: 'Transfer to Moniepoint account',
+    icon: Building2,
+    type: 'bank',
+    details: {
+      accountNumber: '6919053477',
+      accountName: 'Confidential Connect Ltd',
+      bankName: 'Moniepoint'
+    },
+    fees: 'Free',
+    processingTime: 'Instant'
   }
 ];
 
