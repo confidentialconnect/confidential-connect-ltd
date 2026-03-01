@@ -32,15 +32,6 @@ const onlinePaymentMethods: PaymentMethod[] = [
     type: 'card',
     fees: 'Free',
     processingTime: 'Instant'
-  },
-  {
-    id: 'remita-card',
-    name: 'Credit/Debit Card (Remita)',
-    description: 'Pay securely with Visa, Mastercard, or Verve via Remita',
-    icon: CreditCard,
-    type: 'card',
-    fees: 'Free',
-    processingTime: 'Instant'
   }
 ];
 
@@ -302,25 +293,6 @@ export const PaymentMethods = ({ selectedMethod, onMethodSelect, orderAmount }: 
           </CardContent>
         )}
 
-        {isSelected && method.id === 'remita-card' && (
-          <CardContent className="pt-0">
-            <Separator className="mb-4" />
-            <div className="space-y-3 text-center">
-              <div className="flex justify-center gap-2">
-                <div className="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded">VISA</div>
-                <div className="px-3 py-1 bg-red-600 text-white text-xs font-bold rounded">MC</div>
-                <div className="px-3 py-1 bg-green-600 text-white text-xs font-bold rounded">VERVE</div>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Secure payment powered by Remita
-              </p>
-              <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
-                <ExternalLink className="h-3 w-3" />
-                <span>Opens in secure payment window</span>
-              </div>
-            </div>
-          </CardContent>
-        )}
       </Card>
     );
   };
