@@ -351,13 +351,13 @@ Please confirm this order and provide payment instructions.`;
                     <span>{formatNGN(subtotal)}</span>
                   </div>
 
-                  {/* Remita Payment Section */}
+                  {/* Paystack Payment Section */}
                   {isSupabaseAvailable && (
                     <div className="space-y-3 pt-4">
                       <div className="p-4 bg-primary/10 rounded-lg border border-primary/20">
                         <div className="flex items-center gap-2 mb-3">
                           <CreditCard className="h-5 w-5 text-primary" />
-                          <h4 className="text-sm font-semibold text-primary">Secure Payment with Remita</h4>
+                          <h4 className="text-sm font-semibold text-primary">Secure Payment with Paystack</h4>
                         </div>
                         <ul className="text-xs text-muted-foreground space-y-1.5">
                           <li className="flex items-center gap-2">

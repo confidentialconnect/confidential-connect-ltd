@@ -38,7 +38,7 @@ const onlinePaymentMethods: PaymentMethod[] = [
 // Normal payment methods (direct transfers)
 const normalPaymentMethods: PaymentMethod[] = [
   {
-    id: 'remita-bank',
+    id: 'bank-transfer',
     name: 'Bank Transfer',
     description: 'Transfer to First Bank of Nigeria',
     icon: Building2,
