@@ -120,8 +120,7 @@ serve(async (req) => {
         payment_reference: paymentReference,
         total_amount: totalAmount,
         payment_status: 'pending',
-        order_items: items, // Store as JSONB for now
-        user_id: userId // Associate with authenticated user if available
+        user_id: userId
       })
       .select()
       .single();
@@ -137,8 +136,7 @@ serve(async (req) => {
     console.log('Creating order items...');
     const orderItems = items.map(item => ({
       order_id: orderData.id,
-      name: item.name,
-      product_id: null, // We'll link this later if needed
+      product_id: String(item.id),
       price: item.price,
       quantity: item.quantity
     }));
