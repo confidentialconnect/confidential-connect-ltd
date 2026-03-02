@@ -17,7 +17,7 @@ const Payments = () => {
     document.title = "Payment Gateway - Complete Your Order | Secure Payment Portal";
     const meta = document.querySelector('meta[name="description"]');
     if (meta) {
-      meta.setAttribute("content", "Complete your payment securely with credit/debit cards via Remita, OPay, or PalmPay. Instant confirmation and SSL encryption for safe transactions.");
+      meta.setAttribute("content", "Complete your payment securely with Paystack, OPay, or PalmPay. Instant confirmation and SSL encryption for safe transactions.");
     }
 
     const savedOrderData = localStorage.getItem('orderData');
@@ -222,7 +222,7 @@ const Payments = () => {
                 {selectedMethod === 'opay' && '📱 Pay with OPay'}
                 {selectedMethod === 'palmpay' && '📱 Pay with PalmPay'}
                 {selectedMethod === 'moniepoint' && '🏦 Pay with Moniepoint'}
-                {selectedMethod === 'remita-bank' && '🏦 View Bank Details'}
+                {selectedMethod === 'bank-transfer' && '🏦 View Bank Details'}
                 {!selectedMethod && 'Select Payment Method'}
               </Button>
               
