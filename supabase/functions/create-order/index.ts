@@ -132,22 +132,28 @@ serve(async (req) => {
 
     console.log('Order created successfully:', orderData.id);
 
-    // Create individual order items
+    // Create individual order items (only for valid UUID product IDs)
     console.log('Creating order items...');
-    const orderItems = items.map(item => ({
-      order_id: orderData.id,
-      product_id: String(item.id),
-      price: item.price,
-      quantity: item.quantity
-    }));
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    const validItems = items.filter(item => uuidRegex.test(String(item.id)));
+    
+    if (validItems.length > 0) {
+      const orderItems = validItems.map(item => ({
+        order_id: orderData.id,
+        product_id: String(item.id),
+        price: item.price,
+        quantity: item.quantity
+      }));
 
-    const { error: itemsError } = await supabase
-      .from('order_items')
-      .insert(orderItems);
+      const { error: itemsError } = await supabase
+        .from('order_items')
+        .insert(orderItems);
 
-    if (itemsError) {
-      console.error('Order items creation error:', itemsError);
-      // Don't throw here, as the main order was created successfully
+      if (itemsError) {
+        console.error('Order items creation error:', itemsError);
+      }
+    } else {
+      console.log('No valid UUID product IDs found, skipping order_items insert');
     }
 
     console.log('Order processing completed successfully');
