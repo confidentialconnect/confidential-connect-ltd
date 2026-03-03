@@ -151,7 +151,7 @@ Please confirm this order and provide payment instructions.`;
       
       localStorage.setItem('orderData', JSON.stringify({
         payment_reference: data.paymentReference,
-        total_amount: subtotal,
+        total_amount: Math.round(subtotal * 100), // Convert Naira to kobo for Paystack
         customer_name: formData.fullName,
         customer_email: formData.email,
         customer_phone: formData.phone,
