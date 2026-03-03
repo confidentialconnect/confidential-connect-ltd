@@ -35,6 +35,7 @@ const Payments = () => {
       amount: orderData.total_amount, // already in kobo
       currency: 'NGN',
       ref: orderData.payment_reference,
+      channels: ['card', 'bank', 'ussd'],
       metadata: {
         custom_fields: [
           { display_name: "Customer Name", variable_name: "customer_name", value: orderData.customer_name },
