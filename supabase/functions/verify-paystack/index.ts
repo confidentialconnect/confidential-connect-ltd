@@ -1,8 +1,9 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
 serve(async (req) => {
@@ -25,6 +26,7 @@ serve(async (req) => {
       throw new Error('Paystack secret key not configured');
     }
 
+    // Verify transaction with Paystack API
     const response = await fetch(`https://api.paystack.co/transaction/verify/${reference}`, {
       headers: {
         'Authorization': `Bearer ${secretKey}`,
@@ -35,6 +37,16 @@ serve(async (req) => {
     const data = await response.json();
 
     if (data.status && data.data.status === 'success') {
+      // Update order payment status in database
+      const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+      const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+      const supabase = createClient(supabaseUrl, supabaseKey);
+
+      await supabase
+        .from('orders')
+        .update({ payment_status: 'completed', payment_reference: reference })
+        .eq('payment_reference', reference);
+
       return new Response(
         JSON.stringify({
           success: true,
