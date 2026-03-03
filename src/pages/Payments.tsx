@@ -42,21 +42,23 @@ const Payments = () => {
           { display_name: "Phone", variable_name: "phone", value: orderData.customer_phone },
         ]
       },
-      callback: async (response: any) => {
+      callback: function (response: any) {
         toast({ title: "Verifying payment...", description: "Please wait while we confirm your payment." });
-        try {
-          const { data, error } = await supabase.functions.invoke('verify-paystack', {
-            body: { reference: response.reference }
-          });
-          if (error) throw error;
+        supabase.functions.invoke('verify-paystack', {
+          body: { reference: response.reference }
+        }).then(({ data, error }) => {
+          if (error) {
+            handlePaymentError(error.message || 'Payment verification failed');
+            return;
+          }
           if (data?.success) {
             handlePaymentSuccess();
           } else {
             handlePaymentError(data?.message || 'Payment verification failed');
           }
-        } catch (err: any) {
+        }).catch((err: any) => {
           handlePaymentError(err.message || 'Payment verification failed');
-        }
+        });
       },
       onClose: () => {
         toast({ title: "Payment Cancelled", description: "You closed the payment window.", variant: "destructive" });
