@@ -60,16 +60,15 @@ const PaymentInfo = () => {
             </p>
           </div>
 
-          {/* Payment Methods */}
-          <div className="grid md:grid-cols-2 gap-6 mb-12">
-            {/* Bank Transfer */}
+          {/* Payment Method - Moniepoint */}
+          <div className="max-w-2xl mx-auto mb-12">
             <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
               <CardContent className="p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <Building2 className="h-10 w-10 text-primary" />
                   <div className="flex-1">
                     <h2 className="text-2xl font-semibold mb-1">Bank Transfer</h2>
-                    <p className="text-muted-foreground">Direct bank transfer</p>
+                    <p className="text-muted-foreground">Transfer to our company account</p>
                   </div>
                   <Badge className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
                     Recommended
@@ -85,17 +84,24 @@ const PaymentInfo = () => {
                   <div className="flex items-center justify-between bg-muted/50 p-4 rounded-lg">
                     <div>
                       <p className="text-sm font-medium text-muted-foreground mb-1">Account Number</p>
-                      <p className="text-lg font-mono font-semibold">{bankDetails.accountNumber}</p>
+                      <p className="text-2xl font-mono font-bold tracking-wider">{bankDetails.accountNumber}</p>
                     </div>
                     <Button
-                      size="sm"
+                      size="default"
                       variant="outline"
                       onClick={() => handleCopy(bankDetails.accountNumber, 'Account Number')}
+                      className="gap-2"
                     >
                       {copiedField === 'Account Number' ? (
-                        <Check className="h-4 w-4" />
+                        <>
+                          <Check className="h-4 w-4" />
+                          Copied!
+                        </>
                       ) : (
-                        <Copy className="h-4 w-4" />
+                        <>
+                          <Copy className="h-4 w-4" />
+                          Copy Account Number
+                        </>
                       )}
                     </Button>
                   </div>
@@ -116,69 +122,6 @@ const PaymentInfo = () => {
                         <Copy className="h-4 w-4" />
                       )}
                     </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* OPay Transfer */}
-            <Card className="border-purple-200 bg-gradient-to-br from-purple-50 to-transparent dark:border-purple-900/30 dark:from-purple-950/20">
-              <CardContent className="p-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-                    <CreditCard className="h-8 w-8 text-purple-600 dark:text-purple-400" />
-                  </div>
-                  <div className="flex-1">
-                    <h2 className="text-2xl font-semibold mb-1">OPay Transfer</h2>
-                    <p className="text-muted-foreground">Quick mobile payment</p>
-                  </div>
-                  <Badge variant="outline" className="border-purple-200 text-purple-700 dark:border-purple-800 dark:text-purple-400">
-                    Mobile
-                  </Badge>
-                </div>
-                
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between bg-muted/50 p-4 rounded-lg">
-                    <div>
-                      <p className="text-sm font-medium text-muted-foreground mb-1">OPay Number</p>
-                      <p className="text-lg font-mono font-semibold">{bankDetails.opayNumber}</p>
-                    </div>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleCopy(bankDetails.opayNumber, 'OPay Number')}
-                    >
-                      {copiedField === 'OPay Number' ? (
-                        <Check className="h-4 w-4" />
-                      ) : (
-                        <Copy className="h-4 w-4" />
-                      )}
-                    </Button>
-                  </div>
-
-                  <div className="flex items-center justify-between bg-muted/50 p-4 rounded-lg">
-                    <div>
-                      <p className="text-sm font-medium text-muted-foreground mb-1">Account Name</p>
-                      <p className="text-lg font-semibold">{bankDetails.opayName}</p>
-                    </div>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleCopy(bankDetails.opayName, 'OPay Name')}
-                    >
-                      {copiedField === 'OPay Name' ? (
-                        <Check className="h-4 w-4" />
-                      ) : (
-                        <Copy className="h-4 w-4" />
-                      )}
-                    </Button>
-                  </div>
-
-                  <div className="bg-purple-50 dark:bg-purple-950/30 p-3 rounded-lg">
-                    <p className="text-xs text-purple-700 dark:text-purple-400 flex items-start gap-2">
-                      <Shield className="h-4 w-4 flex-shrink-0 mt-0.5" />
-                      <span>Ensure the account name matches exactly before completing your transfer</span>
-                    </p>
                   </div>
                 </div>
               </CardContent>
