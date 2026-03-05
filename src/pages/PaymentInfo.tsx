@@ -39,11 +39,9 @@ const PaymentInfo = () => {
   };
 
   const bankDetails = {
-    accountNumber: '3191660932',
-    accountName: 'Okpo Confidence Oko',
-    bankName: 'First Bank of Nigeria',
-    opayNumber: '6113224110',
-    opayName: 'Okpo Confidence Oko'
+    accountNumber: '6919053477',
+    accountName: 'Confidential Connect Ltd',
+    bankName: 'Moniepoint MFB'
   };
 
   return (
