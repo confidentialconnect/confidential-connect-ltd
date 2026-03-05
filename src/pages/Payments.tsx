@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { PaymentMethods } from "@/components/PaymentMethods";
 import { supabase } from "@/integrations/supabase/client";
+import { Separator } from "@/components/ui/separator";
 
 const Payments = () => {
   const [selectedMethod, setSelectedMethod] = useState<string>('paystack');
@@ -206,6 +207,19 @@ const Payments = () => {
               </div>
 
               <div className="border-t-2 border-primary/20 pt-4 bg-gradient-to-r from-primary/10 to-primary/5 -mx-6 -mb-6 px-6 pb-6 mt-4 rounded-b-xl">
+                {orderData.subtotal && orderData.paystack_fee && (
+                  <div className="space-y-1 mb-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Subtotal</span>
+                      <span>₦{orderData.subtotal.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Processing Fee</span>
+                      <span>₦{orderData.paystack_fee.toLocaleString()}</span>
+                    </div>
+                    <Separator className="my-1" />
+                  </div>
+                )}
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-bold">Total Amount:</span>
                   <span className="text-2xl font-bold text-primary">₦{(orderData.total_amount / 100).toLocaleString()}</span>

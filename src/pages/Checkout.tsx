@@ -9,7 +9,22 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, CreditCard } from "lucide-react";
+import { ArrowLeft, CreditCard, Info } from "lucide-react";
+
+/**
+ * Calculate Paystack processing fee for Nigerian transactions.
+ * Local cards: 1.5% + ₦100 flat fee (for amounts >= ₦2,500), capped at ₦2,000 + ₦100.
+ * Returns the fee in Naira.
+ */
+function calculatePaystackFee(amount: number): number {
+  if (amount <= 0) return 0;
+  let fee = amount * 0.015;
+  if (amount >= 2500) {
+    fee += 100;
+  }
+  // Cap: max Paystack fee is ₦2,000 + ₦100 flat = ₦2,100
+  return Math.min(fee, 2100);
+}
 
 const Checkout = () => {
   const { items, subtotal, clearCart } = useCart();
@@ -47,6 +62,10 @@ const Checkout = () => {
     const meta = document.querySelector('meta[name="description"]');
     if (meta) meta.setAttribute("content", "Complete your order securely with our educational services checkout.");
   }, []);
+
+  // Calculate Paystack fee and total
+  const paystackFee = useMemo(() => calculatePaystackFee(subtotal), [subtotal]);
+  const totalWithFee = useMemo(() => subtotal + paystackFee, [subtotal, paystackFee]);
 
   // Generate order summary message for WhatsApp/Email
   const orderMessage = useMemo(() => {
@@ -137,6 +156,8 @@ Please confirm this order and provide payment instructions.`;
         id: data.order?.id,
         paymentReference: data.paymentReference,
         totalAmount: subtotal,
+        paystackFee: paystackFee,
+        totalWithFee: totalWithFee,
         customer: {
           name: formData.fullName,
           email: formData.email,
@@ -151,7 +172,9 @@ Please confirm this order and provide payment instructions.`;
       
       localStorage.setItem('orderData', JSON.stringify({
         payment_reference: data.paymentReference,
-        total_amount: Math.round(subtotal * 100), // Convert Naira to kobo for Paystack
+        total_amount: Math.round(totalWithFee * 100), // Total + fee in kobo for Paystack
+        subtotal: subtotal,
+        paystack_fee: paystackFee,
         customer_name: formData.fullName,
         customer_email: formData.email,
         customer_phone: formData.phone,
@@ -346,9 +369,27 @@ Please confirm this order and provide payment instructions.`;
                   
                   <Separator />
                   
-                  <div className="flex justify-between text-lg font-semibold">
-                    <span>Total</span>
-                    <span>{formatNGN(subtotal)}</span>
+                  {/* Payment Breakdown */}
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Subtotal</span>
+                      <span>{formatNGN(subtotal)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground flex items-center gap-1">
+                        Processing Fee
+                        <Info className="h-3 w-3" />
+                      </span>
+                      <span>{formatNGN(paystackFee)}</span>
+                    </div>
+                    <Separator />
+                    <div className="flex justify-between text-lg font-semibold">
+                      <span>Total</span>
+                      <span className="text-primary">{formatNGN(totalWithFee)}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      A small processing fee is added to cover secure payment handling.
+                    </p>
                   </div>
 
                   {/* Paystack Payment Section */}
@@ -385,7 +426,7 @@ Please confirm this order and provide payment instructions.`;
                         disabled={isProcessing}
                       >
                         <CreditCard className="h-4 w-4 mr-2" />
-                        {isProcessing ? "Processing..." : "Proceed to Payment"}
+                        {isProcessing ? "Processing..." : `Pay ${formatNGN(totalWithFee)}`}
                       </Button>
                     </div>
                   )}
