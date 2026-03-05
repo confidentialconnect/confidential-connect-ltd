@@ -217,7 +217,7 @@ const PaymentInfo = () => {
               <div className="space-y-3 text-sm text-muted-foreground">
                 <div className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
-                  <p><strong className="text-foreground">Verify Account Name:</strong> Always confirm the account name matches "Okpo Confidence Oko" exactly before transferring to avoid sending money to the wrong account.</p>
+                  <p><strong className="text-foreground">Verify Account Name:</strong> Always confirm the account name matches "Confidential Connect Ltd" exactly before transferring.</p>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
