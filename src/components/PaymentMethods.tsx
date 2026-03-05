@@ -38,55 +38,15 @@ const onlinePaymentMethods: PaymentMethod[] = [
 // Normal payment methods (direct transfers)
 const normalPaymentMethods: PaymentMethod[] = [
   {
-    id: 'bank-transfer',
-    name: 'Bank Transfer',
-    description: 'Transfer to First Bank of Nigeria',
-    icon: Building2,
-    type: 'bank',
-    details: {
-      accountNumber: '3191660932',
-      accountName: 'Okpo Confidence',
-      bankName: 'First Bank of Nigeria'
-    },
-    fees: 'Free',
-    processingTime: 'Instant'
-  },
-  {
-    id: 'opay',
-    name: 'OPay Transfer',
-    description: 'Send money via OPay',
-    icon: Smartphone,
-    type: 'mobile',
-    details: {
-      phoneNumber: '6113224110',
-      accountName: 'Okpo Confidence'
-    },
-    fees: 'Free',
-    processingTime: 'Instant'
-  },
-  {
-    id: 'palmpay',
-    name: 'PalmPay Transfer',
-    description: 'Send money via PalmPay',
-    icon: Smartphone,
-    type: 'mobile',
-    details: {
-      phoneNumber: '07040294858',
-      accountName: 'Okpo Confidence'
-    },
-    fees: 'Free',
-    processingTime: 'Instant'
-  },
-  {
     id: 'moniepoint',
-    name: 'Moniepoint Transfer',
-    description: 'Transfer to Moniepoint account',
+    name: 'Bank Transfer (Moniepoint)',
+    description: 'Transfer to Confidential Connect Ltd',
     icon: Building2,
     type: 'bank',
     details: {
       accountNumber: '6919053477',
       accountName: 'Confidential Connect Ltd',
-      bankName: 'Moniepoint'
+      bankName: 'Moniepoint MFB'
     },
     fees: 'Free',
     processingTime: 'Instant'

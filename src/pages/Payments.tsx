@@ -236,10 +236,7 @@ const Payments = () => {
                 disabled={!selectedMethod}
               >
                 {selectedMethod === 'paystack' && '💳 Pay with Paystack'}
-                {selectedMethod === 'opay' && '📱 Pay with OPay'}
-                {selectedMethod === 'palmpay' && '📱 Pay with PalmPay'}
-                {selectedMethod === 'moniepoint' && '🏦 Pay with Moniepoint'}
-                {selectedMethod === 'bank-transfer' && '🏦 View Bank Details'}
+                {selectedMethod === 'moniepoint' && '🏦 Transfer to Moniepoint'}
                 {!selectedMethod && 'Select Payment Method'}
               </Button>
               
