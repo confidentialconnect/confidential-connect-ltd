@@ -9,7 +9,22 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, CreditCard } from "lucide-react";
+import { ArrowLeft, CreditCard, Info } from "lucide-react";
+
+/**
+ * Calculate Paystack processing fee for Nigerian transactions.
+ * Local cards: 1.5% + ₦100 flat fee (for amounts >= ₦2,500), capped at ₦2,000 + ₦100.
+ * Returns the fee in Naira.
+ */
+function calculatePaystackFee(amount: number): number {
+  if (amount <= 0) return 0;
+  let fee = amount * 0.015;
+  if (amount >= 2500) {
+    fee += 100;
+  }
+  // Cap: max Paystack fee is ₦2,000 + ₦100 flat = ₦2,100
+  return Math.min(fee, 2100);
+}
 
 const Checkout = () => {
   const { items, subtotal, clearCart } = useCart();
