@@ -156,6 +156,8 @@ Please confirm this order and provide payment instructions.`;
         id: data.order?.id,
         paymentReference: data.paymentReference,
         totalAmount: subtotal,
+        paystackFee: paystackFee,
+        totalWithFee: totalWithFee,
         customer: {
           name: formData.fullName,
           email: formData.email,
@@ -170,7 +172,9 @@ Please confirm this order and provide payment instructions.`;
       
       localStorage.setItem('orderData', JSON.stringify({
         payment_reference: data.paymentReference,
-        total_amount: Math.round(subtotal * 100), // Convert Naira to kobo for Paystack
+        total_amount: Math.round(totalWithFee * 100), // Total + fee in kobo for Paystack
+        subtotal: subtotal,
+        paystack_fee: paystackFee,
         customer_name: formData.fullName,
         customer_email: formData.email,
         customer_phone: formData.phone,
