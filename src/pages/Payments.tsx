@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { PaymentMethods } from "@/components/PaymentMethods";
 import { supabase } from "@/integrations/supabase/client";
+import { Separator } from "@/components/ui/separator";
 
 const Payments = () => {
   const [selectedMethod, setSelectedMethod] = useState<string>('paystack');
