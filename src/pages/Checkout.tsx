@@ -369,9 +369,27 @@ Please confirm this order and provide payment instructions.`;
                   
                   <Separator />
                   
-                  <div className="flex justify-between text-lg font-semibold">
-                    <span>Total</span>
-                    <span>{formatNGN(subtotal)}</span>
+                  {/* Payment Breakdown */}
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Subtotal</span>
+                      <span>{formatNGN(subtotal)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground flex items-center gap-1">
+                        Processing Fee
+                        <Info className="h-3 w-3" />
+                      </span>
+                      <span>{formatNGN(paystackFee)}</span>
+                    </div>
+                    <Separator />
+                    <div className="flex justify-between text-lg font-semibold">
+                      <span>Total</span>
+                      <span className="text-primary">{formatNGN(totalWithFee)}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      A small processing fee is added to cover secure payment handling.
+                    </p>
                   </div>
 
                   {/* Paystack Payment Section */}
@@ -408,7 +426,7 @@ Please confirm this order and provide payment instructions.`;
                         disabled={isProcessing}
                       >
                         <CreditCard className="h-4 w-4 mr-2" />
-                        {isProcessing ? "Processing..." : "Proceed to Payment"}
+                        {isProcessing ? "Processing..." : `Pay ${formatNGN(totalWithFee)}`}
                       </Button>
                     </div>
                   )}
