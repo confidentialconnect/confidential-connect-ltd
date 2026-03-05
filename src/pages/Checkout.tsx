@@ -63,6 +63,10 @@ const Checkout = () => {
     if (meta) meta.setAttribute("content", "Complete your order securely with our educational services checkout.");
   }, []);
 
+  // Calculate Paystack fee and total
+  const paystackFee = useMemo(() => calculatePaystackFee(subtotal), [subtotal]);
+  const totalWithFee = useMemo(() => subtotal + paystackFee, [subtotal, paystackFee]);
+
   // Generate order summary message for WhatsApp/Email
   const orderMessage = useMemo(() => {
     const itemSummary = items
