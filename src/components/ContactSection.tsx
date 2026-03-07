@@ -32,11 +32,14 @@ import {
 } from "lucide-react";
 
 export const ContactSection = () => {
+  const navigate = useNavigate();
+  const [showCashDialog, setShowCashDialog] = useState(false);
+
   const paymentMethods = [
-    { name: "Bank Transfer", icon: Building2, description: "All Nigerian banks supported", color: "from-brand-blue to-brand-purple" },
-    { name: "Card Payment", icon: CreditCard, description: "Visa, Mastercard, Verve", color: "from-brand-green to-brand-blue" },
-    { name: "Mobile Money", icon: Smartphone, description: "Opay, PalmPay, Kuda", color: "from-brand-orange to-brand-red" },
-    { name: "Cash Payment", icon: Banknote, description: "Office location only", color: "from-brand-purple to-brand-pink" }
+    { name: "Bank Transfer", icon: Building2, description: "All Nigerian banks supported", color: "from-brand-blue to-brand-purple", action: "bank" },
+    { name: "Card Payment", icon: CreditCard, description: "Visa, Mastercard, Verve", color: "from-brand-green to-brand-blue", action: "card" },
+    { name: "Mobile Money", icon: Smartphone, description: "Opay, PalmPay, Kuda", color: "from-brand-orange to-brand-red", action: "mobile" },
+    { name: "Cash Payment", icon: Banknote, description: "Office location only", color: "from-brand-purple to-brand-pink", action: "cash" }
   ];
 
   return (
