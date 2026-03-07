@@ -6,7 +6,7 @@ import { ProductGrid } from "@/components/ProductGrid";
 import { ServicesSection } from "@/components/ServicesSection";
 import { ContactSection } from "@/components/ContactSection";
 import { GoogleInspiredFooter } from "@/components/GoogleInspiredFooter";
-import { SupportWidget } from "@/components/SupportWidget";
+import { AIChatWidget } from "@/components/AIChatWidget";
 import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { useEffect } from "react";
@@ -50,7 +50,7 @@ const Index = () => {
           <ContactSection />
         </main>
         <GoogleInspiredFooter />
-        <SupportWidget />
+        <AIChatWidget />
         <ScrollToTop />
       </div>
     </div>
