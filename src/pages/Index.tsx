@@ -50,7 +50,7 @@ const Index = () => {
           <ContactSection />
         </main>
         <GoogleInspiredFooter />
-        <SupportWidget />
+        <AIChatWidget />
         <ScrollToTop />
       </div>
     </div>
