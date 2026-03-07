@@ -273,11 +273,11 @@ Please respond to this inquiry. Thank you!`;
                     </div>
                     <div className="flex justify-between">
                       <span className="opacity-90">Account Number:</span>
-                      <span className="font-semibold">1234567890</span>
+                      <span className="font-semibold">6919053477</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="opacity-90">Bank:</span>
-                      <span className="font-semibold">First Bank Nigeria</span>
+                      <span className="font-semibold">Moniepoint MFB</span>
                     </div>
                   </div>
                   <div className="mt-4 p-3 bg-white/10 rounded-xl text-center">
