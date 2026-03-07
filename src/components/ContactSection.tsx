@@ -1,4 +1,8 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import whatsappQrCode from "@/assets/whatsapp-qr-code.jpg";
+import { BankPaymentModal } from "@/components/BankPaymentModal";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
