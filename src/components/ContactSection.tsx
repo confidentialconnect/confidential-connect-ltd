@@ -1,4 +1,8 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import whatsappQrCode from "@/assets/whatsapp-qr-code.jpg";
+import { BankPaymentModal } from "@/components/BankPaymentModal";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -28,11 +32,14 @@ import {
 } from "lucide-react";
 
 export const ContactSection = () => {
+  const navigate = useNavigate();
+  const [showCashDialog, setShowCashDialog] = useState(false);
+
   const paymentMethods = [
-    { name: "Bank Transfer", icon: Building2, description: "All Nigerian banks supported", color: "from-brand-blue to-brand-purple" },
-    { name: "Card Payment", icon: CreditCard, description: "Visa, Mastercard, Verve", color: "from-brand-green to-brand-blue" },
-    { name: "Mobile Money", icon: Smartphone, description: "Opay, PalmPay, Kuda", color: "from-brand-orange to-brand-red" },
-    { name: "Cash Payment", icon: Banknote, description: "Office location only", color: "from-brand-purple to-brand-pink" }
+    { name: "Bank Transfer", icon: Building2, description: "All Nigerian banks supported", color: "from-brand-blue to-brand-purple", action: "bank" },
+    { name: "Card Payment", icon: CreditCard, description: "Visa, Mastercard, Verve", color: "from-brand-green to-brand-blue", action: "card" },
+    { name: "Mobile Money", icon: Smartphone, description: "Opay, PalmPay, Kuda", color: "from-brand-orange to-brand-red", action: "mobile" },
+    { name: "Cash Payment", icon: Banknote, description: "Office location only", color: "from-brand-purple to-brand-pink", action: "cash" }
   ];
 
   return (
@@ -242,10 +249,15 @@ Please respond to this inquiry. Thank you!`;
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {paymentMethods.map((method, index) => {
                     const IconComponent = method.icon;
-                    return (
+                    const cardContent = (
                       <div 
                         key={index}
-                        className="p-4 rounded-2xl glass border-gradient hover-lift group"
+                        className="p-4 rounded-2xl glass border-gradient hover-lift group cursor-pointer"
+                        onClick={() => {
+                          if (method.action === 'card') navigate('/checkout');
+                          if (method.action === 'mobile') window.open('https://wa.me/2347040294858?text=Hello%2C%20I%20want%20to%20make%20a%20mobile%20money%20payment.', '_blank');
+                          if (method.action === 'cash') setShowCashDialog(true);
+                        }}
                       >
                         <div className="flex items-center gap-3">
                           <div className={`p-2 rounded-xl bg-gradient-to-br ${method.color} group-hover:scale-110 transition-transform`}>
@@ -258,8 +270,59 @@ Please respond to this inquiry. Thank you!`;
                         </div>
                       </div>
                     );
+
+                    if (method.action === 'bank') {
+                      return (
+                        <BankPaymentModal key={index}>
+                          {cardContent}
+                        </BankPaymentModal>
+                      );
+                    }
+                    return cardContent;
                   })}
                 </div>
+
+                {/* Cash Payment Dialog */}
+                <Dialog open={showCashDialog} onOpenChange={setShowCashDialog}>
+                  <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                      <DialogTitle className="flex items-center gap-2 text-xl">
+                        <Banknote className="h-5 w-5 text-primary" />
+                        Cash Payment
+                      </DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <div className="bg-muted/50 p-4 rounded-lg space-y-2">
+                        <div className="flex items-center gap-2">
+                          <MapPin className="h-4 w-4 text-primary" />
+                          <span className="font-semibold">Office Location</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          Visit our office in Abuja, Nigeria to make cash payments directly.
+                        </p>
+                      </div>
+                      <div className="bg-muted/50 p-4 rounded-lg space-y-2">
+                        <div className="flex items-center gap-2">
+                          <Clock className="h-4 w-4 text-primary" />
+                          <span className="font-semibold">Working Hours</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          Monday - Saturday: 8:00 AM - 6:00 PM
+                        </p>
+                      </div>
+                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                        <p className="text-sm text-yellow-800">
+                          📲 Contact us on WhatsApp before visiting to confirm availability.
+                        </p>
+                      </div>
+                      <Button className="w-full" asChild>
+                        <a href="https://wa.me/2347040294858?text=Hello%2C%20I%20want%20to%20make%20a%20cash%20payment%20at%20your%20office." target="_blank" rel="noopener noreferrer">
+                          Contact on WhatsApp
+                        </a>
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
                 <div className="p-6 rounded-2xl bg-gradient-to-r from-brand-green to-brand-blue text-white">
                   <div className="text-center mb-4">
                     <Shield className="h-6 w-6 mx-auto mb-2" />
