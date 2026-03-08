@@ -1,7 +1,7 @@
 import { Header } from "@/components/Header";
 import { GoogleInspiredHero } from "@/components/GoogleInspiredHero";
 import { PremiumFeatures } from "@/components/PremiumFeatures";
-import { InteractiveBackground } from "@/components/InteractiveBackground";
+import { Testimonials } from "@/components/Testimonials";
 import { ProductGrid } from "@/components/ProductGrid";
 import { ServicesSection } from "@/components/ServicesSection";
 import { ContactSection } from "@/components/ContactSection";
@@ -12,49 +12,45 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 import { useEffect } from "react";
 
 const Index = () => {
-  useEffect(() => {
-    // Set SEO meta tags
-    document.title = "Confidential Connect Ltd - Your Trusted Technology Partner";
-    
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Comprehensive technology solutions including cybersecurity, software development, cloud services, and technical support. Your trusted partner for secure, innovative digital transformation.');
-    } else {
-      const meta = document.createElement('meta');
-      meta.name = 'description';
-      meta.content = 'Comprehensive technology solutions including cybersecurity, software development, cloud services, and technical support. Your trusted partner for secure, innovative digital transformation.';
-      document.head.appendChild(meta);
-    }
+    useEffect(() => {
+        document.title = "Confidential Connect Ltd - Professional Documentation & Digital Services";
+        
+        const metaDescription = document.querySelector('meta[name="description"]');
+        if (metaDescription) {
+            metaDescription.setAttribute('content', 'CONFIDENTIAL CONNECT LTD — Your trusted partner for document processing, school registration, result verification, and digital services in Nigeria. In partnership with All Campus Connect TV.');
+        } else {
+            const meta = document.createElement('meta');
+            meta.name = 'description';
+            meta.content = 'CONFIDENTIAL CONNECT LTD — Your trusted partner for document processing, school registration, result verification, and digital services in Nigeria. In partnership with All Campus Connect TV.';
+            document.head.appendChild(meta);
+        }
 
-    // Add keywords meta tag
-    const metaKeywords = document.querySelector('meta[name="keywords"]');
-    if (!metaKeywords) {
-      const meta = document.createElement('meta');
-      meta.name = 'keywords';
-      meta.content = 'cybersecurity, software development, cloud services, technical support, Nigeria, technology solutions, digital transformation';
-      document.head.appendChild(meta);
-    }
-  }, []);
+        const metaKeywords = document.querySelector('meta[name="keywords"]');
+        if (!metaKeywords) {
+            const meta = document.createElement('meta');
+            meta.name = 'keywords';
+            meta.content = 'document processing, school registration, WAEC result checker, birth certificate, digital services, Nigeria, All Campus Connect TV, Confidential Connect Ltd';
+            document.head.appendChild(meta);
+        }
+    }, []);
 
-  return (
-    <div className="min-h-screen relative bg-background">
-      <InteractiveBackground />
-      <div className="relative z-10">
-        <KeyboardShortcuts />
-        <Header />
-        <main>
-          <GoogleInspiredHero />
-          <PremiumFeatures />
-          <ProductGrid />
-          <ServicesSection />
-          <ContactSection />
-        </main>
-        <GoogleInspiredFooter />
-        <AIChatWidget />
-        <ScrollToTop />
-      </div>
-    </div>
-  );
+    return (
+        <div className="min-h-screen bg-background">
+            <KeyboardShortcuts />
+            <Header />
+            <main>
+                <GoogleInspiredHero />
+                <PremiumFeatures />
+                <ProductGrid />
+                <Testimonials />
+                <ServicesSection />
+                <ContactSection />
+            </main>
+            <GoogleInspiredFooter />
+            <AIChatWidget />
+            <ScrollToTop />
+        </div>
+    );
 };
 
 export default Index;

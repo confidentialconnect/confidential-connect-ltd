@@ -1,194 +1,181 @@
-import { SearchBar } from "./SearchBar";
-import { Card, CardContent } from "./ui/card";
+import { Link } from "react-router-dom";
+import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { 
-  Shield, 
-  Code, 
-  Globe, 
-  Database, 
-  Cloud, 
-  Laptop,
-  TrendingUp,
-  Zap
+    FileText, 
+    GraduationCap, 
+    Shield, 
+    Smartphone,
+    ArrowRight,
+    CheckCircle,
+    Users,
+    Clock,
+    Award
 } from "lucide-react";
+import officialLogo from "@/assets/official-logo.png";
 
 export const GoogleInspiredHero = () => {
-  const featuredServices = [
-    {
-      icon: Shield,
-      title: "Cybersecurity",
-      description: "Complete security audits and protection",
-      badge: "Most Popular",
-      color: "bg-destructive"
-    },
-    {
-      icon: Code,
-      title: "Software Development",
-      description: "Custom applications and solutions",
-      badge: "Trending",
-      color: "bg-education-blue"
-    },
-    {
-      icon: Cloud,
-      title: "Cloud Solutions",
-      description: "Migration and cloud infrastructure",
-      badge: "New",
-      color: "bg-success"
-    }
-  ];
+    const quickStats = [
+        { icon: Users, value: "10,000+", label: "Clients Served" },
+        { icon: Award, value: "99.5%", label: "Success Rate" },
+        { icon: Clock, value: "24/7", label: "Support Available" },
+        { icon: Shield, value: "CAC", label: "Registered Company" },
+    ];
 
-  const quickStats = [
-    { icon: TrendingUp, value: "500+", label: "Projects Completed" },
-    { icon: Shield, value: "10+", label: "Years Experience" },
-    { icon: Zap, value: "24/7", label: "Support Available" },
-  ];
+    const highlights = [
+        "Document processing & authentication",
+        "School registration & result checking",
+        "Digital services & online processing",
+        "Professional CV & documentation",
+    ];
 
-  return (
-    <section className="min-h-screen flex flex-col justify-center py-20 gradient-mesh relative overflow-hidden">
-      {/* Floating elements */}
-      <div className="absolute top-20 left-10 w-20 h-20 rounded-full bg-brand-blue/20 animate-float blur-sm"></div>
-      <div className="absolute top-40 right-20 w-16 h-16 rounded-full bg-brand-purple/20 animate-float delay-1000 blur-sm"></div>
-      <div className="absolute bottom-40 left-20 w-24 h-24 rounded-full bg-brand-pink/20 animate-float delay-2000 blur-sm"></div>
-      <div className="absolute bottom-20 right-10 w-12 h-12 rounded-full bg-brand-orange/20 animate-float delay-500 blur-sm"></div>
-      
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Main Logo and Search */}
-        <div className="text-center mb-16 animate-fade-in">
-          {/* Company Logo - Premium Style */}
-          <div className="mb-8">
-            <h1 className="text-6xl md:text-8xl font-black mb-6 leading-tight">
-              <span className="text-brand-blue hover-scale inline-block cursor-pointer animate-bounce-in">C</span>
-              <span className="text-brand-red hover-scale inline-block cursor-pointer animate-bounce-in delay-100">o</span>
-              <span className="text-brand-orange hover-scale inline-block cursor-pointer animate-bounce-in delay-200">n</span>
-              <span className="text-brand-blue hover-scale inline-block cursor-pointer animate-bounce-in delay-300">f</span>
-              <span className="text-brand-green hover-scale inline-block cursor-pointer animate-bounce-in delay-400">i</span>
-              <span className="text-brand-red hover-scale inline-block cursor-pointer animate-bounce-in delay-500">d</span>
-              <span className="text-brand-purple hover-scale inline-block cursor-pointer animate-bounce-in delay-600">e</span>
-              <span className="text-brand-orange hover-scale inline-block cursor-pointer animate-bounce-in delay-700">n</span>
-              <span className="text-brand-blue hover-scale inline-block cursor-pointer animate-bounce-in delay-800">t</span>
-              <span className="text-brand-green hover-scale inline-block cursor-pointer animate-bounce-in delay-900">i</span>
-              <span className="text-brand-purple hover-scale inline-block cursor-pointer animate-bounce-in delay-1000">a</span>
-              <span className="text-brand-red hover-scale inline-block cursor-pointer animate-bounce-in delay-1100">l</span>
-              {" "}
-              <span className="text-brand-blue hover-scale inline-block cursor-pointer animate-bounce-in delay-1200">C</span>
-              <span className="text-brand-green hover-scale inline-block cursor-pointer animate-bounce-in delay-1300">o</span>
-              <span className="text-brand-orange hover-scale inline-block cursor-pointer animate-bounce-in delay-1400">n</span>
-              <span className="text-brand-red hover-scale inline-block cursor-pointer animate-bounce-in delay-1500">n</span>
-              <span className="text-brand-purple hover-scale inline-block cursor-pointer animate-bounce-in delay-1600">e</span>
-              <span className="text-brand-blue hover-scale inline-block cursor-pointer animate-bounce-in delay-1700">c</span>
-              <span className="text-brand-green hover-scale inline-block cursor-pointer animate-bounce-in delay-1800">t</span>
-              {" "}
-              <span className="text-brand-orange hover-scale inline-block cursor-pointer animate-bounce-in delay-1900">L</span>
-              <span className="text-brand-purple hover-scale inline-block cursor-pointer animate-bounce-in delay-2000">t</span>
-              <span className="text-brand-blue hover-scale inline-block cursor-pointer animate-bounce-in delay-2100">d</span>
-            </h1>
-            <div className="relative">
-              <p className="text-2xl text-muted-foreground max-w-3xl mx-auto font-light leading-relaxed animate-slide-up">
-                Your trusted technology partner for secure, innovative solutions
-              </p>
-              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-brand-blue to-brand-purple rounded-full"></div>
-            </div>
-          </div>
+    return (
+        <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+            {/* Background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/5" />
+            <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-primary/5 blur-3xl -translate-y-1/2 translate-x-1/4" />
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-accent/5 blur-3xl translate-y-1/2 -translate-x-1/4" />
 
-          {/* Premium Search Bar */}
-          <div className="animate-slide-up delay-300">
-            <SearchBar />
-          </div>
-        </div>
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-20">
+                <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                    {/* Left Column - Content */}
+                    <div className="space-y-8 animate-fade-in">
+                        {/* Partnership Badge */}
+                        <div className="flex items-center gap-3 flex-wrap">
+                            <Badge className="bg-primary/10 text-primary border-primary/20 px-4 py-1.5 text-sm font-medium">
+                                <Shield className="h-3.5 w-3.5 mr-1.5" />
+                                CAC Registered — RC 9081270
+                            </Badge>
+                            <Badge variant="outline" className="px-4 py-1.5 text-sm text-muted-foreground">
+                                In partnership with All Campus Connect TV
+                            </Badge>
+                        </div>
 
-        {/* Premium Stats */}
-        <div className="flex justify-center mb-20 animate-fade-in delay-500">
-          <div className="flex flex-wrap justify-center gap-12">
-            {quickStats.map((stat, index) => {
-              const IconComponent = stat.icon;
-              return (
-                <div key={index} className="text-center group">
-                  <div className="glass rounded-2xl p-6 hover-glow transition-all duration-500 group-hover:scale-105">
-                    <div className="flex items-center justify-center gap-3 mb-2">
-                      <div className="p-2 rounded-full bg-gradient-to-br from-brand-blue to-brand-purple animate-pulse-glow">
-                        <IconComponent className="h-6 w-6 text-white" />
-                      </div>
-                      <span className="text-3xl font-black text-shimmer">{stat.value}</span>
+                        {/* Main Headline */}
+                        <div className="space-y-4">
+                            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight">
+                                <span className="text-foreground">Your Trusted Partner for </span>
+                                <span className="text-gradient">Professional Documentation</span>
+                                <span className="text-foreground"> & Digital Services</span>
+                            </h1>
+                            <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-xl">
+                                We help individuals and institutions process important documentation,
+                                school registrations, and digital services — quickly, securely, and reliably.
+                            </p>
+                        </div>
+
+                        {/* Highlights */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            {highlights.map((item, i) => (
+                                <div key={i} className="flex items-center gap-2.5 text-sm text-foreground/80">
+                                    <CheckCircle className="h-4 w-4 text-primary shrink-0" />
+                                    <span>{item}</span>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* CTA Buttons */}
+                        <div className="flex flex-wrap gap-4">
+                            <Button 
+                                size="lg" 
+                                className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/25 text-base px-8"
+                                asChild
+                            >
+                                <Link to="/categories">
+                                    Apply for Service
+                                    <ArrowRight className="h-4 w-4 ml-2" />
+                                </Link>
+                            </Button>
+                            <Button 
+                                size="lg" 
+                                variant="outline"
+                                className="text-base px-8"
+                                asChild
+                            >
+                                <Link to="/contact">
+                                    Contact Us
+                                </Link>
+                            </Button>
+                            <Button
+                                size="lg"
+                                variant="ghost"
+                                className="text-base px-6"
+                                onClick={() => {
+                                    const msg = `Hello Confidential Connect Ltd! I'd like to get started with your services.`;
+                                    window.open(`https://wa.me/2347040294858?text=${encodeURIComponent(msg)}`, '_blank');
+                                }}
+                            >
+                                <Smartphone className="h-4 w-4 mr-2" />
+                                WhatsApp Us
+                            </Button>
+                        </div>
                     </div>
-                    <span className="text-sm text-muted-foreground font-medium">{stat.label}</span>
-                  </div>
+
+                    {/* Right Column - Stats & Trust */}
+                    <div className="space-y-6 animate-slide-up">
+                        {/* Logo Card */}
+                        <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-8 text-center">
+                            <img 
+                                src={officialLogo} 
+                                alt="Confidential Connect LTD Logo" 
+                                className="h-20 w-auto mx-auto mb-4"
+                            />
+                            <h2 className="text-2xl font-bold text-foreground mb-1">
+                                CONFIDENTIAL CONNECT LTD
+                            </h2>
+                            <p className="text-sm text-muted-foreground">
+                                In partnership with <strong>All Campus Connect TV</strong>
+                            </p>
+                        </div>
+
+                        {/* Stats Grid */}
+                        <div className="grid grid-cols-2 gap-4">
+                            {quickStats.map((stat, index) => {
+                                const IconComponent = stat.icon;
+                                return (
+                                    <div 
+                                        key={index} 
+                                        className="bg-card/80 backdrop-blur-sm border border-border rounded-xl p-5 text-center hover:border-primary/30 transition-colors duration-300"
+                                    >
+                                        <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 mb-3">
+                                            <IconComponent className="h-5 w-5 text-primary" />
+                                        </div>
+                                        <div className="text-2xl font-bold text-foreground">{stat.value}</div>
+                                        <div className="text-xs text-muted-foreground mt-1">{stat.label}</div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        {/* Service Quick Links */}
+                        <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-6">
+                            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">Popular Services</h3>
+                            <div className="space-y-3">
+                                {[
+                                    { icon: FileText, label: "WAEC Result Checker", price: "₦4,200" },
+                                    { icon: GraduationCap, label: "Post-UTME Registration", price: "₦6,000" },
+                                    { icon: Shield, label: "Birth Certificate", price: "₦5,000" },
+                                ].map((service, i) => (
+                                    <Link 
+                                        key={i}
+                                        to="/categories"
+                                        className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors group"
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <service.icon className="h-4 w-4 text-primary" />
+                                            <span className="text-sm font-medium">{service.label}</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-sm font-semibold text-primary">{service.price}</span>
+                                            <ArrowRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Premium Featured Services */}
-        <div className="max-w-7xl mx-auto animate-slide-up delay-700">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gradient mb-4">Featured Services</h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-brand-blue to-brand-purple rounded-full mx-auto"></div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {featuredServices.map((service, index) => {
-              const IconComponent = service.icon;
-              return (
-                <Card 
-                  key={index} 
-                  className="border-gradient glass hover-lift cursor-pointer group relative overflow-hidden" 
-                  onClick={() => window.location.href = `/categories?category=${service.title.toLowerCase().replace(' ', '-')}`}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/5 to-brand-purple/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <CardContent className="p-8 text-center relative z-10">
-                    <div className="relative mb-6">
-                      <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-brand-blue to-brand-purple shadow-premium group-hover:shadow-glow transition-all duration-500 group-hover:scale-110">
-                        <IconComponent className="h-10 w-10 text-white" />
-                        <div className="absolute inset-0 rounded-2xl animate-pulse-glow"></div>
-                      </div>
-                      <Badge className="absolute -top-2 -right-4 text-xs font-semibold bg-gradient-to-r from-brand-orange to-brand-red text-white border-0 shadow-premium animate-bounce-in">
-                        {service.badge}
-                      </Badge>
-                    </div>
-                    <h3 className="text-xl font-bold mb-3 text-gradient group-hover:text-shimmer transition-all duration-300">{service.title}</h3>
-                    <p className="text-muted-foreground leading-relaxed">{service.description}</p>
-                    <div className="mt-4 h-1 w-0 group-hover:w-full bg-gradient-to-r from-brand-blue to-brand-purple rounded-full transition-all duration-500 mx-auto"></div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Premium Language Section */}
-        <div className="text-center mt-20 animate-fade-in delay-1000">
-          <div className="glass rounded-2xl p-6 inline-block">
-            <div className="flex items-center gap-4 text-muted-foreground">
-              <Globe className="h-5 w-5 text-brand-blue" />
-              <span className="text-sm font-medium">Available in:</span>
-              <div className="flex gap-2">
-                {['English', 'Hausa', 'Yoruba', 'Igbo'].map((lang, index) => (
-                  <span key={lang} className="px-3 py-1 bg-gradient-to-r from-brand-blue to-brand-purple text-white rounded-full text-xs font-medium hover-scale cursor-pointer">
-                    {lang}
-                  </span>
-                ))}
-              </div>
             </div>
-          </div>
-        </div>
-
-        {/* Premium Action Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 mt-12 animate-bounce-in delay-1200">
-          {[
-            { text: "I'm Feeling Secure", search: "cybersecurity", gradient: "from-brand-red to-brand-pink" },
-            { text: "I'm Feeling Innovative", search: "software development", gradient: "from-brand-blue to-brand-purple" }, 
-            { text: "I'm Feeling Connected", search: "network solutions", gradient: "from-brand-green to-brand-blue" },
-            { text: "I'm Feeling Technical", search: "technical support", gradient: "from-brand-orange to-brand-red" }
-          ].map((feeling, index) => (
-            <button
-              key={index}
-              onClick={() => window.location.href = `/categories?search=${encodeURIComponent(feeling.search)}`}
-              className={`px-6 py-3 text-sm font-medium text-white bg-gradient-to-r ${feeling.gradient} rounded-full hover-lift shadow-premium transition-all duration-300 hover:shadow-glow border-gradient`}
-            >
-              {feeling.text}
-            </button>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+        </section>
+    );
 };
