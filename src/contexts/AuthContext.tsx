@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { useInactivityLogout } from '@/hooks/useInactivityLogout';
 
 interface Profile {
   id: string;
@@ -170,6 +171,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
     checkAdmin();
   }, [user?.id]);
+
+  // Auto-logout after 30 minutes of inactivity
+  useInactivityLogout(!!user);
 
   const value = {
     user,

@@ -24,6 +24,8 @@ import PaymentInfo from "./pages/PaymentInfo";
 import AdminHome from "./pages/AdminHome";
 import AdminOrders from "./pages/AdminOrders";
 import Auth from "./pages/Auth";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Advertising from "./pages/Advertising";
 
 const queryClient = new QueryClient();
@@ -48,6 +50,8 @@ const App = () => (
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/order-success" element={<OrderSuccess />} />
