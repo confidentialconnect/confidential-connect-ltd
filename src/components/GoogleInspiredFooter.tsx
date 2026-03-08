@@ -13,6 +13,8 @@ export const GoogleInspiredFooter = () => {
 
     const companyLinks = [
         { name: "About Us", href: "/about" },
+        { name: "Pricing", href: "/pricing" },
+        { name: "FAQ", href: "/faq" },
         { name: "Contact", href: "/contact" },
         { name: "Payments", href: "/payment-info" },
         { name: "Advertising", href: "/advertising" },
