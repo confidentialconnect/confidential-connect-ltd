@@ -172,6 +172,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     checkAdmin();
   }, [user?.id]);
 
+  // Auto-logout after 30 minutes of inactivity
+  useInactivityLogout(!!user);
+
   const value = {
     user,
     session,
