@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.verify-paystack]
 verify_jwt = false
+
+[functions.verify-recaptcha]
+verify_jwt = false
