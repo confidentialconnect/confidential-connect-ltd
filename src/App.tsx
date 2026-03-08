@@ -24,6 +24,8 @@ import PaymentInfo from "./pages/PaymentInfo";
 import AdminHome from "./pages/AdminHome";
 import AdminOrders from "./pages/AdminOrders";
 import Auth from "./pages/Auth";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Advertising from "./pages/Advertising";
 
 const queryClient = new QueryClient();
