@@ -29,6 +29,8 @@ import ResetPassword from "./pages/ResetPassword";
 import Advertising from "./pages/Advertising";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsConditions from "./pages/TermsConditions";
+import FAQ from "./pages/FAQ";
+import Pricing from "./pages/Pricing";
 
 const queryClient = new QueryClient();
 
