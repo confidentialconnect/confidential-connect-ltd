@@ -11,559 +11,339 @@ import { Label } from "@/components/ui/label";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { 
-  Phone, 
-  Mail, 
-  MapPin, 
-  Clock, 
-  Send, 
-  MessageSquare,
-  Globe,
-  Facebook,
-  Twitter,
-  Instagram,
-  Linkedin,
-  CreditCard,
-  Smartphone,
-  Building2,
-  Banknote,
-  Shield,
-  Zap,
-  Star
+    Phone, 
+    Mail, 
+    MapPin, 
+    Clock, 
+    Send, 
+    MessageSquare,
+    CreditCard,
+    Smartphone,
+    Building2,
+    Banknote,
+    Shield,
+    Facebook,
+    Instagram,
+    Linkedin
 } from "lucide-react";
 
 export const ContactSection = () => {
-  const navigate = useNavigate();
-  const [showCashDialog, setShowCashDialog] = useState(false);
+    const navigate = useNavigate();
+    const [showCashDialog, setShowCashDialog] = useState(false);
 
-  const paymentMethods = [
-    { name: "Bank Transfer", icon: Building2, description: "All Nigerian banks supported", color: "from-brand-blue to-brand-purple", action: "bank" },
-    { name: "Card Payment", icon: CreditCard, description: "Visa, Mastercard, Verve", color: "from-brand-green to-brand-blue", action: "card" },
-    { name: "Mobile Money", icon: Smartphone, description: "Opay, PalmPay, Kuda", color: "from-brand-orange to-brand-red", action: "mobile" },
-    { name: "Cash Payment", icon: Banknote, description: "Office location only", color: "from-brand-purple to-brand-pink", action: "cash" }
-  ];
+    const paymentMethods = [
+        { name: "Bank Transfer", icon: Building2, description: "All Nigerian banks supported", action: "bank" },
+        { name: "Card Payment", icon: CreditCard, description: "Visa, Mastercard, Verve", action: "card" },
+        { name: "Mobile Money", icon: Smartphone, description: "Opay, PalmPay, Kuda", action: "mobile" },
+        { name: "Cash Payment", icon: Banknote, description: "Office location only", action: "cash" }
+    ];
 
-  return (
-    <section id="contact" className="py-24 bg-gradient-mesh relative overflow-hidden">
-      {/* Floating decorative elements */}
-      <div className="absolute top-20 left-10 w-32 h-32 rounded-full bg-brand-blue/10 animate-float blur-xl"></div>
-      <div className="absolute bottom-20 right-10 w-24 h-24 rounded-full bg-brand-purple/10 animate-float delay-1000 blur-xl"></div>
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full bg-brand-pink/5 animate-pulse-glow blur-2xl"></div>
-      
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Premium Header */}
-        <div className="text-center mb-20 animate-fade-in">
-          <div className="inline-flex items-center gap-2 mb-6">
-            <Star className="h-6 w-6 text-brand-orange animate-pulse-glow" />
-            <Badge className="bg-gradient-to-r from-brand-blue to-brand-purple text-white border-0 px-4 py-2">
-              24/7 Premium Support
-            </Badge>
-            <Star className="h-6 w-6 text-brand-orange animate-pulse-glow" />
-          </div>
-          <h2 className="text-6xl font-black mb-6 text-gradient leading-tight">Get in Touch</h2>
-          <div className="w-32 h-1 bg-gradient-to-r from-brand-blue to-brand-purple rounded-full mx-auto mb-6"></div>
-          <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            Experience world-class support with lightning-fast responses and premium service quality
-          </p>
-        </div>
+    return (
+        <section id="contact" className="py-20 bg-muted/20">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Header */}
+                <div className="text-center mb-14">
+                    <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-3">Contact Us</p>
+                    <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-foreground">Get in Touch</h2>
+                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                        Have a question or need assistance? Our team is ready to help you with any service or inquiry.
+                    </p>
+                </div>
 
-        <div className="grid lg:grid-cols-2 gap-16 mb-20">
-          {/* Premium Contact Form */}
-          <Card className="border-gradient glass hover-lift shadow-premium">
-            <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/5 to-brand-purple/5 rounded-lg"></div>
-            <CardHeader className="relative z-10">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="p-2 rounded-full bg-gradient-to-br from-brand-blue to-brand-purple">
-                  <MessageSquare className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <CardTitle className="text-2xl text-gradient">Send us a Message</CardTitle>
-                  <CardDescription className="text-lg">
-                    Premium support with guaranteed 24-hour response
-                  </CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-6 relative z-10">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="firstName" className="text-sm font-semibold">First Name</Label>
-                  <Input id="firstName" placeholder="Enter your first name" className="border-gradient" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="lastName" className="text-sm font-semibold">Last Name</Label>
-                  <Input id="lastName" placeholder="Enter your last name" className="border-gradient" />
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm font-semibold">Email Address</Label>
-                <Input id="email" type="email" placeholder="Enter your email address" className="border-gradient" />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="phone" className="text-sm font-semibold">Phone Number</Label>
-                <Input id="phone" type="tel" placeholder="+234 800 000 0000" className="border-gradient" />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="service" className="text-sm font-semibold">Service Interested In</Label>
-                <Input id="service" placeholder="e.g., WAEC Result Checker, University Registration" className="border-gradient" />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="message" className="text-sm font-semibold">Message</Label>
-                <Textarea 
-                  id="message" 
-                  placeholder="Tell us how we can help you..."
-                  className="min-h-[120px] border-gradient"
-                />
-              </div>
-              
-              <Button 
-                onClick={(e) => {
-                  e.preventDefault();
-                  const firstName = (document.getElementById('firstName') as HTMLInputElement)?.value || '';
-                  const lastName = (document.getElementById('lastName') as HTMLInputElement)?.value || '';
-                  const email = (document.getElementById('email') as HTMLInputElement)?.value || '';
-                  const phone = (document.getElementById('phone') as HTMLInputElement)?.value || '';
-                  const service = (document.getElementById('service') as HTMLInputElement)?.value || '';
-                  const message = (document.getElementById('message') as HTMLTextAreaElement)?.value || '';
-                  
-                  const whatsappMessage = `Hello Confidential Connect Ltd! 
-*New Message from Contact Form*
+                <div className="grid lg:grid-cols-2 gap-10 mb-16">
+                    {/* Contact Form */}
+                    <Card className="border-border">
+                        <CardHeader>
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 bg-primary/10 rounded-lg">
+                                    <MessageSquare className="h-5 w-5 text-primary" />
+                                </div>
+                                <div>
+                                    <CardTitle className="text-xl">Send us a Message</CardTitle>
+                                    <CardDescription>We respond within 24 hours</CardDescription>
+                                </div>
+                            </div>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="space-y-1.5">
+                                    <Label htmlFor="contact-firstName" className="text-sm font-medium">First Name</Label>
+                                    <Input id="contact-firstName" placeholder="Your first name" />
+                                </div>
+                                <div className="space-y-1.5">
+                                    <Label htmlFor="contact-lastName" className="text-sm font-medium">Last Name</Label>
+                                    <Input id="contact-lastName" placeholder="Your last name" />
+                                </div>
+                            </div>
+                            
+                            <div className="space-y-1.5">
+                                <Label htmlFor="contact-email" className="text-sm font-medium">Email Address</Label>
+                                <Input id="contact-email" type="email" placeholder="your.email@example.com" />
+                            </div>
+                            
+                            <div className="space-y-1.5">
+                                <Label htmlFor="contact-phone" className="text-sm font-medium">Phone Number</Label>
+                                <Input id="contact-phone" type="tel" placeholder="+234 800 000 0000" />
+                            </div>
+                            
+                            <div className="space-y-1.5">
+                                <Label htmlFor="contact-service" className="text-sm font-medium">Service Interested In</Label>
+                                <Input id="contact-service" placeholder="e.g., WAEC Result Checker, University Registration" />
+                            </div>
+                            
+                            <div className="space-y-1.5">
+                                <Label htmlFor="contact-message" className="text-sm font-medium">Message</Label>
+                                <Textarea 
+                                    id="contact-message" 
+                                    placeholder="Tell us how we can help you..."
+                                    className="min-h-[100px]"
+                                />
+                            </div>
+                            
+                            <Button 
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    const firstName = (document.getElementById('contact-firstName') as HTMLInputElement)?.value || '';
+                                    const lastName = (document.getElementById('contact-lastName') as HTMLInputElement)?.value || '';
+                                    const email = (document.getElementById('contact-email') as HTMLInputElement)?.value || '';
+                                    const phone = (document.getElementById('contact-phone') as HTMLInputElement)?.value || '';
+                                    const service = (document.getElementById('contact-service') as HTMLInputElement)?.value || '';
+                                    const message = (document.getElementById('contact-message') as HTMLTextAreaElement)?.value || '';
+                                    
+                                    const whatsappMessage = `Hello Confidential Connect Ltd!\n\n*Name:* ${firstName} ${lastName}\n*Email:* ${email}\n*Phone:* ${phone}\n*Service:* ${service}\n*Message:* ${message}\n\nPlease respond to this inquiry. Thank you!`;
+                                    
+                                    window.open(`https://wa.me/2347040294858?text=${encodeURIComponent(whatsappMessage)}`, '_blank');
+                                }}
+                                className="w-full"
+                                size="lg"
+                            >
+                                <Send className="h-4 w-4 mr-2" />
+                                Send Message
+                            </Button>
+                        </CardContent>
+                    </Card>
 
-*Name:* ${firstName} ${lastName}
-*Email:* ${email}
-*Phone:* ${phone}
-*Service Interest:* ${service}
-*Message:* ${message}
+                    {/* Contact Information */}
+                    <div className="space-y-6">
+                        {/* Contact Details Card */}
+                        <Card className="border-border">
+                            <CardHeader>
+                                <CardTitle className="text-xl flex items-center gap-2">
+                                    <Shield className="h-5 w-5 text-primary" />
+                                    Contact Information
+                                </CardTitle>
+                                <CardDescription>Multiple channels available for your convenience</CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-5">
+                                {[
+                                    { icon: Phone, title: "Phone Support", lines: ["+234 704 029 4858", "+234 911 715 0406"], note: "Available Mon-Sat" },
+                                    { icon: Mail, title: "Email", lines: ["confidentialconnectltd@gmail.com"], note: "Response within 24 hours" },
+                                    { icon: MapPin, title: "Office Location", lines: ["Assembly of God Church Iddo Sarki", "Airport Road, close to University of Abuja", "Abuja, Nigeria"], note: "" },
+                                    { icon: Clock, title: "Working Hours", lines: ["Mon-Fri: 8:00 AM - 6:00 PM", "Saturday: 9:00 AM - 4:00 PM", "Sunday: Closed"], note: "" },
+                                ].map((item, i) => (
+                                    <div key={i} className="flex items-start gap-4">
+                                        <div className="p-2 bg-primary/10 rounded-lg shrink-0 mt-0.5">
+                                            <item.icon className="h-5 w-5 text-primary" />
+                                        </div>
+                                        <div>
+                                            <div className="font-medium text-foreground text-sm">{item.title}</div>
+                                            {item.lines.map((line, j) => (
+                                                <div key={j} className="text-sm text-muted-foreground">{line}</div>
+                                            ))}
+                                            {item.note && <div className="text-xs text-primary mt-0.5">{item.note}</div>}
+                                        </div>
+                                    </div>
+                                ))}
+                            </CardContent>
+                        </Card>
 
-Please respond to this inquiry. Thank you!`;
-                  
-                  const whatsappUrl = `https://wa.me/2347040294858?text=${encodeURIComponent(whatsappMessage)}`;
-                  window.open(whatsappUrl, '_blank');
-                }}
-                className="w-full bg-gradient-to-r from-brand-blue to-brand-purple text-white border-0 hover-lift shadow-premium text-lg py-6"
-              >
-                <Send className="h-5 w-5 mr-3" />
-                Send Premium Message
-                <Zap className="h-5 w-5 ml-3" />
-              </Button>
-            </CardContent>
-          </Card>
+                        {/* Payment Methods */}
+                        <Card className="border-border">
+                            <CardHeader className="pb-3">
+                                <CardTitle className="text-lg flex items-center gap-2">
+                                    <CreditCard className="h-5 w-5 text-primary" />
+                                    Payment Methods
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                                <div className="grid grid-cols-2 gap-3">
+                                    {paymentMethods.map((method, index) => {
+                                        const IconComponent = method.icon;
+                                        const cardContent = (
+                                            <div 
+                                                key={index}
+                                                className="p-3 rounded-lg border border-border hover:border-primary/20 transition-colors cursor-pointer"
+                                                onClick={() => {
+                                                    if (method.action === 'card') navigate('/checkout');
+                                                    if (method.action === 'mobile') window.open('https://wa.me/2347040294858?text=Hello%2C%20I%20want%20to%20make%20a%20mobile%20money%20payment.', '_blank');
+                                                    if (method.action === 'cash') setShowCashDialog(true);
+                                                }}
+                                            >
+                                                <div className="flex items-center gap-2.5">
+                                                    <div className="p-1.5 bg-primary/10 rounded-md">
+                                                        <IconComponent className="h-4 w-4 text-primary" />
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-sm font-medium text-foreground">{method.name}</div>
+                                                        <div className="text-xs text-muted-foreground">{method.description}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
 
-          {/* Premium Contact Information */}
-          <div className="space-y-8 animate-slide-up" style={{animationDelay: "0.2s"}}>
-            {/* Contact Details */}
-            <Card className="border-gradient glass hover-lift shadow-premium">
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-green/5 to-brand-blue/5 rounded-lg"></div>
-              <CardHeader className="relative z-10">
-                <CardTitle className="text-2xl text-gradient flex items-center gap-3">
-                  <Shield className="h-6 w-6" />
-                  Premium Contact Information
-                </CardTitle>
-                <CardDescription className="text-lg">
-                  Multiple channels for instant premium support
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-8 relative z-10">
-                <div className="flex items-center group">
-                  <div className="p-3 rounded-2xl bg-gradient-to-br from-brand-blue to-brand-purple mr-6 group-hover:scale-110 transition-transform shadow-premium">
-                    <Phone className="h-7 w-7 text-white" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-lg text-gradient">Premium Phone Support</div>
-                    <div className="text-muted-foreground font-medium">+234 704 029 4858</div>
-                    <div className="text-muted-foreground font-medium">+234 911 715 0406</div>
-                    <div className="text-xs text-brand-blue">24/7 Emergency Support Available</div>
-                  </div>
-                </div>
-                
-                <div className="flex items-center group">
-                  <div className="p-3 rounded-2xl bg-gradient-to-br from-brand-green to-brand-blue mr-6 group-hover:scale-110 transition-transform shadow-premium">
-                    <Mail className="h-7 w-7 text-white" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-lg text-gradient">Support Email</div>
-                    <div className="text-muted-foreground font-medium">confidentialconnectltd@gmail.com</div>
-                    <div className="text-xs text-brand-green">Response within 2 hours</div>
-                  </div>
-                </div>
-                
-                <div className="flex items-center group">
-                  <div className="p-3 rounded-2xl bg-gradient-to-br from-brand-purple to-brand-pink mr-6 group-hover:scale-110 transition-transform shadow-premium">
-                    <Mail className="h-7 w-7 text-white" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-lg text-gradient">Contact Email</div>
-                    <div className="text-muted-foreground font-medium">confidentialconnectltd@gmail.com</div>
-                    <div className="text-xs text-brand-purple">General Inquiries</div>
-                  </div>
-                </div>
-                
-                <div className="flex items-center group">
-                  <div className="p-3 rounded-2xl bg-gradient-to-br from-brand-orange to-brand-red mr-6 group-hover:scale-110 transition-transform shadow-premium">
-                    <MapPin className="h-7 w-7 text-white" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-lg text-gradient">Premium Office Location</div>
-                    <div className="text-muted-foreground font-medium">
-                      Assembly of God Church Iddo Sarki<br />
-                      Airport Road, close to University of Abuja P/Site<br />
-                      Abuja, Nigeria
-                    </div>
-                    <div className="text-xs text-brand-orange">VIP appointments available</div>
-                  </div>
-                </div>
-                
-                <div className="flex items-center group">
-                  <div className="p-3 rounded-2xl bg-gradient-to-br from-brand-purple to-brand-pink mr-6 group-hover:scale-110 transition-transform shadow-premium">
-                    <Clock className="h-7 w-7 text-white" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-lg text-gradient">Premium Hours</div>
-                    <div className="text-muted-foreground font-medium">
-                      Monday - Friday: 8:00 AM - 6:00 PM<br />
-                      Saturday: 9:00 AM - 4:00 PM<br />
-                      Sunday: Emergency support only
-                    </div>
-                    <div className="text-xs text-brand-purple">Extended hours for VIP clients</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                                        if (method.action === 'bank') {
+                                            return <BankPaymentModal key={index}>{cardContent}</BankPaymentModal>;
+                                        }
+                                        return cardContent;
+                                    })}
+                                </div>
 
-            {/* Premium Payment Methods */}
-            <Card className="border-gradient glass hover-lift shadow-premium overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-orange/5 to-brand-red/5 rounded-lg"></div>
-              <CardHeader className="relative z-10">
-                <CardTitle className="text-2xl text-gradient flex items-center gap-3">
-                  <CreditCard className="h-6 w-6" />
-                  Premium Payment Methods
-                </CardTitle>
-                <CardDescription className="text-lg">
-                  We accept all major payment methods including bank transfers (all Nigerian banks), international cards (Visa, Mastercard, Verve), mobile money (Opay, PalmPay, Kuda), cryptocurrency, and cash payments at our premium office location.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6 relative z-10">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {paymentMethods.map((method, index) => {
-                    const IconComponent = method.icon;
-                    const cardContent = (
-                      <div 
-                        key={index}
-                        className="p-4 rounded-2xl glass border-gradient hover-lift group cursor-pointer"
-                        onClick={() => {
-                          if (method.action === 'card') navigate('/checkout');
-                          if (method.action === 'mobile') window.open('https://wa.me/2347040294858?text=Hello%2C%20I%20want%20to%20make%20a%20mobile%20money%20payment.', '_blank');
-                          if (method.action === 'cash') setShowCashDialog(true);
-                        }}
-                      >
+                                {/* Cash Payment Dialog */}
+                                <Dialog open={showCashDialog} onOpenChange={setShowCashDialog}>
+                                    <DialogContent className="sm:max-w-md">
+                                        <DialogHeader>
+                                            <DialogTitle className="flex items-center gap-2">
+                                                <Banknote className="h-5 w-5 text-primary" />
+                                                Cash Payment
+                                            </DialogTitle>
+                                        </DialogHeader>
+                                        <div className="space-y-4">
+                                            <div className="bg-muted/50 p-4 rounded-lg space-y-2">
+                                                <div className="flex items-center gap-2">
+                                                    <MapPin className="h-4 w-4 text-primary" />
+                                                    <span className="font-semibold text-sm">Office Location</span>
+                                                </div>
+                                                <p className="text-sm text-muted-foreground">
+                                                    Visit our office in Abuja, Nigeria for cash payments.
+                                                </p>
+                                            </div>
+                                            <div className="bg-muted/50 p-4 rounded-lg space-y-2">
+                                                <div className="flex items-center gap-2">
+                                                    <Clock className="h-4 w-4 text-primary" />
+                                                    <span className="font-semibold text-sm">Working Hours</span>
+                                                </div>
+                                                <p className="text-sm text-muted-foreground">
+                                                    Monday - Saturday: 8:00 AM - 6:00 PM
+                                                </p>
+                                            </div>
+                                            <div className="bg-primary/5 border border-primary/10 rounded-lg p-3">
+                                                <p className="text-sm text-muted-foreground">
+                                                    📲 Contact us on WhatsApp before visiting to confirm availability.
+                                                </p>
+                                            </div>
+                                            <Button className="w-full" asChild>
+                                                <a href="https://wa.me/2347040294858?text=Hello%2C%20I%20want%20to%20make%20a%20cash%20payment%20at%20your%20office." target="_blank" rel="noopener noreferrer">
+                                                    Contact on WhatsApp
+                                                </a>
+                                            </Button>
+                                        </div>
+                                    </DialogContent>
+                                </Dialog>
+
+                                {/* Bank Details */}
+                                <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
+                                    <div className="text-center mb-3">
+                                        <div className="text-sm font-semibold text-foreground">Bank Transfer Details</div>
+                                    </div>
+                                    <div className="space-y-1.5 text-sm">
+                                        <div className="flex justify-between">
+                                            <span className="text-muted-foreground">Account Name:</span>
+                                            <span className="font-medium text-foreground">Confidential Connect Ltd</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span className="text-muted-foreground">Account Number:</span>
+                                            <span className="font-medium text-foreground">6919053477</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span className="text-muted-foreground">Bank:</span>
+                                            <span className="font-medium text-foreground">Moniepoint MFB</span>
+                                        </div>
+                                    </div>
+                                    <div className="mt-3 text-center">
+                                        <p className="text-xs text-muted-foreground">📲 Send payment receipt to WhatsApp: +234 704 029 4858</p>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        {/* Quick Actions */}
+                        <div className="grid grid-cols-2 gap-3">
+                            <Button asChild size="lg" className="w-full">
+                                <a href="tel:+2347040294858">
+                                    <Phone className="h-4 w-4 mr-2" />
+                                    Call Us
+                                </a>
+                            </Button>
+                            <Button asChild size="lg" variant="outline" className="w-full">
+                                <a href="https://wa.me/2347040294858" target="_blank" rel="noopener noreferrer">
+                                    <Smartphone className="h-4 w-4 mr-2" />
+                                    WhatsApp
+                                </a>
+                            </Button>
+                        </div>
+
+                        {/* WhatsApp QR */}
+                        <Card className="border-border">
+                            <CardContent className="p-4 flex items-center gap-4">
+                                <img 
+                                    src={whatsappQrCode}
+                                    alt="WhatsApp QR Code" 
+                                    className="w-20 h-20 rounded-lg"
+                                    loading="lazy"
+                                />
+                                <div>
+                                    <p className="text-sm font-medium text-foreground">Scan to chat on WhatsApp</p>
+                                    <p className="text-xs text-muted-foreground">Quick access to our support team</p>
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        {/* Social Media */}
                         <div className="flex items-center gap-3">
-                          <div className={`p-2 rounded-xl bg-gradient-to-br ${method.color} group-hover:scale-110 transition-transform`}>
-                            <IconComponent className="h-5 w-5 text-white" />
-                          </div>
-                          <div>
-                            <div className="font-semibold text-sm">{method.name}</div>
-                            <div className="text-xs text-muted-foreground">{method.description}</div>
-                          </div>
+                            <span className="text-sm text-muted-foreground">Follow us:</span>
+                            {[
+                                { icon: Facebook, href: "https://www.facebook.com/profile.php?id=61580159132745", label: "Facebook" },
+                                { icon: Instagram, href: "https://instagram.com/ConfidentialConnect", label: "Instagram" },
+                                { icon: Linkedin, href: "https://www.linkedin.com/in/okpo-confidence-oko-74ba152a5", label: "LinkedIn" },
+                            ].map((social, i) => (
+                                <Button key={i} variant="outline" size="icon" className="h-9 w-9" asChild>
+                                    <a href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label}>
+                                        <social.icon className="h-4 w-4" />
+                                    </a>
+                                </Button>
+                            ))}
                         </div>
-                      </div>
-                    );
-
-                    if (method.action === 'bank') {
-                      return (
-                        <BankPaymentModal key={index}>
-                          {cardContent}
-                        </BankPaymentModal>
-                      );
-                    }
-                    return cardContent;
-                  })}
-                </div>
-
-                {/* Cash Payment Dialog */}
-                <Dialog open={showCashDialog} onOpenChange={setShowCashDialog}>
-                  <DialogContent className="sm:max-w-md">
-                    <DialogHeader>
-                      <DialogTitle className="flex items-center gap-2 text-xl">
-                        <Banknote className="h-5 w-5 text-primary" />
-                        Cash Payment
-                      </DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4">
-                      <div className="bg-muted/50 p-4 rounded-lg space-y-2">
-                        <div className="flex items-center gap-2">
-                          <MapPin className="h-4 w-4 text-primary" />
-                          <span className="font-semibold">Office Location</span>
-                        </div>
-                        <p className="text-sm text-muted-foreground">
-                          Visit our office in Abuja, Nigeria to make cash payments directly.
-                        </p>
-                      </div>
-                      <div className="bg-muted/50 p-4 rounded-lg space-y-2">
-                        <div className="flex items-center gap-2">
-                          <Clock className="h-4 w-4 text-primary" />
-                          <span className="font-semibold">Working Hours</span>
-                        </div>
-                        <p className="text-sm text-muted-foreground">
-                          Monday - Saturday: 8:00 AM - 6:00 PM
-                        </p>
-                      </div>
-                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                        <p className="text-sm text-yellow-800">
-                          📲 Contact us on WhatsApp before visiting to confirm availability.
-                        </p>
-                      </div>
-                      <Button className="w-full" asChild>
-                        <a href="https://wa.me/2347040294858?text=Hello%2C%20I%20want%20to%20make%20a%20cash%20payment%20at%20your%20office." target="_blank" rel="noopener noreferrer">
-                          Contact on WhatsApp
-                        </a>
-                      </Button>
                     </div>
-                  </DialogContent>
-                </Dialog>
-                <div className="p-6 rounded-2xl bg-gradient-to-r from-brand-green to-brand-blue text-white">
-                  <div className="text-center mb-4">
-                    <Shield className="h-6 w-6 mx-auto mb-2" />
-                    <div className="font-bold">Bank Account Details</div>
-                    <div className="text-xs opacity-90">For direct bank transfers</div>
-                  </div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="opacity-90">Account Name:</span>
-                      <span className="font-semibold">Confidential Connect Ltd</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="opacity-90">Account Number:</span>
-                      <span className="font-semibold">6919053477</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="opacity-90">Bank:</span>
-                      <span className="font-semibold">Moniepoint MFB</span>
-                    </div>
-                  </div>
-                  <div className="mt-4 p-3 bg-white/10 rounded-xl text-center">
-                    <div className="text-xs font-semibold">📲 Send payment receipt to WhatsApp</div>
-                    <div className="text-xs opacity-90 mt-1">+234 704 029 4858</div>
-                  </div>
                 </div>
-              </CardContent>
-            </Card>
 
-            {/* Premium Quick Actions */}
-            <Card className="border-gradient glass hover-lift shadow-premium overflow-hidden">
-              <div className="absolute inset-0 gradient-hero rounded-lg"></div>
-              <CardContent className="p-8 text-white relative z-10">
-                <div className="text-center mb-6">
-                  <h3 className="text-2xl font-black mb-2">Instant Premium Support</h3>
-                  <p className="opacity-90">Get immediate assistance from our expert team</p>
-                </div>
-                <div className="space-y-4">
-                  <Button asChild className="w-full bg-white text-brand-blue hover:bg-white/90 hover-lift shadow-premium font-bold py-4 text-lg">
-                    <a href="tel:+2347040294858" aria-label="Call us now">
-                      <Phone className="h-5 w-5 mr-3" />
-                      Call Premium Support
-                      <Zap className="h-5 w-5 ml-3" />
-                    </a>
-                  </Button>
-                  <Button 
-                    asChild
-                    variant="outline" 
-                    className="w-full border-white text-white hover:bg-white hover:text-brand-blue hover-lift font-bold py-4 text-lg"
-                  >
-                    <a href="https://wa.me/2347040294858?text=Hello%20Confidential%20Connect%2C%20I%20need%20premium%20support%20with..." target="_blank" rel="noopener noreferrer" aria-label="Live chat support on WhatsApp">
-                      <Globe className="h-5 w-5 mr-3" />
-                      Premium WhatsApp Chat
-                      <Star className="h-5 w-5 ml-3" />
-                    </a>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Premium WhatsApp QR */}
-            <Card className="border-gradient glass hover-lift shadow-premium">
-              <CardHeader>
-                <CardTitle className="text-gradient flex items-center gap-2">
-                  <Smartphone className="h-5 w-5" />
-                  Premium WhatsApp Access
-                </CardTitle>
-                <CardDescription>
-                  Scan for instant VIP support access
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="text-center">
-                <div className="relative inline-block">
-                  <img 
-                    src={whatsappQrCode}
-                    alt="WhatsApp QR Code for Confidential Connect Ltd Support" 
-                    className="w-full max-w-[240px] mx-auto rounded-2xl shadow-premium border-gradient"
-                  />
-                  <div className="absolute -top-2 -right-2">
-                    <Badge className="bg-gradient-to-r from-brand-orange to-brand-red text-white border-0 animate-pulse-glow">
-                      VIP Access
-                    </Badge>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Premium Social Media */}
-            <Card className="border-gradient glass hover-lift shadow-premium">
-              <CardHeader>
-                <CardTitle className="text-gradient flex items-center gap-2">
-                  <Star className="h-5 w-5" />
-                  Follow Our Premium Updates
-                </CardTitle>
-                <CardDescription>
-                  Exclusive content and VIP announcements
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex space-x-4">
-                  <Button 
-                    variant="outline" 
-                    size="icon" 
-                    className="hover-lift hover-glow border-gradient h-12 w-12"
-                    asChild
-                  >
-                    <a 
-                      href="https://www.facebook.com/profile.php?id=61580159132745" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      aria-label="Follow us on Facebook"
-                    >
-                      <Facebook className="h-6 w-6" />
-                    </a>
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="icon" 
-                    className="hover-lift hover-glow border-gradient h-12 w-12"
-                    asChild
-                  >
-                    <a 
-                      href="https://twitter.com/ConfidentialConnect" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      aria-label="Follow us on Twitter"
-                    >
-                      <Twitter className="h-6 w-6" />
-                    </a>
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="icon" 
-                    className="hover-lift hover-glow border-gradient h-12 w-12"
-                    asChild
-                  >
-                    <a 
-                      href="https://instagram.com/ConfidentialConnect" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      aria-label="Follow us on Instagram"
-                    >
-                      <Instagram className="h-6 w-6" />
-                    </a>
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="icon" 
-                    className="hover-lift hover-glow border-gradient h-12 w-12"
-                    asChild
-                  >
-                    <a 
-                      href="https://www.linkedin.com/in/okpo-confidence-oko-74ba152a5?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      aria-label="Follow us on LinkedIn"
-                    >
-                      <Linkedin className="h-6 w-6" />
-                    </a>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        {/* Premium FAQ Section with Accordion */}
-        <Card className="border-gradient glass shadow-premium animate-fade-in">
-          <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/5 to-brand-purple/5 rounded-lg"></div>
-          <CardHeader className="text-center relative z-10">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Star className="h-6 w-6 text-brand-orange animate-pulse-glow" />
-              <Badge className="bg-gradient-to-r from-brand-blue to-brand-purple text-white border-0">
-                Premium FAQ
-              </Badge>
-              <Star className="h-6 w-6 text-brand-orange animate-pulse-glow" />
+                {/* FAQ Section */}
+                <Card className="border-border max-w-4xl mx-auto">
+                    <CardHeader className="text-center">
+                        <CardTitle className="text-2xl text-foreground">Frequently Asked Questions</CardTitle>
+                        <CardDescription>Quick answers to common questions about our services</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <Accordion type="single" collapsible className="space-y-2">
+                            {[
+                                { q: "How quickly can I get my WAEC results?", a: "WAEC result checking is instant. You'll receive the PIN immediately after payment, with 24/7 support if needed." },
+                                { q: "Do you assist with university applications?", a: "Yes, we provide complete university registration support including form filling, document submission, and application tracking." },
+                                { q: "Is my personal information secure?", a: "Absolutely. We use industry-standard encryption and secure processing. Your data is never shared with third parties." },
+                                { q: "What payment methods do you accept?", a: "We accept bank transfers (all Nigerian banks), cards (Visa, Mastercard, Verve), mobile money (Opay, PalmPay, Kuda), and cash at our office." },
+                                { q: "Can you help with hostel booking?", a: "Yes, we offer hostel booking services for universities and polytechnics with room selection and booking confirmation." },
+                            ].map((faq, i) => (
+                                <AccordionItem key={i} value={`faq-${i}`} className="border border-border rounded-lg px-4">
+                                    <AccordionTrigger className="hover:no-underline text-left text-sm font-medium">
+                                        {faq.q}
+                                    </AccordionTrigger>
+                                    <AccordionContent className="text-sm text-muted-foreground pb-4">
+                                        {faq.a}
+                                    </AccordionContent>
+                                </AccordionItem>
+                            ))}
+                        </Accordion>
+                    </CardContent>
+                </Card>
             </div>
-            <CardTitle className="text-4xl font-bold text-gradient">Frequently Asked Questions</CardTitle>
-            <CardDescription className="text-lg">
-              Quick answers to common questions about our premium services
-            </CardDescription>
-            <div className="w-24 h-1 bg-gradient-to-r from-brand-blue to-brand-purple rounded-full mx-auto mt-4"></div>
-          </CardHeader>
-          <CardContent className="relative z-10">
-            <Accordion type="single" collapsible className="space-y-4">
-              <AccordionItem value="item-1" className="border-gradient rounded-2xl px-6">
-                <AccordionTrigger className="hover:no-underline text-left text-lg font-semibold text-gradient hover:text-shimmer">
-                  How quickly can I get my WAEC results?
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground leading-relaxed pt-4">
-                  WAEC result checking is instant with our premium service. You'll receive the PIN immediately after payment, with 24/7 technical support to assist if needed. Our premium clients also get priority access during peak periods.
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="item-2" className="border-gradient rounded-2xl px-6">
-                <AccordionTrigger className="hover:no-underline text-left text-lg font-semibold text-gradient hover:text-shimmer">
-                  Do you assist with university applications?
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground leading-relaxed pt-4">
-                  Yes, we provide comprehensive premium university registration support including personal consultation, form filling assistance, document submission, application tracking, and guaranteed admission guidance. Our success rate is 99.8%.
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="item-3" className="border-gradient rounded-2xl px-6">
-                <AccordionTrigger className="hover:no-underline text-left text-lg font-semibold text-gradient hover:text-shimmer">
-                  Is my personal information secure?
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground leading-relaxed pt-4">
-                  Absolutely. We use military-grade encryption, bank-level security measures, and are PCI DSS compliant. Your data is protected with multi-layer security protocols and we never share personal information with third parties.
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="item-4" className="border-gradient rounded-2xl px-6">
-                <AccordionTrigger className="hover:no-underline text-left text-lg font-semibold text-gradient hover:text-shimmer">
-                  What premium payment methods do you accept?
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground leading-relaxed pt-4">
-                  We accept all major payment methods including bank transfers (all Nigerian banks), international cards (Visa, Mastercard, Verve), mobile money (Opay, PalmPay, Kuda), cryptocurrency, and cash payments at our premium office location.
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="item-5" className="border-gradient rounded-2xl px-6">
-                <AccordionTrigger className="hover:no-underline text-left text-lg font-semibold text-gradient hover:text-shimmer">
-                  Can you help with hostel booking and accommodation?
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground leading-relaxed pt-4">
-                  Yes, we offer premium hostel booking services for universities and polytechnics with room selection, virtual tours, booking confirmation, and move-in assistance. We also provide luxury private accommodation options.
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="item-6" className="border-gradient rounded-2xl px-6">
-                <AccordionTrigger className="hover:no-underline text-left text-lg font-semibold text-gradient hover:text-shimmer">
-                  Do you deliver food products nationwide?
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground leading-relaxed pt-4">
-                  Yes, we deliver premium fresh chinchin and soya milk nationwide with same-day delivery in Lagos, next-day delivery in major cities, and 2-3 day delivery to other locations. All products are freshly made and packaged with care.
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </CardContent>
-        </Card>
-      </div>
-    </section>
-  );
+        </section>
+    );
 };
