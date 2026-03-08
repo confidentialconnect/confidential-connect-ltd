@@ -1,228 +1,253 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, Phone, ShoppingCart, User, LogOut, Mail } from "lucide-react";
+import { Menu, Phone, ShoppingCart, User, LogOut, ChevronDown } from "lucide-react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
-import { GoogleAppsMenu } from "./GoogleAppsMenu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "./ui/dropdown-menu";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 import officialLogo from "@/assets/official-logo.png";
 
 export const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const { totalItems } = useCart();
-  const { user, profile, isAdmin, signOut } = useAuth();
+    const [isOpen, setIsOpen] = useState(false);
+    const { totalItems } = useCart();
+    const { user, profile, isAdmin, signOut } = useAuth();
 
-  const navigation = [
-    { name: "Home", href: "/" },
-    { name: "Categories", href: "/categories" },
-    { name: "Payments", href: "/payment-info" },
-    { name: "Advertising", href: "/advertising" },
-    { name: "About", href: "/about" },
-    { name: "Contact", href: "/contact" },
-  ];
+    const navigation = [
+        { name: "Home", href: "/" },
+        { name: "Services", href: "/categories" },
+        { name: "Products", href: "/products" },
+        { name: "About", href: "/about" },
+        { name: "Contact", href: "/contact" },
+    ];
 
-  return (
-    <header className="fixed top-0 w-full bg-background/95 backdrop-blur-sm border-b border-border z-50 animate-fade-in">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex items-center space-x-3">
-            <img 
-              src={officialLogo} 
-              alt="Confidential Connect LTD Logo" 
-              className="h-12 w-auto"
-            />
-            <div className="text-lg font-extrabold text-gradient">
-              CONFIDENTIAL CONNECT LTD
-            </div>
-          </div>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className="text-foreground hover:text-primary transition-colors duration-200 font-medium"
-              >
-                {item.name}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Google-style Right Side */}
-          <div className="hidden lg:flex items-center space-x-2">
-            {/* Contact Info */}
-            <div className="flex items-center space-x-4 mr-4">
-              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                <Mail className="h-4 w-4" />
-                <span>support@confidentialconnect.ng</span>
-              </div>
-              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                <Phone className="h-4 w-4" />
-                <span>07040294858</span>
-              </div>
-            </div>
-
-            {/* Cart */}
-            <Button variant="ghost" size="sm" asChild className="relative">
-              <Link to="/cart" className="flex items-center gap-1">
-                <ShoppingCart className="h-5 w-5" />
-                {totalItems > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    {totalItems}
-                  </span>
-                )}
-              </Link>
-            </Button>
-
-            {/* Google Apps Menu */}
-            <GoogleAppsMenu />
-            
-            {/* User Account */}
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="rounded-full">
-                    <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-medium">
-                      {(profile?.full_name || user.email)?.charAt(0).toUpperCase()}
-                    </div>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <div className="px-3 py-2 border-b">
-                    <p className="text-sm font-medium">{profile?.full_name || "User"}</p>
-                    <p className="text-xs text-muted-foreground">{user.email}</p>
-                  </div>
-                  <DropdownMenuItem asChild>
-                    <Link to="/profile">Profile</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/orders">My Orders</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/wishlist">Wishlist</Link>
-                  </DropdownMenuItem>
-                  {isAdmin && (
-                    <DropdownMenuItem asChild>
-                      <Link to="/admin">Admin Panel</Link>
-                    </DropdownMenuItem>
-                  )}
-                  <DropdownMenuItem onClick={signOut}>
-                    <LogOut className="h-4 w-4 mr-2" />
-                    Sign Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button asChild size="sm">
-                <Link to="/auth">Sign In</Link>
-              </Button>
-            )}
-          </div>
-
-          {/* Mobile Menu */}
-          <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="sm">
-                <Menu className="h-5 w-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-              <div className="flex flex-col space-y-6 mt-8">
-                <div className="flex items-center space-x-3">
-                  <img 
-                    src={officialLogo} 
-                    alt="Confidential Connect LTD Logo" 
-                    className="h-10 w-auto"
-                  />
-                  <span className="text-lg font-extrabold text-gradient">
-                    CONFIDENTIAL CONNECT LTD
-                  </span>
-                </div>
-                <nav className="flex flex-col space-y-4">
-                  {navigation.map((item) => (
-                    <Link
-                      key={item.name}
-                      to={item.href}
-                      onClick={() => setIsOpen(false)}
-                      className="text-foreground hover:text-primary transition-colors duration-200 font-medium text-lg"
-                    >
-                      {item.name}
+    return (
+        <header className="fixed top-0 w-full bg-background/95 backdrop-blur-md border-b border-border z-50">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex justify-between items-center h-16">
+                    {/* Logo */}
+                    <Link to="/" className="flex items-center gap-2.5 shrink-0">
+                        <img 
+                            src={officialLogo} 
+                            alt="Confidential Connect LTD Logo" 
+                            className="h-9 w-auto"
+                        />
+                        <div className="hidden sm:block">
+                            <div className="text-sm font-bold text-foreground leading-tight">
+                                CONFIDENTIAL CONNECT LTD
+                            </div>
+                            <div className="text-[10px] text-muted-foreground leading-tight">
+                                In partnership with All Campus Connect TV
+                            </div>
+                        </div>
                     </Link>
-                  ))}
-                </nav>
-                <div className="border-t pt-6 space-y-4">
-                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                    <Phone className="h-4 w-4" />
-                    <span>07040294858</span>
-                  </div>
-                  
-                  <Button variant="outline" asChild className="w-full justify-start">
-                    <Link to="/cart" onClick={() => setIsOpen(false)}>
-                      <ShoppingCart className="mr-2 h-4 w-4" />
-                      Cart ({totalItems})
-                    </Link>
-                  </Button>
-                  
-                  {user ? (
-                    <div className="space-y-2">
-                      <div className="px-2 py-1 text-sm text-muted-foreground">
-                        Signed in as {profile?.full_name || user.email}
-                      </div>
-                      <Button variant="outline" asChild className="w-full justify-start">
-                        <Link to="/profile" onClick={() => setIsOpen(false)}>
-                          <User className="mr-2 h-4 w-4" />
-                          Profile
+
+                    {/* Desktop Navigation */}
+                    <nav className="hidden lg:flex items-center gap-1">
+                        {navigation.map((item) => (
+                            <Link
+                                key={item.name}
+                                to={item.href}
+                                className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-muted/50"
+                            >
+                                {item.name}
+                            </Link>
+                        ))}
+                        <Link
+                            to="/payment-info"
+                            className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-muted/50"
+                        >
+                            Payments
                         </Link>
-                      </Button>
-                      <Button variant="outline" asChild className="w-full justify-start">
-                        <Link to="/orders" onClick={() => setIsOpen(false)}>
-                          <User className="mr-2 h-4 w-4" />
-                          My Orders
-                        </Link>
-                      </Button>
-                      <Button variant="outline" asChild className="w-full justify-start">
-                        <Link to="/wishlist" onClick={() => setIsOpen(false)}>
-                          <User className="mr-2 h-4 w-4" />
-                      Wishlist
-                    </Link>
-                  </Button>
-                  {isAdmin && (
-                    <Button variant="outline" asChild className="w-full justify-start">
-                      <Link to="/admin" onClick={() => setIsOpen(false)}>
-                        <User className="mr-2 h-4 w-4" />
-                        Admin Panel
-                      </Link>
-                    </Button>
-                  )}
-                  <Button
-                        variant="outline" 
-                        onClick={() => {
-                          signOut();
-                          setIsOpen(false);
-                        }}
-                        className="w-full justify-start"
-                      >
-                        <LogOut className="mr-2 h-4 w-4" />
-                        Sign Out
-                      </Button>
+                    </nav>
+
+                    {/* Right Side Actions */}
+                    <div className="flex items-center gap-2">
+                        {/* Phone - Desktop */}
+                        <a 
+                            href="tel:+2347040294858" 
+                            className="hidden lg:flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors px-3 py-2"
+                        >
+                            <Phone className="h-4 w-4" />
+                            <span>07040294858</span>
+                        </a>
+
+                        {/* Cart */}
+                        <Button variant="ghost" size="icon" asChild className="relative">
+                            <Link to="/cart">
+                                <ShoppingCart className="h-5 w-5" />
+                                {totalItems > 0 && (
+                                    <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
+                                        {totalItems}
+                                    </span>
+                                )}
+                            </Link>
+                        </Button>
+
+                        {/* User Account */}
+                        {user ? (
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" size="sm" className="gap-2">
+                                        <div className="w-7 h-7 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-semibold">
+                                            {(profile?.full_name || user.email)?.charAt(0).toUpperCase()}
+                                        </div>
+                                        <ChevronDown className="h-3.5 w-3.5 text-muted-foreground hidden sm:block" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="w-56">
+                                    <div className="px-3 py-2">
+                                        <p className="text-sm font-medium">{profile?.full_name || "User"}</p>
+                                        <p className="text-xs text-muted-foreground">{user.email}</p>
+                                    </div>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem asChild>
+                                        <Link to="/profile">Profile</Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem asChild>
+                                        <Link to="/orders">My Orders</Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem asChild>
+                                        <Link to="/wishlist">Wishlist</Link>
+                                    </DropdownMenuItem>
+                                    {isAdmin && (
+                                        <>
+                                            <DropdownMenuSeparator />
+                                            <DropdownMenuItem asChild>
+                                                <Link to="/admin">Admin Panel</Link>
+                                            </DropdownMenuItem>
+                                        </>
+                                    )}
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem onClick={signOut}>
+                                        <LogOut className="h-4 w-4 mr-2" />
+                                        Sign Out
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        ) : (
+                            <Button size="sm" asChild>
+                                <Link to="/auth">Sign In</Link>
+                            </Button>
+                        )}
+
+                        {/* Mobile Menu */}
+                        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+                            <SheetTrigger asChild className="lg:hidden">
+                                <Button variant="ghost" size="icon">
+                                    <Menu className="h-5 w-5" />
+                                </Button>
+                            </SheetTrigger>
+                            <SheetContent side="right" className="w-[280px]">
+                                <div className="flex flex-col mt-6">
+                                    {/* Logo */}
+                                    <div className="flex items-center gap-2.5 mb-6 pb-6 border-b border-border">
+                                        <img 
+                                            src={officialLogo} 
+                                            alt="Logo" 
+                                            className="h-8 w-auto"
+                                        />
+                                        <div>
+                                            <div className="text-xs font-bold text-foreground leading-tight">
+                                                CONFIDENTIAL CONNECT LTD
+                                            </div>
+                                            <div className="text-[10px] text-muted-foreground">
+                                                All Campus Connect TV
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Nav Links */}
+                                    <nav className="flex flex-col gap-1">
+                                        {navigation.map((item) => (
+                                            <Link
+                                                key={item.name}
+                                                to={item.href}
+                                                onClick={() => setIsOpen(false)}
+                                                className="px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted/50 rounded-md transition-colors"
+                                            >
+                                                {item.name}
+                                            </Link>
+                                        ))}
+                                        <Link
+                                            to="/payment-info"
+                                            onClick={() => setIsOpen(false)}
+                                            className="px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted/50 rounded-md transition-colors"
+                                        >
+                                            Payments
+                                        </Link>
+                                    </nav>
+
+                                    {/* Divider */}
+                                    <div className="border-t border-border my-4" />
+
+                                    {/* Actions */}
+                                    <div className="space-y-2">
+                                        <Button variant="outline" size="sm" className="w-full justify-start" asChild>
+                                            <Link to="/cart" onClick={() => setIsOpen(false)}>
+                                                <ShoppingCart className="mr-2 h-4 w-4" />
+                                                Cart ({totalItems})
+                                            </Link>
+                                        </Button>
+
+                                        {user ? (
+                                            <>
+                                                <div className="px-3 py-1.5 text-xs text-muted-foreground">
+                                                    {profile?.full_name || user.email}
+                                                </div>
+                                                <Button variant="outline" size="sm" className="w-full justify-start" asChild>
+                                                    <Link to="/profile" onClick={() => setIsOpen(false)}>
+                                                        <User className="mr-2 h-4 w-4" />
+                                                        Profile
+                                                    </Link>
+                                                </Button>
+                                                <Button variant="outline" size="sm" className="w-full justify-start" asChild>
+                                                    <Link to="/orders" onClick={() => setIsOpen(false)}>
+                                                        My Orders
+                                                    </Link>
+                                                </Button>
+                                                {isAdmin && (
+                                                    <Button variant="outline" size="sm" className="w-full justify-start" asChild>
+                                                        <Link to="/admin" onClick={() => setIsOpen(false)}>
+                                                            Admin Panel
+                                                        </Link>
+                                                    </Button>
+                                                )}
+                                                <Button 
+                                                    variant="outline" 
+                                                    size="sm"
+                                                    className="w-full justify-start"
+                                                    onClick={() => { signOut(); setIsOpen(false); }}
+                                                >
+                                                    <LogOut className="mr-2 h-4 w-4" />
+                                                    Sign Out
+                                                </Button>
+                                            </>
+                                        ) : (
+                                            <Button size="sm" className="w-full" asChild>
+                                                <Link to="/auth" onClick={() => setIsOpen(false)}>
+                                                    Sign In
+                                                </Link>
+                                            </Button>
+                                        )}
+                                    </div>
+
+                                    {/* Phone */}
+                                    <div className="border-t border-border mt-4 pt-4">
+                                        <a 
+                                            href="tel:+2347040294858" 
+                                            className="flex items-center gap-2 text-sm text-muted-foreground"
+                                        >
+                                            <Phone className="h-4 w-4" />
+                                            07040294858
+                                        </a>
+                                    </div>
+                                </div>
+                            </SheetContent>
+                        </Sheet>
                     </div>
-                  ) : (
-                    <Button asChild className="w-full">
-                      <Link to="/auth" onClick={() => setIsOpen(false)}>
-                        Sign In
-                      </Link>
-                    </Button>
-                  )}
                 </div>
-              </div>
-            </SheetContent>
-          </Sheet>
-        </div>
-      </div>
-    </header>
-  );
+            </div>
+        </header>
+    );
 };
