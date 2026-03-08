@@ -1,6 +1,7 @@
 import { Header } from "@/components/Header";
 import { GoogleInspiredHero } from "@/components/GoogleInspiredHero";
 import { PremiumFeatures } from "@/components/PremiumFeatures";
+import { TrustSection } from "@/components/TrustSection";
 import { Testimonials } from "@/components/Testimonials";
 import { ProductGrid } from "@/components/ProductGrid";
 import { ServicesSection } from "@/components/ServicesSection";
@@ -9,6 +10,7 @@ import { GoogleInspiredFooter } from "@/components/GoogleInspiredFooter";
 import { AIChatWidget } from "@/components/AIChatWidget";
 import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { useEffect } from "react";
 
 const Index = () => {
@@ -40,6 +42,7 @@ const Index = () => {
             <Header />
             <main>
                 <GoogleInspiredHero />
+                <TrustSection />
                 <PremiumFeatures />
                 <ProductGrid />
                 <Testimonials />
@@ -48,6 +51,7 @@ const Index = () => {
             </main>
             <GoogleInspiredFooter />
             <AIChatWidget />
+            <WhatsAppButton />
             <ScrollToTop />
         </div>
     );
