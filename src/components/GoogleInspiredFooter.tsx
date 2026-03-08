@@ -99,7 +99,7 @@ export const GoogleInspiredFooter = () => {
                                 <Phone className="h-4 w-4 mt-0.5 shrink-0" />
                                 <div>
                                     <div>+234 704 029 4858</div>
-                                    <div>+234 901 171 5040</div>
+                                    <div>+234 911 715 0406</div>
                                 </div>
                             </li>
                             <li className="flex items-center gap-2 text-sm text-muted-foreground">

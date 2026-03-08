@@ -174,7 +174,7 @@ Please respond to this inquiry. Thank you!`;
                   <div>
                     <div className="font-bold text-lg text-gradient">Premium Phone Support</div>
                     <div className="text-muted-foreground font-medium">+234 704 029 4858</div>
-                    <div className="text-muted-foreground font-medium">+234 901 171 50406</div>
+                    <div className="text-muted-foreground font-medium">+234 911 715 0406</div>
                     <div className="text-xs text-brand-blue">24/7 Emergency Support Available</div>
                   </div>
                 </div>
