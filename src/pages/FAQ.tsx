@@ -1,3 +1,4 @@
+import { usePageSEO } from "@/hooks/usePageSEO";
 import { Header } from "@/components/Header";
 import { GoogleInspiredFooter } from "@/components/GoogleInspiredFooter";
 import { ScrollToTop } from "@/components/ScrollToTop";
@@ -88,6 +89,13 @@ const faqCategories = [
 ];
 
 const FAQ = () => {
+    usePageSEO({
+        title: 'FAQ',
+        description: 'Find answers to frequently asked questions about document processing, school registration, result checking, and our services at CONFIDENTIAL CONNECT LTD.',
+        keywords: 'FAQ confidential connect, document processing questions, WAEC result checker help, service questions Nigeria',
+        canonical: 'https://confidential-connect-ltd.lovable.app/faq',
+    });
+
     return (
         <div className="min-h-screen bg-background">
             <Header />

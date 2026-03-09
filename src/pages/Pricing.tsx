@@ -1,3 +1,4 @@
+import { usePageSEO } from "@/hooks/usePageSEO";
 import { Header } from "@/components/Header";
 import { GoogleInspiredFooter } from "@/components/GoogleInspiredFooter";
 import { ScrollToTop } from "@/components/ScrollToTop";
@@ -83,6 +84,13 @@ const pricingCategories = [
 ];
 
 const Pricing = () => {
+    usePageSEO({
+        title: 'Pricing',
+        description: 'View transparent pricing for document processing, WAEC/NECO result checking, birth certificates, and other services at CONFIDENTIAL CONNECT LTD.',
+        keywords: 'pricing confidential connect, WAEC result checker price, birth certificate cost Nigeria, document processing fees',
+        canonical: 'https://confidential-connect-ltd.lovable.app/pricing',
+    });
+
     return (
         <div className="min-h-screen bg-background">
             <Header />

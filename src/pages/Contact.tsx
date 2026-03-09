@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { usePageSEO } from "@/hooks/usePageSEO";
 import { Header } from "@/components/Header";
 import { GoogleInspiredFooter } from "@/components/GoogleInspiredFooter";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,13 @@ import { useToast } from "@/hooks/use-toast";
 
 const Contact = () => {
     const { toast } = useToast();
+    usePageSEO({
+        title: 'Contact Us',
+        description: 'Contact CONFIDENTIAL CONNECT LTD for document processing, school registration, and digital services. Reach us via phone, WhatsApp, or email.',
+        keywords: 'contact confidential connect, customer support Nigeria, digital services contact',
+        canonical: 'https://confidential-connect-ltd.lovable.app/contact',
+    });
+
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [formData, setFormData] = useState({
         name: "",
