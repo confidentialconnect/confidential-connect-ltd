@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { usePageSEO } from "@/hooks/usePageSEO";
 import { Header } from "@/components/Header";
 import { GoogleInspiredFooter } from "@/components/GoogleInspiredFooter";
 import { Button } from "@/components/ui/button";
