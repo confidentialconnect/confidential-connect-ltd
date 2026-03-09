@@ -31,6 +31,8 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsConditions from "./pages/TermsConditions";
 import FAQ from "./pages/FAQ";
 import Pricing from "./pages/Pricing";
+import Dashboard from "./pages/Dashboard";
+import ServiceRequest from "./pages/ServiceRequest";
 
 const queryClient = new QueryClient();
 
@@ -61,6 +63,8 @@ const App = () => (
               <Route path="/order-success" element={<OrderSuccess />} />
               <Route path="/payments" element={<Payments />} />
               <Route path="/payment-info" element={<PaymentInfo />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/request-service" element={<ServiceRequest />} />
               <Route path="/admin" element={<AdminHome />} />
               <Route path="/admin/orders" element={<AdminOrders />} />
               <Route path="/advertising" element={<Advertising />} />

@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      notifications: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_read: boolean
+          link: string | null
+          message: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_read?: boolean
+          link?: string | null
+          message: string
+          title: string
+          type?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_read?: boolean
+          link?: string | null
+          message?: string
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       order_items: {
         Row: {
           created_at: string | null
@@ -158,6 +191,51 @@ export type Database = {
           is_admin?: boolean | null
           phone?: string | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      service_requests: {
+        Row: {
+          admin_notes: string | null
+          client_email: string
+          client_name: string
+          client_phone: string
+          created_at: string | null
+          description: string | null
+          document_url: string | null
+          id: string
+          service_type: string
+          status: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          client_email: string
+          client_name: string
+          client_phone: string
+          created_at?: string | null
+          description?: string | null
+          document_url?: string | null
+          id?: string
+          service_type: string
+          status?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          admin_notes?: string | null
+          client_email?: string
+          client_name?: string
+          client_phone?: string
+          created_at?: string | null
+          description?: string | null
+          document_url?: string | null
+          id?: string
+          service_type?: string
+          status?: string
+          updated_at?: string | null
+          user_id?: string
         }
         Relationships: []
       }

@@ -139,7 +139,7 @@ export const ServicesSection = () => {
                                         </BankPaymentModal>
                                     ) : (
                                         <Button asChild className="w-full" variant="outline">
-                                            <a href="#contact">Learn More</a>
+                                            <a href="/request-service">Request Service</a>
                                         </Button>
                                     )}
                                 </CardContent>
