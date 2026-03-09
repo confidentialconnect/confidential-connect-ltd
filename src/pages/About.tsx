@@ -22,6 +22,13 @@ import ceoPhoto from "@/assets/ceo-photo.jpg";
 import { Link } from "react-router-dom";
 
 const About = () => {
+    usePageSEO({
+        title: 'About Us',
+        description: 'Learn about CONFIDENTIAL CONNECT LTD — a CAC-registered company providing professional document processing, school registration, and digital services in Nigeria. In partnership with All Campus Connect TV.',
+        keywords: 'about confidential connect, CAC registered company, document processing Nigeria, All Campus Connect TV',
+        canonical: 'https://confidential-connect-ltd.lovable.app/about',
+    });
+
     const stats = [
         { label: "Clients Served", value: "10,000+", icon: Users },
         { label: "Success Rate", value: "99.5%", icon: Award },
