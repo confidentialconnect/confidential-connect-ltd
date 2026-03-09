@@ -103,6 +103,12 @@ export const Header = () => {
                                     </div>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem asChild>
+                                        <Link to="/dashboard">My Dashboard</Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem asChild>
+                                        <Link to="/request-service">Request Service</Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem asChild>
                                         <Link to="/profile">Profile</Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem asChild>
