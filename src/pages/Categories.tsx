@@ -9,6 +9,13 @@ import { Link } from "react-router-dom";
 import { Laptop, Shield, Globe, Server, Database, Code } from "lucide-react";
 
 const Categories = () => {
+  usePageSEO({
+      title: 'Services',
+      description: 'Browse all services offered by CONFIDENTIAL CONNECT LTD — document processing, school registration, WAEC/NECO result checking, and digital services.',
+      keywords: 'services confidential connect, document processing services, digital services Nigeria, school registration',
+      canonical: 'https://confidential-connect-ltd.lovable.app/categories',
+  });
+
   const [selectedCategory, setSelectedCategory] = useState("all");
 
   const categories = [
