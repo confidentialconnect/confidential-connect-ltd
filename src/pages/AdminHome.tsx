@@ -76,18 +76,6 @@ const AdminHome = () => {
     const { toast } = useToast();
     const { user, isAdmin, loading: authLoading } = useAuth();
 
-    if (!authLoading && (!user || !isAdmin)) {
-        return <Navigate to="/auth" replace />;
-    }
-
-    if (authLoading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin" />
-            </div>
-        );
-    }
-
     useEffect(() => {
         document.title = "Admin Dashboard | Confidential Connect Ltd";
         fetchAllData();
