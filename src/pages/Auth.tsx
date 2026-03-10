@@ -58,7 +58,6 @@ const Auth = () => {
                     : error.message,
                 variant: "destructive"
             });
-            signInCaptchaRef.current?.reset();
         } else {
             toast({
                 title: "Welcome back!",
