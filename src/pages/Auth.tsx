@@ -240,15 +240,6 @@ const Auth = () => {
                                             required
                                         />
                                     </div>
-                                    {RECAPTCHA_SITE_KEY && (
-                                        <div className="flex justify-center">
-                                            <ReCAPTCHA
-                                                ref={signUpCaptchaRef}
-                                                sitekey={RECAPTCHA_SITE_KEY}
-                                                theme="light"
-                                            />
-                                        </div>
-                                    )}
                                     <Button type="submit" className="w-full" disabled={isLoading}>
                                         {isLoading ? "Creating Account..." : "Create Account"}
                                     </Button>
