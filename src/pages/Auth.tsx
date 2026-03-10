@@ -121,7 +121,6 @@ const Auth = () => {
                     variant: "destructive"
                 });
             }
-            signUpCaptchaRef.current?.reset();
         } else {
             toast({
                 title: "Account Created!",
