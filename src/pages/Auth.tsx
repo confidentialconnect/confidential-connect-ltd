@@ -101,15 +101,6 @@ const Auth = () => {
 
         setIsLoading(true);
 
-        const captchaToken = signUpCaptchaRef.current?.getValue() || null;
-        const captchaValid = await verifyCaptcha(captchaToken);
-
-        if (!captchaValid) {
-            setIsLoading(false);
-            signUpCaptchaRef.current?.reset();
-            return;
-        }
-
         const { error } = await signUp(
             signUpData.email,
             signUpData.password,
