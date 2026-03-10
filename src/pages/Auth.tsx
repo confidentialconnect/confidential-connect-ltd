@@ -19,9 +19,6 @@ const Auth = () => {
         fullName: ''
     });
 
-    const signInCaptchaRef = useRef<ReCAPTCHA>(null);
-    const signUpCaptchaRef = useRef<ReCAPTCHA>(null);
-
     const { signIn, signUp, user } = useAuth();
     const { toast } = useToast();
     const navigate = useNavigate();
