@@ -35,33 +35,6 @@ const Auth = () => {
         }
     }, [user, navigate]);
 
-    const verifyCaptcha = async (token: string | null): Promise<boolean> => {
-        // If no site key configured, skip verification (dev mode)
-        if (!RECAPTCHA_SITE_KEY) return true;
-
-        if (!token) {
-            toast({
-                title: "Verification Required",
-                description: "Please complete the reCAPTCHA verification.",
-                variant: "destructive"
-            });
-            return false;
-        }
-
-        try {
-            const { data, error } = await supabase.functions.invoke('verify-recaptcha', {
-                body: { token }
-            });
-
-            if (error) throw error;
-            return data?.success === true;
-        } catch {
-            // If verification endpoint fails, allow through with warning
-            console.warn('reCAPTCHA verification failed — allowing through');
-            return true;
-        }
-    };
-
     const handleSignIn = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!signInData.email || !signInData.password) {
@@ -74,15 +47,6 @@ const Auth = () => {
         }
 
         setIsLoading(true);
-
-        const captchaToken = signInCaptchaRef.current?.getValue() || null;
-        const captchaValid = await verifyCaptcha(captchaToken);
-
-        if (!captchaValid) {
-            setIsLoading(false);
-            signInCaptchaRef.current?.reset();
-            return;
-        }
 
         const { error } = await signIn(signInData.email, signInData.password);
 
