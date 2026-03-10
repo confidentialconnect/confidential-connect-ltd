@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,10 +7,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
-import ReCAPTCHA from 'react-google-recaptcha';
-
-const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || '6Ldc1YMsAAAAAAlvvaBdCHNLqVwHURHb78_nJovc';
 
 const Auth = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -21,9 +17,6 @@ const Auth = () => {
         confirmPassword: '',
         fullName: ''
     });
-
-    const signInCaptchaRef = useRef<ReCAPTCHA>(null);
-    const signUpCaptchaRef = useRef<ReCAPTCHA>(null);
 
     const { signIn, signUp, user } = useAuth();
     const { toast } = useToast();
@@ -41,33 +34,6 @@ const Auth = () => {
         }
     }, [user, navigate]);
 
-    const verifyCaptcha = async (token: string | null): Promise<boolean> => {
-        // If no site key configured, skip verification (dev mode)
-        if (!RECAPTCHA_SITE_KEY) return true;
-
-        if (!token) {
-            toast({
-                title: "Verification Required",
-                description: "Please complete the reCAPTCHA verification.",
-                variant: "destructive"
-            });
-            return false;
-        }
-
-        try {
-            const { data, error } = await supabase.functions.invoke('verify-recaptcha', {
-                body: { token }
-            });
-
-            if (error) throw error;
-            return data?.success === true;
-        } catch {
-            // If verification endpoint fails, allow through with warning
-            console.warn('reCAPTCHA verification failed — allowing through');
-            return true;
-        }
-    };
-
     const handleSignIn = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!signInData.email || !signInData.password) {
@@ -81,15 +47,6 @@ const Auth = () => {
 
         setIsLoading(true);
 
-        const captchaToken = signInCaptchaRef.current?.getValue() || null;
-        const captchaValid = await verifyCaptcha(captchaToken);
-
-        if (!captchaValid) {
-            setIsLoading(false);
-            signInCaptchaRef.current?.reset();
-            return;
-        }
-
         const { error } = await signIn(signInData.email, signInData.password);
 
         if (error) {
@@ -100,7 +57,6 @@ const Auth = () => {
                     : error.message,
                 variant: "destructive"
             });
-            signInCaptchaRef.current?.reset();
         } else {
             toast({
                 title: "Welcome back!",
@@ -144,15 +100,6 @@ const Auth = () => {
 
         setIsLoading(true);
 
-        const captchaToken = signUpCaptchaRef.current?.getValue() || null;
-        const captchaValid = await verifyCaptcha(captchaToken);
-
-        if (!captchaValid) {
-            setIsLoading(false);
-            signUpCaptchaRef.current?.reset();
-            return;
-        }
-
         const { error } = await signUp(
             signUpData.email,
             signUpData.password,
@@ -173,7 +120,6 @@ const Auth = () => {
                     variant: "destructive"
                 });
             }
-            signUpCaptchaRef.current?.reset();
         } else {
             toast({
                 title: "Account Created!",
@@ -234,15 +180,6 @@ const Auth = () => {
                                             required
                                         />
                                     </div>
-                                    {RECAPTCHA_SITE_KEY && (
-                                        <div className="flex justify-center">
-                                            <ReCAPTCHA
-                                                ref={signInCaptchaRef}
-                                                sitekey={RECAPTCHA_SITE_KEY}
-                                                theme="light"
-                                            />
-                                        </div>
-                                    )}
                                     <Button type="submit" className="w-full" disabled={isLoading}>
                                         {isLoading ? "Signing In..." : "Sign In"}
                                     </Button>
@@ -302,15 +239,6 @@ const Auth = () => {
                                             required
                                         />
                                     </div>
-                                    {RECAPTCHA_SITE_KEY && (
-                                        <div className="flex justify-center">
-                                            <ReCAPTCHA
-                                                ref={signUpCaptchaRef}
-                                                sitekey={RECAPTCHA_SITE_KEY}
-                                                theme="light"
-                                            />
-                                        </div>
-                                    )}
                                     <Button type="submit" className="w-full" disabled={isLoading}>
                                         {isLoading ? "Creating Account..." : "Create Account"}
                                     </Button>
