@@ -15,15 +15,15 @@ import { useEffect } from "react";
 
 const Index = () => {
     useEffect(() => {
-        document.title = "Confidential Connect Ltd - Professional Documentation & Digital Services";
+        document.title = "Confidential Connect Ltd — Professional Documentation & Digital Services";
         
         const metaDescription = document.querySelector('meta[name="description"]');
         if (metaDescription) {
-            metaDescription.setAttribute('content', 'CONFIDENTIAL CONNECT LTD — Your trusted partner for document processing, school registration, result verification, and digital services in Nigeria. In partnership with All Campus Connect TV.');
+            metaDescription.setAttribute('content', 'CONFIDENTIAL CONNECT LTD — Your trusted partner for WAEC result checking, certificate processing, NIN verification, and student support services in Nigeria. CAC Registered (RC 9081270).');
         } else {
             const meta = document.createElement('meta');
             meta.name = 'description';
-            meta.content = 'CONFIDENTIAL CONNECT LTD — Your trusted partner for document processing, school registration, result verification, and digital services in Nigeria. In partnership with All Campus Connect TV.';
+            meta.content = 'CONFIDENTIAL CONNECT LTD — Your trusted partner for WAEC result checking, certificate processing, NIN verification, and student support services in Nigeria. CAC Registered (RC 9081270).';
             document.head.appendChild(meta);
         }
 
@@ -31,7 +31,7 @@ const Index = () => {
         if (!metaKeywords) {
             const meta = document.createElement('meta');
             meta.name = 'keywords';
-            meta.content = 'document processing, school registration, WAEC result checker, birth certificate, digital services, Nigeria, All Campus Connect TV, Confidential Connect Ltd';
+            meta.content = 'WAEC result checker, certificate processing, NIN verification, student services, document processing, Nigeria, All Campus Connect TV, Confidential Connect Ltd';
             document.head.appendChild(meta);
         }
     }, []);
