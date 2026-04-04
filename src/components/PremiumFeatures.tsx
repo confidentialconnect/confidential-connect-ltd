@@ -40,9 +40,9 @@ export const PremiumFeatures = () => {
         },
         {
             icon: Monitor,
-            title: "Digital Services",
-            description: "Online registrations, NIN retrieval, identity verification, and other essential digital processing services.",
-            features: ["Secure process", "Online access", "24/7 availability"],
+            title: "NIN & Identity Services",
+            description: "NIN retrieval, identity verification, and other essential digital processing services with full privacy protection.",
+            features: ["Secure process", "Online access", "Privacy guaranteed"],
         },
         {
             icon: Smartphone,
@@ -53,40 +53,41 @@ export const PremiumFeatures = () => {
     ];
 
     return (
-        <section className="py-20 bg-background">
+        <section className="py-24 bg-secondary/50">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
-                <div className="text-center mb-14">
-                    <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-3">What We Offer</p>
-                    <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+                <div className="text-center mb-16">
+                    <p className="text-xs font-semibold text-primary uppercase tracking-[0.2em] mb-4 font-body">What We Offer</p>
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 font-display">
                         Comprehensive Service Solutions
                     </h2>
-                    <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                    <div className="line-gold mx-auto mb-6" />
+                    <p className="text-lg text-muted-foreground max-w-3xl mx-auto font-body leading-relaxed">
                         From document processing to school registrations, we provide end-to-end services 
                         that simplify your academic and professional documentation needs.
                     </p>
                 </div>
 
                 {/* Services Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-14">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
                     {services.map((service, index) => {
                         const IconComponent = service.icon;
                         return (
                             <Card 
                                 key={index} 
-                                className="bg-card border-border hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 group"
+                                className="bg-card border-border hover-gold transition-all duration-300 hover:-translate-y-1 group"
                             >
-                                <CardContent className="p-6 space-y-4">
-                                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 group-hover:bg-primary/15 transition-colors">
-                                        <IconComponent className="h-6 w-6 text-primary" />
+                                <CardContent className="p-7 space-y-5">
+                                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-accent group-hover:bg-primary/10 transition-colors duration-300">
+                                        <IconComponent className="h-7 w-7 text-primary" />
                                     </div>
                                     
-                                    <h3 className="text-xl font-semibold text-foreground">{service.title}</h3>
-                                    <p className="text-muted-foreground text-sm leading-relaxed">{service.description}</p>
+                                    <h3 className="text-xl font-bold text-foreground font-display">{service.title}</h3>
+                                    <p className="text-muted-foreground text-sm leading-relaxed font-body">{service.description}</p>
                                     
-                                    <div className="space-y-2 pt-2">
+                                    <div className="space-y-2.5 pt-2">
                                         {service.features.map((feature, i) => (
-                                            <div key={i} className="flex items-center gap-2.5 text-sm">
+                                            <div key={i} className="flex items-center gap-2.5 text-sm font-body">
                                                 <Check className="h-4 w-4 text-primary shrink-0" />
                                                 <span className="text-foreground/70">{feature}</span>
                                             </div>
@@ -99,16 +100,17 @@ export const PremiumFeatures = () => {
                 </div>
 
                 {/* CTA */}
-                <div className="text-center bg-card border border-border rounded-2xl p-10 max-w-3xl mx-auto">
-                    <h3 className="text-2xl font-bold text-foreground mb-3">
+                <div className="text-center bg-foreground rounded-2xl p-12 max-w-3xl mx-auto relative overflow-hidden">
+                    <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent" />
+                    <h3 className="text-2xl lg:text-3xl font-bold text-background mb-4 font-display">
                         Ready to Get Started?
                     </h3>
-                    <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
-                        Join thousands of clients who trust <strong>CONFIDENTIAL CONNECT LTD</strong> for their 
+                    <p className="text-background/60 mb-8 max-w-lg mx-auto font-body">
+                        Join thousands of clients who trust <strong className="text-primary">CONFIDENTIAL CONNECT LTD</strong> for their 
                         documentation and service needs.
                     </p>
                     <div className="flex flex-wrap justify-center gap-4">
-                        <Button size="lg" className="px-8" asChild>
+                        <Button size="lg" className="gradient-gold text-primary-foreground px-8 shadow-gold font-body font-semibold tracking-wide" asChild>
                             <Link to="/categories">
                                 Browse Services
                                 <ArrowRight className="h-4 w-4 ml-2" />
@@ -117,10 +119,9 @@ export const PremiumFeatures = () => {
                         <Button 
                             size="lg" 
                             variant="outline"
-                            className="px-8"
+                            className="px-8 border-background/20 text-background hover:bg-background/10 font-body"
                             onClick={() => {
-                                const msg = `Hello Confidential Connect Ltd! I'd like to learn more about your services.`;
-                                window.open(`https://wa.me/2347040294858?text=${encodeURIComponent(msg)}`, '_blank');
+                                window.open(`https://wa.me/2347040294858?text=${encodeURIComponent("Hello Confidential Connect Ltd! I'd like to learn more about your services.")}`, '_blank');
                             }}
                         >
                             <Smartphone className="h-4 w-4 mr-2" />

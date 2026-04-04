@@ -42,14 +42,15 @@ const testimonials = [
 
 export const Testimonials = () => {
     return (
-        <section className="py-20 bg-muted/20">
+        <section className="py-24 bg-background">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-14">
-                    <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-3">Testimonials</p>
-                    <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-                        Trusted by Thousands of Clients
+                <div className="text-center mb-16">
+                    <p className="text-xs font-semibold text-primary uppercase tracking-[0.2em] mb-4 font-body">Testimonials</p>
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 font-display">
+                        Trusted by Thousands
                     </h2>
-                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                    <div className="line-gold mx-auto mb-6" />
+                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-body leading-relaxed">
                         Hear from students, parents, and institutions who rely on our services for their documentation and academic needs.
                     </p>
                 </div>
@@ -58,12 +59,12 @@ export const Testimonials = () => {
                     {testimonials.map((testimonial, index) => (
                         <Card 
                             key={index} 
-                            className="bg-card border-border hover:border-primary/20 transition-all duration-300 hover:-translate-y-1"
+                            className="bg-card border-border hover-gold transition-all duration-300 hover:-translate-y-1"
                         >
-                            <CardContent className="p-6 space-y-4">
-                                <Quote className="h-8 w-8 text-primary/20" />
+                            <CardContent className="p-7 space-y-5">
+                                <Quote className="h-8 w-8 text-primary/30" />
                                 
-                                <p className="text-foreground/80 leading-relaxed text-sm">
+                                <p className="text-foreground/80 leading-relaxed text-sm font-body italic">
                                     "{testimonial.content}"
                                 </p>
 
@@ -71,21 +72,21 @@ export const Testimonials = () => {
                                     {Array.from({ length: 5 }).map((_, i) => (
                                         <Star 
                                             key={i} 
-                                            className={`h-4 w-4 ${i < testimonial.rating ? 'text-yellow-500 fill-yellow-500' : 'text-muted-foreground/30'}`} 
+                                            className={`h-4 w-4 ${i < testimonial.rating ? 'text-primary fill-primary' : 'text-muted-foreground/20'}`} 
                                         />
                                     ))}
                                 </div>
 
-                                <div className="pt-2 border-t border-border">
+                                <div className="pt-4 border-t border-border">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                                            <span className="text-sm font-bold text-primary">
+                                        <div className="w-10 h-10 rounded-full gradient-gold flex items-center justify-center">
+                                            <span className="text-sm font-bold text-primary-foreground font-body">
                                                 {testimonial.name.charAt(0)}
                                             </span>
                                         </div>
                                         <div>
-                                            <p className="text-sm font-semibold text-foreground">{testimonial.name}</p>
-                                            <p className="text-xs text-muted-foreground">{testimonial.role}</p>
+                                            <p className="text-sm font-semibold text-foreground font-body">{testimonial.name}</p>
+                                            <p className="text-xs text-muted-foreground font-body">{testimonial.role}</p>
                                         </div>
                                     </div>
                                 </div>
