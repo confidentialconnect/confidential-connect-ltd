@@ -289,7 +289,7 @@ export const AIChatWidget = () => {
                         <form
                             onSubmit={(e) => {
                                 e.preventDefault();
-                                sendMessage();
+                                sendMessageWithText(input);
                             }}
                             className="flex gap-2"
                         >
