@@ -96,6 +96,13 @@ async function streamChat({
     onDone();
 }
 
+const QUICK_REPLIES = [
+    { label: '📄 WAEC Certificate', message: 'I need help with WAEC certificate processing' },
+    { label: '🆔 NIN Services', message: 'I need help with NIN registration or correction' },
+    { label: '💰 Pricing', message: 'What are your prices?' },
+    { label: '📞 Contact Us', message: 'How can I contact you?' },
+];
+
 export const AIChatWidget = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState<Msg[]>([
@@ -106,6 +113,7 @@ export const AIChatWidget = () => {
     ]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [showQuickReplies, setShowQuickReplies] = useState(true);
     const scrollRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -121,15 +129,23 @@ export const AIChatWidget = () => {
         }
     }, [isOpen]);
 
-    const sendMessage = async () => {
-        const text = input.trim();
-        if (!text || isLoading) return;
+    const handleQuickReply = (message: string) => {
+        setShowQuickReplies(false);
+        setInput(message);
+        setTimeout(() => {
+            sendMessageWithText(message);
+        }, 0);
+    };
 
-        const userMsg: Msg = { role: 'user', content: text };
+    const sendMessageWithText = async (text: string) => {
+        if (!text.trim() || isLoading) return;
+
+        const userMsg: Msg = { role: 'user', content: text.trim() };
         const updatedMessages = [...messages, userMsg];
         setMessages(updatedMessages);
         setInput('');
         setIsLoading(true);
+        setShowQuickReplies(false);
 
         let assistantSoFar = '';
 
@@ -253,6 +269,19 @@ export const AIChatWidget = () => {
                                 </div>
                             </div>
                         )}
+                        {showQuickReplies && !isLoading && messages.length === 1 && (
+                            <div className="flex flex-wrap gap-2 pt-2">
+                                {QUICK_REPLIES.map((qr) => (
+                                    <button
+                                        key={qr.label}
+                                        onClick={() => handleQuickReply(qr.message)}
+                                        className="text-xs px-3 py-1.5 rounded-full border border-primary/30 bg-primary/5 text-primary hover:bg-primary/10 transition-colors"
+                                    >
+                                        {qr.label}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     {/* Input */}
@@ -260,7 +289,7 @@ export const AIChatWidget = () => {
                         <form
                             onSubmit={(e) => {
                                 e.preventDefault();
-                                sendMessage();
+                                sendMessageWithText(input);
                             }}
                             className="flex gap-2"
                         >
