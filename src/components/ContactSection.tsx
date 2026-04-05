@@ -115,7 +115,7 @@ export const ContactSection = () => {
                                 {[
                                     { icon: Phone, title: "Phone Support", lines: ["+234 704 029 4858", "+234 911 715 0406"], note: "Available Mon-Sat" },
                                     { icon: Mail, title: "Email", lines: ["confidentialconnectltd@gmail.com"], note: "Response within 24 hours" },
-                                    { icon: MapPin, title: "Office Location", lines: ["Assembly of God Church Iddo Sarki", "Airport Road, close to University of Abuja", "Abuja, Nigeria"], note: "" },
+                                    { icon: MapPin, title: "Office Location", lines: ["Close to KCE Villa, Iddo Sarki", "Airport Road, Abuja, Nigeria"], note: "" },
                                     { icon: Clock, title: "Working Hours", lines: ["Mon-Fri: 8:00 AM - 6:00 PM", "Saturday: 9:00 AM - 4:00 PM", "Sunday: Closed"], note: "" },
                                 ].map((item, i) => (
                                     <div key={i} className="flex items-start gap-4">
