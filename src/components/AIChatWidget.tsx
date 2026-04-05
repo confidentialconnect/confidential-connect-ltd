@@ -269,6 +269,19 @@ export const AIChatWidget = () => {
                                 </div>
                             </div>
                         )}
+                        {showQuickReplies && !isLoading && messages.length === 1 && (
+                            <div className="flex flex-wrap gap-2 pt-2">
+                                {QUICK_REPLIES.map((qr) => (
+                                    <button
+                                        key={qr.label}
+                                        onClick={() => handleQuickReply(qr.message)}
+                                        className="text-xs px-3 py-1.5 rounded-full border border-primary/30 bg-primary/5 text-primary hover:bg-primary/10 transition-colors"
+                                    >
+                                        {qr.label}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     {/* Input */}
