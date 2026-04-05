@@ -97,7 +97,7 @@ export const GoogleInspiredFooter = () => {
                             </li>
                             <li className="flex items-start gap-3 text-sm text-background/50 font-body">
                                 <MapPin className="h-4 w-4 mt-0.5 text-primary shrink-0" />
-                                <span>Airport Road, close to University of Abuja, Nigeria</span>
+                                <span>Close to KCE Villa, Iddo Sarki, Airport Road, Abuja, Nigeria</span>
                             </li>
                         </ul>
                         <div className="mt-5 flex items-center gap-4">
