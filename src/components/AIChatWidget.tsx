@@ -96,6 +96,13 @@ async function streamChat({
     onDone();
 }
 
+const QUICK_REPLIES = [
+    { label: '📄 WAEC Certificate', message: 'I need help with WAEC certificate processing' },
+    { label: '🆔 NIN Services', message: 'I need help with NIN registration or correction' },
+    { label: '💰 Pricing', message: 'What are your prices?' },
+    { label: '📞 Contact Us', message: 'How can I contact you?' },
+];
+
 export const AIChatWidget = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState<Msg[]>([
@@ -106,6 +113,7 @@ export const AIChatWidget = () => {
     ]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [showQuickReplies, setShowQuickReplies] = useState(true);
     const scrollRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
