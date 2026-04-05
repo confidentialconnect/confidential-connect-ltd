@@ -34,6 +34,7 @@ COMPANY INFO:
 - Phone: 07040294858
 - Email: confidentialconnectltd@gmail.com
 - Payment: Bank Transfer (Moniepoint MFB, Account: 6919053477, Name: Confidential Connect Ltd), Card Payment via Paystack
+- Office Address: Close to KCE Villa, Iddo Sarki, Airport Road, Abuja, Nigeria
 
 SERVICES: WAEC result checking, WAEC certificate processing and retrieval, WAEC correction of name/date of birth/details, NIN registration/correction/printing, School registration assistance, General document processing.
 
