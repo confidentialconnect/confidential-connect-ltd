@@ -129,15 +129,23 @@ export const AIChatWidget = () => {
         }
     }, [isOpen]);
 
-    const sendMessage = async () => {
-        const text = input.trim();
-        if (!text || isLoading) return;
+    const handleQuickReply = (message: string) => {
+        setShowQuickReplies(false);
+        setInput(message);
+        setTimeout(() => {
+            sendMessageWithText(message);
+        }, 0);
+    };
 
-        const userMsg: Msg = { role: 'user', content: text };
+    const sendMessageWithText = async (text: string) => {
+        if (!text.trim() || isLoading) return;
+
+        const userMsg: Msg = { role: 'user', content: text.trim() };
         const updatedMessages = [...messages, userMsg];
         setMessages(updatedMessages);
         setInput('');
         setIsLoading(true);
+        setShowQuickReplies(false);
 
         let assistantSoFar = '';
 
