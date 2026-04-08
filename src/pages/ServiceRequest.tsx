@@ -14,7 +14,7 @@ import { supabase } from '@/integrations/supabase/client';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { Upload, FileText, CheckCircle } from 'lucide-react';
 
-const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || '6Ldc1YMsAAAAAAlvvaBdCHNLqVwHURHb78_nJovc';
+const RECAPTCHA_SITE_KEY = '6LfI5K0sAAAAAO0PAp9Gk2Ku10gGRqOIkI7Z0_ct';
 
 const SERVICE_TYPES = [
     { value: 'birth_certificate', label: 'Birth Certificate', price: '₦5,000' },
