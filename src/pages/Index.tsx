@@ -1,12 +1,15 @@
 import { Header } from "@/components/Header";
-import { GoogleInspiredHero } from "@/components/GoogleInspiredHero";
-import { PremiumFeatures } from "@/components/PremiumFeatures";
-import { TrustSection } from "@/components/TrustSection";
-import { Testimonials } from "@/components/Testimonials";
+import { HeroSection } from "@/components/HeroSection";
+import { AboutSection } from "@/components/AboutSection";
+import { ServiceCategories } from "@/components/ServiceCategories";
+import { MoneyMakingFeatures } from "@/components/MoneyMakingFeatures";
+import { WhyChooseUs } from "@/components/WhyChooseUs";
+import { ImpactSection } from "@/components/ImpactSection";
+import { TestimonialsSection } from "@/components/TestimonialsSection";
+import { CTASection } from "@/components/CTASection";
+import { ContactSectionNew } from "@/components/ContactSectionNew";
+import { FooterNew } from "@/components/FooterNew";
 import { ProductGrid } from "@/components/ProductGrid";
-import { ServicesSection } from "@/components/ServicesSection";
-import { ContactSection } from "@/components/ContactSection";
-import { GoogleInspiredFooter } from "@/components/GoogleInspiredFooter";
 import { AIChatWidget } from "@/components/AIChatWidget";
 import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
 import { ScrollToTop } from "@/components/ScrollToTop";
@@ -15,15 +18,15 @@ import { useEffect } from "react";
 
 const Index = () => {
     useEffect(() => {
-        document.title = "Confidential Connect Ltd — Professional Documentation & Digital Services";
+        document.title = "Confidential Connect Ltd — Empowering Students, Connecting Opportunities";
         
         const metaDescription = document.querySelector('meta[name="description"]');
         if (metaDescription) {
-            metaDescription.setAttribute('content', 'CONFIDENTIAL CONNECT LTD — Your trusted partner for WAEC result checking, certificate processing, NIN verification, and student support services in Nigeria. CAC Registered (RC 9081270).');
+            metaDescription.setAttribute('content', 'Confidential Connect Ltd — Your trusted platform for student empowerment, job opportunities, document services, and business promotion across Nigeria. In partnership with All Campus Connect TV.');
         } else {
             const meta = document.createElement('meta');
             meta.name = 'description';
-            meta.content = 'CONFIDENTIAL CONNECT LTD — Your trusted partner for WAEC result checking, certificate processing, NIN verification, and student support services in Nigeria. CAC Registered (RC 9081270).';
+            meta.content = 'Confidential Connect Ltd — Your trusted platform for student empowerment, job opportunities, document services, and business promotion across Nigeria. In partnership with All Campus Connect TV.';
             document.head.appendChild(meta);
         }
 
@@ -31,7 +34,7 @@ const Index = () => {
         if (!metaKeywords) {
             const meta = document.createElement('meta');
             meta.name = 'keywords';
-            meta.content = 'WAEC result checker, certificate processing, NIN verification, student services, document processing, Nigeria, All Campus Connect TV, Confidential Connect Ltd';
+            meta.content = 'student opportunities, job listings Nigeria, document services, WAEC result checker, business promotion, student empowerment, Confidential Connect Ltd, All Campus Connect TV';
             document.head.appendChild(meta);
         }
     }, []);
@@ -41,15 +44,18 @@ const Index = () => {
             <KeyboardShortcuts />
             <Header />
             <main>
-                <GoogleInspiredHero />
-                <TrustSection />
-                <PremiumFeatures />
+                <HeroSection />
+                <AboutSection />
+                <ServiceCategories />
                 <ProductGrid />
-                <Testimonials />
-                <ServicesSection />
-                <ContactSection />
+                <MoneyMakingFeatures />
+                <WhyChooseUs />
+                <ImpactSection />
+                <TestimonialsSection />
+                <CTASection />
+                <ContactSectionNew />
             </main>
-            <GoogleInspiredFooter />
+            <FooterNew />
             <AIChatWidget />
             <WhatsAppButton />
             <ScrollToTop />
