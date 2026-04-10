@@ -5,7 +5,7 @@ const testimonials = [
     {
         name: "Adebayo Ogunlesi",
         role: "University Student, Abuja",
-        content: "Confidential Connect helped me check my WAEC result and register for Post-UTME within hours. The platform is incredibly fast and the team guided me every step of the way. I'm now in 200 level!",
+        content: "Confidential Connect Ltd helped me check my WAEC result and register for Post-UTME within hours. The platform is incredibly fast and the team guided me every step of the way. I'm now in 200 level!",
         rating: 5,
     },
     {

@@ -35,7 +35,7 @@ export const WhyChooseUs = () => {
                 <div className="text-center mb-16">
                     <p className="text-xs font-semibold text-primary uppercase tracking-[0.2em] mb-4 font-body">Why Us</p>
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 font-display">
-                        Why Choose Confidential Connect?
+                        Why Choose Confidential Connect Ltd?
                     </h2>
                     <div className="line-gold mx-auto mb-6" />
                 </div>

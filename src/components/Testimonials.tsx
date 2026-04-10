@@ -5,7 +5,7 @@ const testimonials = [
     {
         name: "Adebayo Ogunlesi",
         role: "University Student",
-        content: "Confidential Connect made my WAEC result checking and university registration seamless. Their team guided me through every step. Highly recommended!",
+        content: "Confidential Connect Ltd made my WAEC result checking and university registration seamless. Their team guided me through every step. Highly recommended!",
         rating: 5,
     },
     {
@@ -17,7 +17,7 @@ const testimonials = [
     {
         name: "Chukwuemeka Nwosu",
         role: "School Administrator",
-        content: "We purchase bulk scratch cards from Confidential Connect for our students. The pricing is competitive and delivery is always prompt. Great business partner.",
+        content: "We purchase bulk scratch cards from Confidential Connect Ltd for our students. The pricing is competitive and delivery is always prompt. Great business partner.",
         rating: 5,
     },
     {
@@ -29,7 +29,7 @@ const testimonials = [
     {
         name: "Oluwaseun Adeyemi",
         role: "Polytechnic Student",
-        content: "Post-UTME registration was stressful until I found Confidential Connect. They handled everything professionally and I got admitted successfully!",
+        content: "Post-UTME registration was stressful until I found Confidential Connect Ltd. They handled everything professionally and I got admitted successfully!",
         rating: 5,
     },
     {
