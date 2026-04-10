@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { HeroSection } from "@/components/HeroSection";
+import { WhatsAppChannelPopup } from "@/components/WhatsAppChannelPopup";
 import { AboutSection } from "@/components/AboutSection";
 import { ServiceCategories } from "@/components/ServiceCategories";
 import { MoneyMakingFeatures } from "@/components/MoneyMakingFeatures";
@@ -59,6 +60,7 @@ const Index = () => {
             <AIChatWidget />
             <WhatsAppButton />
             <ScrollToTop />
+            <WhatsAppChannelPopup />
         </div>
     );
 };
