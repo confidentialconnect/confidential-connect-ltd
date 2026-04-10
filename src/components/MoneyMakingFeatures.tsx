@@ -9,28 +9,31 @@ import {
 
 const pricingPlans = [
     {
-        name: "Basic",
+        name: "Starter",
         price: "₦2,000",
-        period: "/post",
-        description: "Single promotion post",
-        features: ["1 featured listing", "7-day visibility", "Basic analytics"],
+        period: "/day",
+        description: "Quick daily visibility",
+        features: ["2 posts daily (Morning & Evening)", "Affordable exposure", "Perfect for quick visibility"],
         popular: false,
+        emoji: "",
     },
     {
-        name: "Standard",
-        price: "₦5,000",
-        period: "/month",
-        description: "Best for growing businesses",
-        features: ["5 featured listings", "30-day visibility", "Priority placement", "WhatsApp support"],
+        name: "Growth",
+        price: "₦10,500",
+        period: "/week",
+        description: "Best value for business growth",
+        features: ["7 days continuous promotion", "Consistent daily exposure", "Best value for money", "WhatsApp support"],
         popular: true,
+        emoji: "🔥",
     },
     {
         name: "Premium",
-        price: "₦15,000",
+        price: "₦36,000",
         period: "/month",
-        description: "Maximum exposure & reach",
-        features: ["Unlimited listings", "Homepage spotlight", "Dedicated manager", "Analytics dashboard", "Priority support"],
+        description: "Maximum visibility & results",
+        features: ["30 days promotion", "Maximum visibility", "Priority placement", "Unlimited creatives", "Dedicated support"],
         popular: false,
+        emoji: "💎",
     },
 ];
 
