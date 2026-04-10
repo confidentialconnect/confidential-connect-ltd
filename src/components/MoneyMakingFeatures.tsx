@@ -119,7 +119,7 @@ export const MoneyMakingFeatures = () => {
                     </p>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-12">
+                <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-8">
                     {pricingPlans.map((plan, idx) => (
                         <Card key={idx} className={`relative overflow-hidden transition-all duration-300 hover:-translate-y-1 ${
                             plan.popular 
@@ -131,11 +131,14 @@ export const MoneyMakingFeatures = () => {
                             )}
                             <CardHeader className="pb-4">
                                 <div className="flex items-center justify-between">
-                                    <CardTitle className="text-lg font-display">{plan.name}</CardTitle>
+                                    <CardTitle className="text-lg font-display">
+                                        {plan.emoji && <span className="mr-1">{plan.emoji}</span>}
+                                        {plan.name}
+                                    </CardTitle>
                                     {plan.popular && (
                                         <Badge className="gradient-brand text-white border-0 font-body">
                                             <Star className="h-3 w-3 mr-1" />
-                                            Popular
+                                            Most Popular
                                         </Badge>
                                     )}
                                 </div>
@@ -159,14 +162,33 @@ export const MoneyMakingFeatures = () => {
                                     variant={plan.popular ? "default" : "outline"}
                                     asChild
                                 >
-                                    <Link to="/advertising">
-                                        Get Started
+                                    <a
+                                        href={`https://wa.me/2347040294858?text=${encodeURIComponent(
+                                            `Hello, I just made payment for promotion on Confidential Connect Ltd.\n\nFull Name:\nBusiness Name:\nSelected Plan: ${plan.name} (${plan.price}${plan.period})\nWhat I want to promote:\nTarget Audience:\nDuration:\n\nPayment Screenshot attached.`
+                                        )}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Start Now
                                         <ArrowRight className="h-4 w-4 ml-2" />
-                                    </Link>
+                                    </a>
                                 </Button>
                             </CardContent>
                         </Card>
                     ))}
+                </div>
+
+                {/* Payment & urgency notes */}
+                <div className="text-center space-y-4 mb-8">
+                    <p className="text-sm text-muted-foreground font-body">
+                        All plans require payment before activation.
+                    </p>
+                    <p className="text-sm font-medium text-primary font-body">
+                        ⚠ Limited promotion slots available daily to ensure quality exposure.
+                    </p>
+                    <p className="text-xs text-muted-foreground font-body max-w-lg mx-auto">
+                        After making payment, kindly send your payment evidence and promotion details via WhatsApp.
+                    </p>
                 </div>
 
                 {/* Payment Integration note */}
@@ -174,7 +196,7 @@ export const MoneyMakingFeatures = () => {
                     <div className="inline-flex items-center gap-2 bg-accent border border-primary/10 rounded-full px-5 py-2.5">
                         <CreditCard className="h-4 w-4 text-primary" />
                         <span className="text-sm font-medium text-foreground font-body">
-                            Secure payments via Paystack — Cards, Bank Transfer & USSD accepted
+                            Secure payments via Paystack, Bank Transfer & USSD accepted
                         </span>
                     </div>
                 </div>
