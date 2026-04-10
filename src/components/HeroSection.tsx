@@ -42,7 +42,7 @@ export const HeroSection = () => {
                     {/* Subtext */}
                     <p className="text-lg sm:text-xl text-white/55 leading-relaxed max-w-2xl mx-auto font-body font-light">
                         We connect students, graduates, and business owners with verified opportunities, 
-                        essential services, and growth platforms across Nigeria.
+                        essential services, and powerful growth platforms across Nigeria.
                     </p>
 
                     {/* CTAs */}
@@ -52,10 +52,10 @@ export const HeroSection = () => {
                             className="gradient-brand text-white shadow-brand-lg text-base px-8 font-body font-semibold tracking-wide hover:opacity-90 transition-opacity h-13"
                             asChild
                         >
-                            <Link to="/auth">
+                            <a href="https://whatsapp.com/channel/0029Vb7C1k61yT24qg7Ip427" target="_blank" rel="noopener noreferrer">
                                 <Users className="h-5 w-5 mr-2" />
                                 Join Now
-                            </Link>
+                            </a>
                         </Button>
                         <Button
                             size="lg"
@@ -74,9 +74,9 @@ export const HeroSection = () => {
                             className="text-base px-6 text-white/60 hover:text-white hover:bg-white/5 font-body h-13"
                             asChild
                         >
-                            <Link to="/request-service">
+                            <Link to="/advertising">
                                 <Briefcase className="h-4 w-4 mr-2" />
-                                Post a Service
+                                Promote Your Business
                             </Link>
                         </Button>
                     </div>

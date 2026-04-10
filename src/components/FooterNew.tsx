@@ -35,7 +35,7 @@ export const FooterNew = () => {
                         <div className="flex items-center gap-3">
                             <img src={officialLogo} alt="Confidential Connect LTD Logo" className="h-10 w-auto" />
                             <div>
-                                <div className="text-sm font-bold text-background tracking-wide font-body">CONFIDENTIAL CONNECT</div>
+                                <div className="text-sm font-bold text-background tracking-wide font-body">CONFIDENTIAL CONNECT LTD</div>
                                 <div className="text-xs text-primary font-body font-medium">RC 9081270</div>
                             </div>
                         </div>

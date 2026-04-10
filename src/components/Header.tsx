@@ -35,7 +35,7 @@ export const Header = () => {
                         />
                         <div className="hidden sm:block">
                             <div className="text-sm font-bold text-foreground tracking-wide font-body">
-                                CONFIDENTIAL CONNECT
+                                CONFIDENTIAL CONNECT LTD
                             </div>
                             <div className="text-[10px] text-primary font-medium tracking-wider font-body">
                                 In partnership with All Campus Connect TV
@@ -118,8 +118,8 @@ export const Header = () => {
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         ) : (
-                            <Button size="sm" asChild className="gradient-gold text-primary-foreground hover:opacity-90 shadow-gold font-body font-semibold tracking-wide">
-                                <Link to="/auth">Get Started</Link>
+                            <Button size="sm" asChild className="gradient-brand text-white hover:opacity-90 shadow-brand font-body font-semibold tracking-wide">
+                                <a href="https://whatsapp.com/channel/0029Vb7C1k61yT24qg7Ip427" target="_blank" rel="noopener noreferrer">Join Now</a>
                             </Button>
                         )}
 
@@ -134,7 +134,7 @@ export const Header = () => {
                                     <div className="flex items-center gap-3 mb-8 pb-6 border-b border-border">
                                         <img src={officialLogo} alt="Logo" className="h-8 w-auto" />
                                         <div>
-                                            <div className="text-xs font-bold text-foreground tracking-wide font-body">CONFIDENTIAL CONNECT</div>
+                                            <div className="text-xs font-bold text-foreground tracking-wide font-body">CONFIDENTIAL CONNECT LTD</div>
                                             <div className="text-[10px] text-primary font-body">All Campus Connect TV</div>
                                         </div>
                                     </div>
@@ -182,8 +182,8 @@ export const Header = () => {
                                                 </Button>
                                             </>
                                         ) : (
-                                            <Button size="sm" className="w-full gradient-gold text-primary-foreground font-body font-semibold" asChild>
-                                                <Link to="/auth" onClick={() => setIsOpen(false)}>Get Started</Link>
+                                            <Button size="sm" className="w-full gradient-brand text-white font-body font-semibold" asChild>
+                                                <a href="https://whatsapp.com/channel/0029Vb7C1k61yT24qg7Ip427" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>Join Now</a>
                                             </Button>
                                         )}
                                     </div>

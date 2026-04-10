@@ -32,10 +32,10 @@ export const CTASection = () => {
                                 className="gradient-brand text-white shadow-brand-lg text-base px-8 font-body font-semibold h-13"
                                 asChild
                             >
-                                <Link to="/auth">
+                                <a href="https://whatsapp.com/channel/0029Vb7C1k61yT24qg7Ip427" target="_blank" rel="noopener noreferrer">
                                     Join Now
                                     <ArrowRight className="h-4 w-4 ml-2" />
-                                </Link>
+                                </a>
                             </Button>
                             <Button
                                 size="lg"
