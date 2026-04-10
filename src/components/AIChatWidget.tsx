@@ -207,7 +207,7 @@ export const AIChatWidget = () => {
                         <div className="flex items-center gap-2">
                             <Bot className="h-5 w-5" />
                             <div>
-                                <p className="font-semibold text-sm">Confidential Connect</p>
+                                <p className="font-semibold text-sm">Confidential Connect Ltd</p>
                                 <p className="text-xs opacity-80">AI Assistant • Online</p>
                             </div>
                         </div>
