@@ -16,6 +16,7 @@ const pricingPlans = [
         features: ["2 posts daily (Morning & Evening)", "Affordable exposure", "Perfect for quick visibility"],
         popular: false,
         emoji: "",
+        slug: "starter",
     },
     {
         name: "Growth",
@@ -25,6 +26,7 @@ const pricingPlans = [
         features: ["7 days continuous promotion", "Consistent daily exposure", "Best value for money", "WhatsApp support"],
         popular: true,
         emoji: "🔥",
+        slug: "growth",
     },
     {
         name: "Premium",
@@ -34,6 +36,7 @@ const pricingPlans = [
         features: ["30 days promotion", "Maximum visibility", "Priority placement", "Unlimited creatives", "Dedicated support"],
         popular: false,
         emoji: "💎",
+        slug: "premium",
     },
 ];
 
@@ -70,7 +73,7 @@ const revenueFeatures = [
 
 export const MoneyMakingFeatures = () => {
     return (
-        <section className="py-24 bg-background">
+        <section id="pricing" className="py-24 bg-background">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
                 <div className="text-center mb-16">
@@ -162,16 +165,10 @@ export const MoneyMakingFeatures = () => {
                                     variant={plan.popular ? "default" : "outline"}
                                     asChild
                                 >
-                                    <a
-                                        href={`https://wa.me/2347040294858?text=${encodeURIComponent(
-                                            `Hello, I just made payment for promotion on Confidential Connect Ltd.\n\nFull Name:\nBusiness Name:\nSelected Plan: ${plan.name} (${plan.price}${plan.period})\nWhat I want to promote:\nTarget Audience:\nDuration:\n\nPayment Screenshot attached.`
-                                        )}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
+                                    <Link to={`/promote/${plan.slug}`}>
                                         Start Now
                                         <ArrowRight className="h-4 w-4 ml-2" />
-                                    </a>
+                                    </Link>
                                 </Button>
                             </CardContent>
                         </Card>
