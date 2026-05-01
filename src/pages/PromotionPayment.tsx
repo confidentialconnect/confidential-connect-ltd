@@ -8,9 +8,10 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import {
-    ArrowLeft, Check, Copy, Building2, MessageCircle,
+    ArrowLeft, Check, Copy, Building2,
     ShieldCheck, Star, AlertTriangle, ArrowRight,
 } from "lucide-react";
+import { PromotionProofForm } from "@/components/PromotionProofForm";
 
 type PlanKey = "starter" | "growth" | "premium";
 
@@ -110,9 +111,6 @@ const PromotionPayment = () => {
         }
     };
 
-    const whatsappMessage = `Hello, I just made payment for promotion on Confidential Connect Ltd.\n\nFull Name:\nBusiness Name:\nSelected Plan: ${plan.name} (${plan.price} ${plan.period})\nWhat I want to promote:\nTarget Audience:\nDuration:\n\nPayment Screenshot attached.`;
-    const whatsappUrl = `https://wa.me/2347040294858?text=${encodeURIComponent(whatsappMessage)}`;
-
     return (
         <div className="min-h-screen bg-background">
             <Header />
@@ -208,14 +206,6 @@ const PromotionPayment = () => {
                                 After making payment, kindly send your payment evidence and promotion details via WhatsApp.
                             </div>
 
-                            <Button asChild size="lg" className="w-full gradient-brand text-white shadow-brand font-body font-semibold">
-                                <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-                                    <MessageCircle className="h-5 w-5 mr-2" />
-                                    Send Proof on WhatsApp
-                                    <ArrowRight className="h-4 w-4 ml-2" />
-                                </a>
-                            </Button>
-
                             <p className="text-xs text-center text-muted-foreground font-body flex items-center justify-center gap-1.5">
                                 <ShieldCheck className="h-3.5 w-3.5 text-primary" />
                                 Your promotion will be reviewed and activated after payment confirmation.
@@ -224,6 +214,19 @@ const PromotionPayment = () => {
                     </Card>
                 </div>
 
+                {/* Payment proof submission form */}
+                <Card className="mt-8 border-primary/30">
+                    <CardHeader>
+                        <CardTitle className="font-display text-xl">Submit Payment Proof</CardTitle>
+                        <p className="text-sm text-muted-foreground font-body">
+                            Fill in your details and upload your payment screenshot. We'll save your submission and open WhatsApp so you can attach the receipt.
+                        </p>
+                    </CardHeader>
+                    <CardContent>
+                        <PromotionProofForm plan={plan} />
+                    </CardContent>
+                </Card>
+
                 {/* How it works */}
                 <div className="mt-12 rounded-xl border bg-card p-6">
                     <h2 className="text-lg font-bold font-display mb-4 text-center">How It Works</h2>
@@ -231,7 +234,7 @@ const PromotionPayment = () => {
                         {[
                             "Transfer the exact amount to the account above",
                             "Take a screenshot of your payment receipt",
-                            "Click 'Send Proof on WhatsApp' & fill the details",
+                            "Fill the form below & submit your proof",
                             "Get admin approval — your promotion goes live",
                         ].map((step, i) => (
                             <li key={i} className="flex gap-3">

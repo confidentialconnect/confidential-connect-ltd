@@ -194,6 +194,63 @@ export type Database = {
         }
         Relationships: []
       }
+      promotion_payments: {
+        Row: {
+          admin_notes: string | null
+          amount: number
+          business_name: string
+          created_at: string
+          duration: string | null
+          email: string | null
+          full_name: string
+          id: string
+          phone: string
+          plan: string
+          promote_what: string
+          receipt_url: string | null
+          status: string
+          target_audience: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          amount: number
+          business_name: string
+          created_at?: string
+          duration?: string | null
+          email?: string | null
+          full_name: string
+          id?: string
+          phone: string
+          plan: string
+          promote_what: string
+          receipt_url?: string | null
+          status?: string
+          target_audience?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          admin_notes?: string | null
+          amount?: number
+          business_name?: string
+          created_at?: string
+          duration?: string | null
+          email?: string | null
+          full_name?: string
+          id?: string
+          phone?: string
+          plan?: string
+          promote_what?: string
+          receipt_url?: string | null
+          status?: string
+          target_audience?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       service_requests: {
         Row: {
           admin_notes: string | null
