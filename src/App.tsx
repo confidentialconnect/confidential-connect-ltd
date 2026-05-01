@@ -33,6 +33,7 @@ import FAQ from "./pages/FAQ";
 import Pricing from "./pages/Pricing";
 import Dashboard from "./pages/Dashboard";
 import ServiceRequest from "./pages/ServiceRequest";
+import PromotionPayment from "./pages/PromotionPayment";
 
 const queryClient = new QueryClient();
 
@@ -65,6 +66,7 @@ const App = () => (
               <Route path="/payment-info" element={<PaymentInfo />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/request-service" element={<ServiceRequest />} />
+              <Route path="/promote/:plan" element={<PromotionPayment />} />
               <Route path="/admin" element={<AdminHome />} />
               <Route path="/admin/orders" element={<AdminOrders />} />
               <Route path="/advertising" element={<Advertising />} />
