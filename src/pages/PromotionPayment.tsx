@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { PromotionProofForm } from "@/components/PromotionProofForm";
 
-type PlanKey = "starter" | "growth" | "premium";
+type PlanKey = "starter" | "weekly" | "growth" | "premium";
 
 const plans: Record<PlanKey, {
     name: string;
@@ -29,25 +29,34 @@ const plans: Record<PlanKey, {
         name: "Starter",
         price: "₦2,000",
         amount: "2000",
-        period: "per day",
+        period: "1 Day Promotion",
         description: "Quick daily visibility — Morning & Evening promotion.",
         features: [
             "2 posts daily (Morning & Evening)",
-            "Affordable exposure",
-            "Perfect for quick visibility",
+            "Quick and affordable visibility",
+        ],
+    },
+    weekly: {
+        name: "Weekly",
+        price: "₦10,500",
+        amount: "10500",
+        period: "7 Days Promotion",
+        description: "Consistent weekly visibility for better reach.",
+        features: [
+            "Consistent daily promotion",
+            "Better reach and engagement",
         ],
     },
     growth: {
         name: "Growth",
-        price: "₦10,500",
-        amount: "10500",
-        period: "per week",
-        description: "Best value for consistent business growth.",
+        price: "₦18,200",
+        amount: "18200",
+        period: "14 Days Promotion",
+        description: "Best value for business growth.",
         features: [
-            "7 days continuous promotion",
-            "Consistent daily exposure",
-            "Best value for money",
-            "WhatsApp support",
+            "Extended promotion period",
+            "Strong audience reach",
+            "Higher engagement",
         ],
         popular: true,
         emoji: "🔥",
@@ -56,14 +65,12 @@ const plans: Record<PlanKey, {
         name: "Premium",
         price: "₦36,000",
         amount: "36000",
-        period: "per month",
+        period: "30 Days Promotion",
         description: "Maximum visibility with priority placement.",
         features: [
-            "30 days promotion",
             "Maximum visibility",
             "Priority placement",
-            "Unlimited creatives",
-            "Dedicated support",
+            "Long-term promotion",
         ],
         emoji: "💎",
     },

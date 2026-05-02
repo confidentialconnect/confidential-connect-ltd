@@ -12,18 +12,31 @@ const pricingPlans = [
         name: "Starter",
         price: "₦2,000",
         period: "/day",
+        duration: "1 Day Promotion",
         description: "Quick daily visibility",
-        features: ["2 posts daily (Morning & Evening)", "Affordable exposure", "Perfect for quick visibility"],
+        features: ["2 posts daily (Morning & Evening)", "Quick and affordable visibility"],
         popular: false,
         emoji: "",
         slug: "starter",
     },
     {
-        name: "Growth",
+        name: "Weekly",
         price: "₦10,500",
-        period: "/week",
+        period: "",
+        duration: "7 Days Promotion",
+        description: "Consistent weekly visibility",
+        features: ["Consistent daily promotion", "Better reach and engagement"],
+        popular: false,
+        emoji: "",
+        slug: "weekly",
+    },
+    {
+        name: "Growth",
+        price: "₦18,200",
+        period: "",
+        duration: "14 Days Promotion",
         description: "Best value for business growth",
-        features: ["7 days continuous promotion", "Consistent daily exposure", "Best value for money", "WhatsApp support"],
+        features: ["Extended promotion period", "Strong audience reach", "Higher engagement"],
         popular: true,
         emoji: "🔥",
         slug: "growth",
@@ -31,9 +44,10 @@ const pricingPlans = [
     {
         name: "Premium",
         price: "₦36,000",
-        period: "/month",
+        period: "",
+        duration: "30 Days Promotion",
         description: "Maximum visibility & results",
-        features: ["30 days promotion", "Maximum visibility", "Priority placement", "Unlimited creatives", "Dedicated support"],
+        features: ["Maximum visibility", "Priority placement", "Long-term promotion"],
         popular: false,
         emoji: "💎",
         slug: "premium",
@@ -122,7 +136,7 @@ export const MoneyMakingFeatures = () => {
                     </p>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-8">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-8">
                     {pricingPlans.map((plan, idx) => (
                         <Card key={idx} className={`relative overflow-hidden transition-all duration-300 hover:-translate-y-1 ${
                             plan.popular 
@@ -148,9 +162,17 @@ export const MoneyMakingFeatures = () => {
                                 <p className="text-sm text-muted-foreground font-body">{plan.description}</p>
                             </CardHeader>
                             <CardContent className="space-y-6">
-                                <div className="flex items-baseline gap-1">
-                                    <span className="text-3xl font-bold text-foreground font-display">{plan.price}</span>
-                                    <span className="text-sm text-muted-foreground font-body">{plan.period}</span>
+                                <div>
+                                    <div className="flex items-baseline gap-1">
+                                        <span className="text-3xl font-extrabold text-foreground font-display">{plan.price}</span>
+                                        {plan.period && (
+                                            <span className="text-sm text-muted-foreground font-body">{plan.period}</span>
+                                        )}
+                                    </div>
+                                    <div className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-primary bg-primary/10 rounded-full px-2.5 py-1 font-body">
+                                        <Zap className="h-3 w-3" />
+                                        {plan.duration}
+                                    </div>
                                 </div>
                                 <div className="space-y-3">
                                     {plan.features.map((feature, i) => (
