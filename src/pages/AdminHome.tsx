@@ -177,9 +177,14 @@ const AdminHome = () => {
                             CONFIDENTIAL CONNECT LTD — Management Panel
                         </p>
                     </div>
-                    <Button asChild>
-                        <Link to="/admin/orders">📊 Payment Tracking</Link>
-                    </Button>
+                    <div className="flex flex-wrap gap-2">
+                        <Button asChild variant="outline">
+                            <Link to="/admin/orders">📊 Payment Tracking</Link>
+                        </Button>
+                        <Button asChild>
+                            <Link to="/admin/promotions">📣 Promotion Payments</Link>
+                        </Button>
+                    </div>
                 </div>
 
                 {/* Summary Cards */}

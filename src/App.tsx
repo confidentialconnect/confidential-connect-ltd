@@ -34,6 +34,7 @@ import Pricing from "./pages/Pricing";
 import Dashboard from "./pages/Dashboard";
 import ServiceRequest from "./pages/ServiceRequest";
 import PromotionPayment from "./pages/PromotionPayment";
+import AdminPromotionPayments from "./pages/AdminPromotionPayments";
 
 const queryClient = new QueryClient();
 
@@ -69,6 +70,7 @@ const App = () => (
               <Route path="/promote/:plan" element={<PromotionPayment />} />
               <Route path="/admin" element={<AdminHome />} />
               <Route path="/admin/orders" element={<AdminOrders />} />
+              <Route path="/admin/promotions" element={<AdminPromotionPayments />} />
               <Route path="/advertising" element={<Advertising />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<TermsConditions />} />
