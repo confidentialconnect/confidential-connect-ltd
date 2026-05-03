@@ -81,18 +81,6 @@ const AdminHome = () => {
         fetchAllData();
     }, []);
 
-    if (!authLoading && (!user || !isAdmin)) {
-        return <Navigate to="/auth" replace />;
-    }
-
-    if (authLoading || loading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin" />
-            </div>
-        );
-    }
-
     const fetchAllData = async () => {
         try {
             const [ordersRes, requestsRes, usersRes] = await Promise.all([
@@ -166,6 +154,18 @@ const AdminHome = () => {
             default: return 'bg-muted text-muted-foreground';
         }
     };
+
+    if (!authLoading && (!user || !isAdmin)) {
+        return <Navigate to="/auth" replace />;
+    }
+
+    if (authLoading || loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin" />
+            </div>
+        );
+    }
 
     return (
         <section className="pt-24 pb-16 bg-background min-h-screen">
