@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -74,7 +74,6 @@ const AdminHome = () => {
     const [loading, setLoading] = useState(true);
     const [adminNotes, setAdminNotes] = useState<Record<string, string>>({});
     const { toast } = useToast();
-    const { user, isAdmin, loading: authLoading } = useAuth();
 
     useEffect(() => {
         document.title = "Admin Dashboard | Confidential Connect Ltd";
@@ -155,11 +154,7 @@ const AdminHome = () => {
         }
     };
 
-    if (!authLoading && (!user || !isAdmin)) {
-        return <Navigate to="/auth" replace />;
-    }
-
-    if (authLoading || loading) {
+    if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <Loader2 className="h-8 w-8 animate-spin" />
