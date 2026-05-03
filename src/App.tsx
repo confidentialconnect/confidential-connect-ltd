@@ -36,6 +36,7 @@ import ServiceRequest from "./pages/ServiceRequest";
 import PromotionPayment from "./pages/PromotionPayment";
 import AdminPromotionPayments from "./pages/AdminPromotionPayments";
 import AdminUsers from "./pages/AdminUsers";
+import RequireAdmin from "./components/RequireAdmin";
 
 const queryClient = new QueryClient();
 
@@ -69,10 +70,10 @@ const App = () => (
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/request-service" element={<ServiceRequest />} />
               <Route path="/promote/:plan" element={<PromotionPayment />} />
-              <Route path="/admin" element={<AdminHome />} />
-              <Route path="/admin/orders" element={<AdminOrders />} />
-              <Route path="/admin/promotions" element={<AdminPromotionPayments />} />
-              <Route path="/admin/users" element={<AdminUsers />} />
+              <Route path="/admin" element={<RequireAdmin><AdminHome /></RequireAdmin>} />
+              <Route path="/admin/orders" element={<RequireAdmin><AdminOrders /></RequireAdmin>} />
+              <Route path="/admin/promotions" element={<RequireAdmin><AdminPromotionPayments /></RequireAdmin>} />
+              <Route path="/admin/users" element={<RequireAdmin><AdminUsers /></RequireAdmin>} />
               <Route path="/advertising" element={<Advertising />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<TermsConditions />} />

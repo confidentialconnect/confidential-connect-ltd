@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Navigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -38,7 +37,6 @@ interface PromotionPayment {
 const STATUS_OPTIONS = ["pending", "approved", "in_progress", "completed", "live", "rejected"];
 
 const AdminPromotionPayments = () => {
-  const { user, isAdmin, loading: authLoading } = useAuth();
   const { toast } = useToast();
   const [payments, setPayments] = useState<PromotionPayment[]>([]);
   const [loading, setLoading] = useState(true);
@@ -55,10 +53,6 @@ const AdminPromotionPayments = () => {
     document.title = "Promotion Payments | Admin Dashboard";
     fetchPayments();
   }, []);
-
-  if (!authLoading && (!user || !isAdmin)) {
-    return <Navigate to="/auth" replace />;
-  }
 
   const fetchPayments = async () => {
     setLoading(true);
@@ -221,7 +215,7 @@ const AdminPromotionPayments = () => {
     }
   };
 
-  if (authLoading || loading) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />

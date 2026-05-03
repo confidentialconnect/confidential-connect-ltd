@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,7 +23,6 @@ interface UserRow extends Profile {
 }
 
 const AdminUsers = () => {
-  const { user, isAdmin, loading: authLoading } = useAuth();
   const [rows, setRows] = useState<UserRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -33,8 +31,6 @@ const AdminUsers = () => {
     document.title = "Users | Admin Dashboard";
     fetchData();
   }, []);
-
-  if (!authLoading && (!user || !isAdmin)) return <Navigate to="/auth" replace />;
 
   const fetchData = async () => {
     setLoading(true);
@@ -84,7 +80,7 @@ const AdminUsers = () => {
     );
   });
 
-  if (authLoading || loading) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
