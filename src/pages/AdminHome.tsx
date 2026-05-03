@@ -8,7 +8,6 @@ import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { formatNGN } from "@/contexts/CartContext";
-import { useAuth } from "@/contexts/AuthContext";
 import { LiveCharts } from "@/components/LiveCharts";
 import { SupportChat } from "@/components/SupportChat";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
