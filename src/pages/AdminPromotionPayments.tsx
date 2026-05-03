@@ -10,9 +10,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import {
   ArrowLeft, Loader2, RefreshCw, Search, FileImage, ExternalLink,
-  CheckCircle, XCircle, Clock, Phone, Mail, Building2, User, Target,
+  CheckCircle, XCircle, Clock, Phone, Mail, Building2, User, Target, Pencil, PlayCircle, Flag,
 } from "lucide-react";
 
 interface PromotionPayment {
@@ -34,7 +35,7 @@ interface PromotionPayment {
   updated_at: string;
 }
 
-const STATUS_OPTIONS = ["pending", "approved", "rejected", "live"];
+const STATUS_OPTIONS = ["pending", "approved", "in_progress", "completed", "live", "rejected"];
 
 const AdminPromotionPayments = () => {
   const { user, isAdmin, loading: authLoading } = useAuth();
@@ -46,6 +47,9 @@ const AdminPromotionPayments = () => {
   const [notesDraft, setNotesDraft] = useState<Record<string, string>>({});
   const [receiptUrls, setReceiptUrls] = useState<Record<string, string>>({});
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [editing, setEditing] = useState<PromotionPayment | null>(null);
+  const [editForm, setEditForm] = useState<Partial<PromotionPayment>>({});
+  const [savingEdit, setSavingEdit] = useState(false);
 
   useEffect(() => {
     document.title = "Promotion Payments | Admin Dashboard";
@@ -137,25 +141,84 @@ const AdminPromotionPayments = () => {
     pending: payments.filter((p) => p.status === "pending").length,
     approved: payments.filter((p) => p.status === "approved" || p.status === "live").length,
     rejected: payments.filter((p) => p.status === "rejected").length,
+    inProgress: payments.filter((p) => p.status === "in_progress").length,
+    completed: payments.filter((p) => p.status === "completed").length,
     revenue: payments
-      .filter((p) => p.status === "approved" || p.status === "live")
+      .filter((p) => ["approved", "live", "in_progress", "completed"].includes(p.status))
       .reduce((s, p) => s + Number(p.amount || 0), 0),
   };
+
+  const now = Date.now();
+  const inWindow = (p: PromotionPayment, ms: number) =>
+    ["approved", "live", "in_progress", "completed"].includes(p.status) &&
+    now - new Date(p.created_at).getTime() <= ms;
+  const sumAmt = (arr: PromotionPayment[]) => arr.reduce((s, p) => s + Number(p.amount || 0), 0);
+  const revenueDaily = sumAmt(payments.filter((p) => inWindow(p, 24 * 3600 * 1000)));
+  const revenueWeekly = sumAmt(payments.filter((p) => inWindow(p, 7 * 24 * 3600 * 1000)));
+  const revenueMonthly = sumAmt(payments.filter((p) => inWindow(p, 30 * 24 * 3600 * 1000)));
 
   const statusBadge = (status: string) => {
     const map: Record<string, string> = {
       pending: "bg-yellow-500/10 text-yellow-700 border-yellow-300",
       approved: "bg-green-500/10 text-green-700 border-green-300",
       live: "bg-emerald-500/10 text-emerald-700 border-emerald-300",
+      in_progress: "bg-blue-500/10 text-blue-700 border-blue-300",
+      completed: "bg-violet-500/10 text-violet-700 border-violet-300",
       rejected: "bg-red-500/10 text-red-700 border-red-300",
     };
     const Icon = status === "rejected" ? XCircle : status === "pending" ? Clock : CheckCircle;
     return (
       <Badge variant="outline" className={map[status] ?? ""}>
         <Icon className="h-3 w-3 mr-1" />
-        {status}
+        {status.replace("_", " ")}
       </Badge>
     );
+  };
+
+  const openEdit = (p: PromotionPayment) => {
+    setEditing(p);
+    setEditForm({
+      full_name: p.full_name,
+      business_name: p.business_name,
+      phone: p.phone,
+      email: p.email,
+      plan: p.plan,
+      amount: p.amount,
+      duration: p.duration,
+      promote_what: p.promote_what,
+      target_audience: p.target_audience,
+    });
+  };
+
+  const saveEdit = async () => {
+    if (!editing) return;
+    setSavingEdit(true);
+    try {
+      const patch = {
+        full_name: editForm.full_name ?? editing.full_name,
+        business_name: editForm.business_name ?? editing.business_name,
+        phone: editForm.phone ?? editing.phone,
+        email: editForm.email ?? editing.email,
+        plan: editForm.plan ?? editing.plan,
+        amount: Number(editForm.amount ?? editing.amount),
+        duration: editForm.duration ?? editing.duration,
+        promote_what: editForm.promote_what ?? editing.promote_what,
+        target_audience: editForm.target_audience ?? editing.target_audience,
+        updated_at: new Date().toISOString(),
+      };
+      const { error } = await supabase
+        .from("promotion_payments")
+        .update(patch)
+        .eq("id", editing.id);
+      if (error) throw error;
+      setPayments((prev) => prev.map((r) => (r.id === editing.id ? { ...r, ...patch } as PromotionPayment : r)));
+      toast({ title: "Saved", description: "Request details updated" });
+      setEditing(null);
+    } catch (e: any) {
+      toast({ title: "Save failed", description: e.message ?? "Try again", variant: "destructive" });
+    } finally {
+      setSavingEdit(false);
+    }
   };
 
   if (authLoading || loading) {
@@ -184,12 +247,20 @@ const AdminPromotionPayments = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-6">
           <Card><CardContent className="p-4"><div className="text-2xl font-bold">{stats.total}</div><div className="text-sm text-muted-foreground">Total</div></CardContent></Card>
           <Card className="bg-yellow-50 border-yellow-200"><CardContent className="p-4"><div className="text-2xl font-bold text-yellow-700">{stats.pending}</div><div className="text-sm text-yellow-600">Pending</div></CardContent></Card>
           <Card className="bg-green-50 border-green-200"><CardContent className="p-4"><div className="text-2xl font-bold text-green-700">{stats.approved}</div><div className="text-sm text-green-600">Approved/Live</div></CardContent></Card>
+          <Card className="bg-blue-50 border-blue-200"><CardContent className="p-4"><div className="text-2xl font-bold text-blue-700">{stats.inProgress}</div><div className="text-sm text-blue-600">In Progress</div></CardContent></Card>
+          <Card className="bg-violet-50 border-violet-200"><CardContent className="p-4"><div className="text-2xl font-bold text-violet-700">{stats.completed}</div><div className="text-sm text-violet-600">Completed</div></CardContent></Card>
           <Card className="bg-red-50 border-red-200"><CardContent className="p-4"><div className="text-2xl font-bold text-red-700">{stats.rejected}</div><div className="text-sm text-red-600">Rejected</div></CardContent></Card>
-          <Card className="bg-primary/5 border-primary/20 col-span-2 md:col-span-1"><CardContent className="p-4"><div className="text-2xl font-bold text-primary">₦{stats.revenue.toLocaleString()}</div><div className="text-sm text-primary/80">Confirmed Revenue</div></CardContent></Card>
+          <Card className="bg-primary/5 border-primary/20 col-span-2 lg:col-span-1"><CardContent className="p-4"><div className="text-2xl font-bold text-primary">₦{stats.revenue.toLocaleString()}</div><div className="text-sm text-primary/80">Total Revenue</div></CardContent></Card>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20"><CardContent className="p-4"><div className="text-sm text-muted-foreground">Daily Revenue</div><div className="text-2xl font-bold text-primary">₦{revenueDaily.toLocaleString()}</div></CardContent></Card>
+          <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20"><CardContent className="p-4"><div className="text-sm text-muted-foreground">Weekly Revenue</div><div className="text-2xl font-bold text-primary">₦{revenueWeekly.toLocaleString()}</div></CardContent></Card>
+          <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20"><CardContent className="p-4"><div className="text-sm text-muted-foreground">Monthly Revenue</div><div className="text-2xl font-bold text-primary">₦{revenueMonthly.toLocaleString()}</div></CardContent></Card>
         </div>
 
         <Card className="mb-6">
@@ -320,11 +391,27 @@ const AdminPromotionPayments = () => {
                         </Button>
                         <Button
                           size="sm"
+                          onClick={() => updateStatus(p, "in_progress")}
+                          disabled={updatingId === p.id || p.status === "in_progress"}
+                          className="bg-blue-600 hover:bg-blue-700"
+                        >
+                          <PlayCircle className="h-3 w-3 mr-1" />In Progress
+                        </Button>
+                        <Button
+                          size="sm"
                           onClick={() => updateStatus(p, "live")}
                           disabled={updatingId === p.id || p.status === "live"}
                           className="bg-emerald-600 hover:bg-emerald-700"
                         >
                           <CheckCircle className="h-3 w-3 mr-1" />Mark Live
+                        </Button>
+                        <Button
+                          size="sm"
+                          onClick={() => updateStatus(p, "completed")}
+                          disabled={updatingId === p.id || p.status === "completed"}
+                          className="bg-violet-600 hover:bg-violet-700"
+                        >
+                          <Flag className="h-3 w-3 mr-1" />Completed
                         </Button>
                         <Button
                           size="sm"
@@ -341,6 +428,9 @@ const AdminPromotionPayments = () => {
                           disabled={updatingId === p.id || p.status === "pending"}
                         >
                           <Clock className="h-3 w-3 mr-1" />Reset to Pending
+                        </Button>
+                        <Button size="sm" variant="outline" onClick={() => openEdit(p)}>
+                          <Pencil className="h-3 w-3 mr-1" />Edit
                         </Button>
                         <Button size="sm" variant="outline" asChild className="ml-auto">
                           <a
@@ -359,6 +449,68 @@ const AdminPromotionPayments = () => {
             })
           )}
         </div>
+
+        <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Edit Request</DialogTitle>
+            </DialogHeader>
+            {editing && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-sm font-medium">Full name</label>
+                  <Input value={editForm.full_name ?? ""} onChange={(e) => setEditForm((f) => ({ ...f, full_name: e.target.value }))} />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Business name</label>
+                  <Input value={editForm.business_name ?? ""} onChange={(e) => setEditForm((f) => ({ ...f, business_name: e.target.value }))} />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Phone</label>
+                  <Input value={editForm.phone ?? ""} onChange={(e) => setEditForm((f) => ({ ...f, phone: e.target.value }))} />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Email</label>
+                  <Input value={editForm.email ?? ""} onChange={(e) => setEditForm((f) => ({ ...f, email: e.target.value }))} />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Plan</label>
+                  <Select value={editForm.plan ?? ""} onValueChange={(v) => setEditForm((f) => ({ ...f, plan: v }))}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Starter">Starter</SelectItem>
+                      <SelectItem value="Weekly">Weekly</SelectItem>
+                      <SelectItem value="Growth">Growth</SelectItem>
+                      <SelectItem value="Premium">Premium</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Amount (₦)</label>
+                  <Input type="number" value={editForm.amount ?? 0} onChange={(e) => setEditForm((f) => ({ ...f, amount: Number(e.target.value) }))} />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Duration</label>
+                  <Input value={editForm.duration ?? ""} onChange={(e) => setEditForm((f) => ({ ...f, duration: e.target.value }))} />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="text-sm font-medium">Promotion content</label>
+                  <Textarea rows={3} value={editForm.promote_what ?? ""} onChange={(e) => setEditForm((f) => ({ ...f, promote_what: e.target.value }))} />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="text-sm font-medium">Target audience</label>
+                  <Textarea rows={2} value={editForm.target_audience ?? ""} onChange={(e) => setEditForm((f) => ({ ...f, target_audience: e.target.value }))} />
+                </div>
+              </div>
+            )}
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setEditing(null)} disabled={savingEdit}>Cancel</Button>
+              <Button onClick={saveEdit} disabled={savingEdit}>
+                {savingEdit && <Loader2 className="h-4 w-4 animate-spin mr-2" />}Save changes
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
