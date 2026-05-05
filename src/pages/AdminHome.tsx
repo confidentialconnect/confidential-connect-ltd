@@ -14,7 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
     Users, FileText, Package, Bell,
-    Clock, CheckCircle, AlertCircle, Loader2
+    Clock, CheckCircle, AlertCircle, Loader2, Wallet, ThumbsUp
 } from "lucide-react";
 
 interface Order {
@@ -49,6 +49,14 @@ interface ProfileData {
     created_at: string | null;
 }
 
+interface PromotionPaymentRow {
+    id: string;
+    user_id: string;
+    amount: number;
+    status: string;
+    created_at: string;
+}
+
 const SERVICE_LABELS: Record<string, string> = {
     birth_certificate: 'Birth Certificate',
     state_of_origin: 'State of Origin Certificate',
@@ -70,6 +78,7 @@ const AdminHome = () => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [serviceRequests, setServiceRequests] = useState<ServiceRequest[]>([]);
     const [users, setUsers] = useState<ProfileData[]>([]);
+    const [promotions, setPromotions] = useState<PromotionPaymentRow[]>([]);
     const [loading, setLoading] = useState(true);
     const [adminNotes, setAdminNotes] = useState<Record<string, string>>({});
     const { toast } = useToast();
@@ -81,15 +90,17 @@ const AdminHome = () => {
 
     const fetchAllData = async () => {
         try {
-            const [ordersRes, requestsRes, usersRes] = await Promise.all([
+            const [ordersRes, requestsRes, usersRes, promosRes] = await Promise.all([
                 supabase.from('orders').select('*').order('created_at', { ascending: false }),
                 supabase.from('service_requests').select('*').order('created_at', { ascending: false }),
                 supabase.from('profiles').select('id, email, full_name, created_at').order('created_at', { ascending: false }),
+                supabase.from('promotion_payments').select('id, user_id, amount, status, created_at').order('created_at', { ascending: false }),
             ]);
 
             if (ordersRes.data) setOrders(ordersRes.data);
             if (requestsRes.data) setServiceRequests(requestsRes.data);
             if (usersRes.data) setUsers(usersRes.data);
+            if (promosRes.data) setPromotions(promosRes.data as PromotionPaymentRow[]);
         } catch (error) {
             console.error('Admin fetch error:', error);
         } finally {
@@ -161,6 +172,23 @@ const AdminHome = () => {
         );
     }
 
+    // Combined request stats (service requests + promotion submissions)
+    const allRequests = [
+        ...serviceRequests.map((r) => ({ status: r.status })),
+        ...promotions.map((p) => ({ status: p.status })),
+    ];
+    const totalRequests = allRequests.length;
+    const pendingRequests = allRequests.filter((r) => r.status === 'pending').length;
+    const approvedRequests = allRequests.filter((r) => r.status === 'approved' || r.status === 'live' || r.status === 'in_progress').length;
+    const completedRequests = allRequests.filter((r) => r.status === 'completed').length;
+    const promoRevenue = promotions
+        .filter((p) => ['approved', 'live', 'in_progress', 'completed'].includes(p.status))
+        .reduce((s, p) => s + Number(p.amount || 0), 0);
+    const orderRevenue = orders
+        .filter((o) => o.payment_status === 'paid' || o.payment_status === 'completed')
+        .reduce((s, o) => s + Number(o.total_amount || 0) / 100, 0);
+    const totalRevenue = promoRevenue + orderRevenue;
+
     return (
         <section className="pt-24 pb-16 bg-background min-h-screen">
             <div className="container mx-auto px-4">
@@ -182,31 +210,13 @@ const AdminHome = () => {
                 </div>
 
                 {/* Summary Cards */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
                     <Card>
                         <CardContent className="p-4 flex items-center gap-3">
-                            <Users className="h-8 w-8 text-primary" />
+                            <FileText className="h-8 w-8 text-primary" />
                             <div>
-                                <div className="text-2xl font-bold">{users.length}</div>
-                                <div className="text-xs text-muted-foreground">Registered Users</div>
-                            </div>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardContent className="p-4 flex items-center gap-3">
-                            <FileText className="h-8 w-8 text-blue-500" />
-                            <div>
-                                <div className="text-2xl font-bold">{serviceRequests.length}</div>
-                                <div className="text-xs text-muted-foreground">Service Requests</div>
-                            </div>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardContent className="p-4 flex items-center gap-3">
-                            <Package className="h-8 w-8 text-green-500" />
-                            <div>
-                                <div className="text-2xl font-bold">{orders.length}</div>
-                                <div className="text-xs text-muted-foreground">Total Orders</div>
+                                <div className="text-2xl font-bold">{totalRequests}</div>
+                                <div className="text-xs text-muted-foreground">Total Requests</div>
                             </div>
                         </CardContent>
                     </Card>
@@ -214,10 +224,35 @@ const AdminHome = () => {
                         <CardContent className="p-4 flex items-center gap-3">
                             <Clock className="h-8 w-8 text-yellow-500" />
                             <div>
-                                <div className="text-2xl font-bold">
-                                    {serviceRequests.filter(r => r.status === 'pending').length}
-                                </div>
-                                <div className="text-xs text-muted-foreground">Pending Requests</div>
+                                <div className="text-2xl font-bold">{pendingRequests}</div>
+                                <div className="text-xs text-muted-foreground">Pending</div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardContent className="p-4 flex items-center gap-3">
+                            <ThumbsUp className="h-8 w-8 text-blue-500" />
+                            <div>
+                                <div className="text-2xl font-bold">{approvedRequests}</div>
+                                <div className="text-xs text-muted-foreground">Approved</div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardContent className="p-4 flex items-center gap-3">
+                            <CheckCircle className="h-8 w-8 text-green-500" />
+                            <div>
+                                <div className="text-2xl font-bold">{completedRequests}</div>
+                                <div className="text-xs text-muted-foreground">Completed</div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                    <Card className="bg-primary/5 border-primary/20 col-span-2 md:col-span-1">
+                        <CardContent className="p-4 flex items-center gap-3">
+                            <Wallet className="h-8 w-8 text-primary" />
+                            <div>
+                                <div className="text-2xl font-bold text-primary">₦{totalRevenue.toLocaleString()}</div>
+                                <div className="text-xs text-muted-foreground">Total Revenue</div>
                             </div>
                         </CardContent>
                     </Card>
