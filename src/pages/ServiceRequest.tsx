@@ -97,6 +97,27 @@ const ServiceRequest = () => {
             return;
         }
 
+        // Verify reCAPTCHA token server-side before continuing
+        const captchaToken = captchaRef.current?.getValue() || null;
+        if (!captchaToken) {
+            toast({ title: 'Verification required', description: 'Please complete the reCAPTCHA challenge.', variant: 'destructive' });
+            return;
+        }
+        try {
+            const { data: captchaData, error: captchaError } = await supabase.functions.invoke('verify-recaptcha', {
+                body: { token: captchaToken },
+            });
+            if (captchaError || !captchaData?.success) {
+                toast({ title: 'Verification failed', description: 'reCAPTCHA validation failed. Please try again.', variant: 'destructive' });
+                captchaRef.current?.reset();
+                return;
+            }
+        } catch {
+            toast({ title: 'Verification failed', description: 'Could not verify reCAPTCHA. Please try again.', variant: 'destructive' });
+            captchaRef.current?.reset();
+            return;
+        }
+
         setIsLoading(true);
 
         try {

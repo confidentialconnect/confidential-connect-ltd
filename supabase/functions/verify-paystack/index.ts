@@ -12,6 +12,29 @@ serve(async (req) => {
   }
 
   try {
+    // Require authenticated caller
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+    const userClient = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: userData } = await userClient.auth.getUser();
+    const user = userData?.user;
+    if (!user) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const { reference } = await req.json();
 
     if (!reference) {
@@ -26,6 +49,24 @@ serve(async (req) => {
       throw new Error('Paystack secret key not configured');
     }
 
+    // Verify the caller owns the order tied to this reference
+    const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, serviceKey);
+
+    const { data: ownedOrder } = await supabase
+      .from('orders')
+      .select('id')
+      .eq('payment_reference', reference)
+      .eq('user_id', user.id)
+      .maybeSingle();
+
+    if (!ownedOrder) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Forbidden' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Verify transaction with Paystack API
     const response = await fetch(`https://api.paystack.co/transaction/verify/${reference}`, {
       headers: {
@@ -37,15 +78,11 @@ serve(async (req) => {
     const data = await response.json();
 
     if (data.status && data.data.status === 'success') {
-      // Update order payment status in database
-      const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-      const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-      const supabase = createClient(supabaseUrl, supabaseKey);
-
       await supabase
         .from('orders')
         .update({ payment_status: 'completed', payment_reference: reference })
-        .eq('payment_reference', reference);
+        .eq('payment_reference', reference)
+        .eq('user_id', user.id);
 
       return new Response(
         JSON.stringify({
@@ -70,7 +107,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Paystack verification error:', error);
     return new Response(
-      JSON.stringify({ success: false, error: error.message }),
+      JSON.stringify({ success: false, error: 'Payment verification failed' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
