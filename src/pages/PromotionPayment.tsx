@@ -9,9 +9,11 @@ import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import {
     ArrowLeft, Check, Copy, Building2,
-    ShieldCheck, Star, AlertTriangle, ArrowRight,
+    ShieldCheck, Star, AlertTriangle, ArrowRight, CreditCard, Zap, MessageCircle,
 } from "lucide-react";
 import { PromotionProofForm } from "@/components/PromotionProofForm";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 type PlanKey = "starter" | "weekly" | "growth" | "premium";
 
@@ -77,9 +79,9 @@ const plans: Record<PlanKey, {
 };
 
 const BANK = {
-    bank: "Moniepoint MFB",
+    bank: "Opay",
     accountName: "Confidential Connect Ltd",
-    accountNumber: "6919053477",
+    accountNumber: "7040294858",
 };
 
 const PromotionPayment = () => {
@@ -88,6 +90,8 @@ const PromotionPayment = () => {
     const plan = plans[planKey];
     const { toast } = useToast();
     const [copied, setCopied] = useState(false);
+    const [payerEmail, setPayerEmail] = useState("");
+    const [paying, setPaying] = useState(false);
 
     useEffect(() => {
         if (!plan) return;
@@ -117,6 +121,52 @@ const PromotionPayment = () => {
             toast({ title: "Copy failed", description: "Please copy manually.", variant: "destructive" });
         }
     };
+
+    const handlePaystack = () => {
+        if (!plan) return;
+        const email = payerEmail.trim();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            toast({ title: "Email required", description: "Enter a valid email to pay with Paystack.", variant: "destructive" });
+            return;
+        }
+        const PaystackPop = (window as any).PaystackPop;
+        if (!PaystackPop) {
+            toast({ title: "Paystack not loaded", description: "Please refresh the page and try again.", variant: "destructive" });
+            return;
+        }
+        const paystackKey = (import.meta as any).env?.VITE_PAYSTACK_PUBLIC_KEY || "pk_live_258b0e0fcab902ea3361ef5affa8110b925badc1";
+        setPaying(true);
+        const handler = PaystackPop.setup({
+            key: paystackKey,
+            email,
+            amount: Number(plan.amount) * 100, // kobo
+            currency: "NGN",
+            ref: `PROMO-${plan.name.toUpperCase()}-${Date.now()}`,
+            channels: ["card", "bank", "ussd", "bank_transfer"],
+            metadata: {
+                custom_fields: [
+                    { display_name: "Plan", variable_name: "plan", value: `${plan.name} (${plan.period})` },
+                ],
+            },
+            callback: function () {
+                setPaying(false);
+                toast({
+                    title: "Payment successful ✅",
+                    description: "Now send your proof and promotion details on WhatsApp.",
+                });
+                const msg = `Hello, I just paid for promotion on Confidential Connect Ltd.\n\nFull Name:\nBusiness Name:\nSelected Plan: ${plan.name} (${plan.price} ${plan.period})\nWhat I want to promote:\nDuration: ${plan.period}\n\nPaid via Paystack — receipt attached.`;
+                window.open(`https://wa.me/2347040294858?text=${encodeURIComponent(msg)}`, "_blank", "noopener,noreferrer");
+            },
+            onClose: () => {
+                setPaying(false);
+                toast({ title: "Payment cancelled", description: "You closed the payment window.", variant: "destructive" });
+            },
+        });
+        handler.openIframe();
+    };
+
+    const whatsappMsg = `Hello, I just paid for promotion on Confidential Connect Ltd.\n\nFull Name:\nBusiness Name:\nSelected Plan: ${plan.name} (${plan.price} ${plan.period})\nWhat I want to promote:\nDuration: ${plan.period}\n\nPayment Screenshot attached.`;
+    const whatsappUrl = `https://wa.me/2347040294858?text=${encodeURIComponent(whatsappMsg)}`;
 
     return (
         <div className="min-h-screen bg-background">
@@ -173,13 +223,58 @@ const PromotionPayment = () => {
                         </CardContent>
                     </Card>
 
-                    {/* Bank transfer */}
+                    {/* Payment options */}
+                    <div className="space-y-6">
+                    {/* Option 1: Paystack */}
+                    <Card className="border-primary/40 shadow-brand">
+                        <CardHeader>
+                            <div className="flex items-center justify-between">
+                                <CardTitle className="font-display text-xl flex items-center gap-2">
+                                    <CreditCard className="h-5 w-5 text-primary" />
+                                    Option 1: Pay with Paystack
+                                </CardTitle>
+                                <Badge className="gradient-brand text-white border-0 font-body">
+                                    <Zap className="h-3 w-3 mr-1" /> Fast & Secure
+                                </Badge>
+                            </div>
+                            <p className="text-xs text-muted-foreground font-body pt-1">
+                                Card, Bank Transfer or USSD — instant confirmation.
+                            </p>
+                        </CardHeader>
+                        <CardContent className="space-y-3">
+                            <div className="space-y-1.5">
+                                <Label htmlFor="payerEmail" className="font-body text-sm">Email for receipt</Label>
+                                <Input
+                                    id="payerEmail" type="email" placeholder="you@example.com"
+                                    value={payerEmail} onChange={(e) => setPayerEmail(e.target.value)}
+                                />
+                            </div>
+                            <Button
+                                size="lg" onClick={handlePaystack} disabled={paying}
+                                className="w-full gradient-brand text-white shadow-brand font-body font-semibold"
+                            >
+                                {paying ? "Opening Paystack…" : `Pay ${plan.price} with Paystack`}
+                                <ArrowRight className="h-4 w-4 ml-2" />
+                            </Button>
+                            <div className="flex justify-center gap-1.5 pt-1">
+                                <span className="px-2 py-0.5 bg-blue-600 text-white text-[10px] font-bold rounded">VISA</span>
+                                <span className="px-2 py-0.5 bg-red-600 text-white text-[10px] font-bold rounded">MC</span>
+                                <span className="px-2 py-0.5 bg-green-600 text-white text-[10px] font-bold rounded">VERVE</span>
+                                <span className="px-2 py-0.5 bg-indigo-600 text-white text-[10px] font-bold rounded">USSD</span>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Option 2: Bank transfer */}
                     <Card className="border-border">
                         <CardHeader>
                             <CardTitle className="font-display text-xl flex items-center gap-2">
                                 <Building2 className="h-5 w-5 text-primary" />
-                                Bank Transfer Details
+                                Option 2: Manual Bank Transfer
                             </CardTitle>
+                            <p className="text-xs text-muted-foreground font-body pt-1">
+                                Prefer direct transfer? Use the details below.
+                            </p>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="rounded-lg border border-dashed p-4 space-y-3">
@@ -197,7 +292,7 @@ const PromotionPayment = () => {
                                         <div className="font-mono text-xl font-bold tracking-wider">{BANK.accountNumber}</div>
                                         <Button size="sm" variant="outline" onClick={copyAccount}>
                                             {copied ? <Check className="h-4 w-4 mr-1" /> : <Copy className="h-4 w-4 mr-1" />}
-                                            {copied ? "Copied" : "Copy"}
+                                            {copied ? "Copied" : "Copy Account Number"}
                                         </Button>
                                     </div>
                                 </div>
@@ -209,16 +304,25 @@ const PromotionPayment = () => {
                                 </div>
                             </div>
 
-                            <div className="rounded-lg bg-primary/5 border border-primary/20 p-3 text-sm text-foreground/80 font-body">
-                                After making payment, kindly send your payment evidence and promotion details via WhatsApp.
-                            </div>
-
                             <p className="text-xs text-center text-muted-foreground font-body flex items-center justify-center gap-1.5">
                                 <ShieldCheck className="h-3.5 w-3.5 text-primary" />
                                 Your promotion will be reviewed and activated after payment confirmation.
                             </p>
                         </CardContent>
                     </Card>
+                    </div>
+                </div>
+
+                {/* After-payment instruction + WhatsApp */}
+                <div className="mt-8 rounded-xl border border-primary/30 bg-primary/5 p-5 text-center">
+                    <p className="text-sm sm:text-base font-body text-foreground/90 mb-4">
+                        After making payment <span className="font-semibold">(either method)</span>, please send your payment proof and promotion details via WhatsApp to complete your request.
+                    </p>
+                    <Button asChild size="lg" className="bg-green-600 hover:bg-green-700 text-white font-body font-semibold">
+                        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                            <MessageCircle className="h-5 w-5 mr-2" /> Send Proof on WhatsApp
+                        </a>
+                    </Button>
                 </div>
 
                 {/* Payment proof submission form */}
