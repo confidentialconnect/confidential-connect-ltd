@@ -30,8 +30,9 @@ const Payments = () => {
   }, [navigate]);
 
   const handlePaystackPayment = () => {
+    const paystackKey = import.meta.env.VITE_PAYSTACK_PUBLIC_KEY || 'pk_live_258b0e0fcab902ea3361ef5affa8110b925badc1';
     const handler = (window as any).PaystackPop.setup({
-      key: 'pk_live_258b0e0fcab902ea3361ef5affa8110b925badc1',
+      key: paystackKey,
       email: orderData.customer_email,
       amount: orderData.total_amount, // already in kobo
       currency: 'NGN',
