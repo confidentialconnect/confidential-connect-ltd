@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { toast as sonnerToast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -87,9 +88,17 @@ const AdminPromotionPayments = () => {
   };
 
   const updateStatus = async (p: PromotionPayment, newStatus: string) => {
+    if (p.status === newStatus) return;
+    const prevStatus = p.status;
+    const notes = notesDraft[p.id] ?? p.admin_notes ?? null;
+
+    // Optimistic UI update — flip status instantly
+    setPayments((prev) =>
+      prev.map((row) => (row.id === p.id ? { ...row, status: newStatus, admin_notes: notes } : row))
+    );
     setUpdatingId(p.id);
+    const loadingId = sonnerToast.loading(`Updating to ${newStatus.replace("_", " ")}...`);
     try {
-      const notes = notesDraft[p.id] ?? p.admin_notes ?? null;
       const { error } = await supabase
         .from("promotion_payments")
         .update({ status: newStatus, admin_notes: notes, updated_at: new Date().toISOString() })
@@ -105,13 +114,20 @@ const AdminPromotionPayments = () => {
         link: "/dashboard",
       });
 
-      setPayments((prev) =>
-        prev.map((row) => (row.id === p.id ? { ...row, status: newStatus, admin_notes: notes } : row))
-      );
-      toast({ title: "Updated", description: `Submission marked as ${newStatus}` });
+      sonnerToast.success(`Marked as ${newStatus.replace("_", " ")}`, {
+        id: loadingId,
+        description: `${p.business_name} — ${p.plan}`,
+      });
     } catch (e: any) {
       console.error(e);
-      toast({ title: "Update failed", description: e.message ?? "Try again", variant: "destructive" });
+      // Roll back optimistic update on failure
+      setPayments((prev) =>
+        prev.map((row) => (row.id === p.id ? { ...row, status: prevStatus } : row))
+      );
+      sonnerToast.error("Update failed", {
+        id: loadingId,
+        description: e.message ?? "Please try again.",
+      });
     } finally {
       setUpdatingId(null);
     }
