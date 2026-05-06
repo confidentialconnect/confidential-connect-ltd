@@ -16,6 +16,7 @@ interface AuthContextType {
   session: Session | null;
   profile: Profile | null;
   loading: boolean;
+  adminLoading: boolean;
   isAdmin: boolean;
   hasRole: (role: 'admin' | 'user') => Promise<boolean>;
   signUp: (email: string, password: string, fullName?: string) => Promise<{ error: any }>;
@@ -39,6 +40,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [adminLoading, setAdminLoading] = useState(true);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -49,12 +51,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(session?.user ?? null);
         
         if (session?.user) {
+          setAdminLoading(true);
           // Defer profile fetch to avoid deadlock
           setTimeout(() => {
             fetchProfile(session.user.id);
           }, 0);
         } else {
           setProfile(null);
+          setIsAdmin(false);
+          setAdminLoading(false);
         }
         
         setLoading(false);
@@ -67,9 +72,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(session?.user ?? null);
       
       if (session?.user) {
+        setAdminLoading(true);
         setTimeout(() => {
           fetchProfile(session.user.id);
         }, 0);
+      } else {
+        setAdminLoading(false);
       }
       
       setLoading(false);
@@ -163,10 +171,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const checkAdmin = async () => {
       if (user) {
-        const admin = await hasRole('admin');
-        setIsAdmin(admin);
+        setAdminLoading(true);
+        try {
+          const admin = await hasRole('admin');
+          setIsAdmin(admin);
+        } finally {
+          setAdminLoading(false);
+        }
       } else {
         setIsAdmin(false);
+        setAdminLoading(false);
       }
     };
     checkAdmin();
@@ -180,6 +194,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     session,
     profile,
     loading,
+    adminLoading,
     isAdmin,
     hasRole,
     signUp,

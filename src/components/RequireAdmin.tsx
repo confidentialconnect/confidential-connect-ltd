@@ -20,10 +20,10 @@ interface RequireAdminProps {
  * are initialized.
  */
 export const RequireAdmin = ({ children }: RequireAdminProps) => {
-  const { user, isAdmin, loading } = useAuth();
+  const { user, isAdmin, loading, adminLoading } = useAuth();
   const location = useLocation();
 
-  if (loading) {
+  if (loading || adminLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
