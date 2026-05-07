@@ -26,7 +26,7 @@ const Contact = () => {
     usePageSEO({
         title: 'Contact Us',
         description: 'Contact CONFIDENTIAL CONNECT LTD for document processing, school registration, and digital services. Reach us via phone, WhatsApp, or email.',
-        keywords: 'contact confidential connect, customer support Nigeria, digital services contact',
+        keywords: 'contact confidential connect ltd, customer support Nigeria, digital services contact',
         canonical: 'https://confidential-connect-ltd.lovable.app/contact',
     });
 

@@ -20,7 +20,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
       <aside className="hidden md:flex flex-col w-56 border-r bg-card pt-20 px-3 sticky top-0 h-screen">
         <div className="px-2 mb-4">
           <p className="text-xs uppercase tracking-wider text-muted-foreground">Admin</p>
-          <p className="font-semibold">Confidential Connect</p>
+          <p className="font-semibold">Confidential Connect Ltd</p>
         </div>
         <nav className="space-y-1">
           {navItems.map((item) => (
