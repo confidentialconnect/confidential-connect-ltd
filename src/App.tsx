@@ -36,6 +36,8 @@ import ServiceRequest from "./pages/ServiceRequest";
 import PromotionPayment from "./pages/PromotionPayment";
 import AdminPromotionPayments from "./pages/AdminPromotionPayments";
 import AdminUsers from "./pages/AdminUsers";
+import AdminAnalytics from "./pages/AdminAnalytics";
+import AdminSettings from "./pages/AdminSettings";
 import RequireAdmin from "./components/RequireAdmin";
 import AdminLayout from "./components/AdminLayout";
 
@@ -75,6 +77,8 @@ const App = () => (
               <Route path="/admin/orders" element={<RequireAdmin><AdminLayout><AdminOrders /></AdminLayout></RequireAdmin>} />
               <Route path="/admin/promotions" element={<RequireAdmin><AdminLayout><AdminPromotionPayments /></AdminLayout></RequireAdmin>} />
               <Route path="/admin/users" element={<RequireAdmin><AdminLayout><AdminUsers /></AdminLayout></RequireAdmin>} />
+              <Route path="/admin/analytics" element={<RequireAdmin><AdminLayout><AdminAnalytics /></AdminLayout></RequireAdmin>} />
+              <Route path="/admin/settings" element={<RequireAdmin><AdminLayout><AdminSettings /></AdminLayout></RequireAdmin>} />
               <Route path="/advertising" element={<Advertising />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<TermsConditions />} />
