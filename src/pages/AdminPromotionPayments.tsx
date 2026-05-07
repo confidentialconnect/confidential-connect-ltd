@@ -240,7 +240,7 @@ const AdminPromotionPayments = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted/20 p-4 pt-20">
+    <div className="bg-transparent">
       <div className="max-w-7xl mx-auto">
         <div className="mb-6">
           <Button variant="ghost" size="sm" asChild className="mb-4">

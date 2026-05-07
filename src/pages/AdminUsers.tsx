@@ -89,7 +89,7 @@ const AdminUsers = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted/20 p-4 pt-20">
+    <div className="bg-transparent">
       <div className="max-w-7xl mx-auto">
         <Button variant="ghost" size="sm" asChild className="mb-4">
           <Link to="/admin"><ArrowLeft className="h-4 w-4 mr-2" />Back to Admin</Link>
