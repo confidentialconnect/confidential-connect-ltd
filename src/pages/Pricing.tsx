@@ -87,7 +87,7 @@ const Pricing = () => {
     usePageSEO({
         title: 'Pricing',
         description: 'View transparent pricing for document processing, WAEC/NECO result checking, birth certificates, and other services at CONFIDENTIAL CONNECT LTD.',
-        keywords: 'pricing confidential connect, WAEC result checker price, birth certificate cost Nigeria, document processing fees',
+        keywords: 'pricing confidential connect ltd, WAEC result checker price, birth certificate cost Nigeria, document processing fees',
         canonical: 'https://confidential-connect-ltd.lovable.app/pricing',
     });
 
