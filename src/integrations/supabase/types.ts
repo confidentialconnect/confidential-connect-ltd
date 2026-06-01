@@ -128,39 +128,96 @@ export type Database = {
         }
         Relationships: []
       }
+      product_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number | null
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           category: string
           created_at: string | null
           description: string | null
+          discount_price: number | null
+          external_link: string | null
+          featured: boolean
           id: string
           image_url: string | null
+          images: string[] | null
           in_stock: boolean | null
           name: string
           price: number
+          sku: string | null
+          status: string
+          stock: number | null
+          tags: string[] | null
           updated_at: string | null
+          video_url: string | null
+          whatsapp: string | null
         }
         Insert: {
           category: string
           created_at?: string | null
           description?: string | null
+          discount_price?: number | null
+          external_link?: string | null
+          featured?: boolean
           id?: string
           image_url?: string | null
+          images?: string[] | null
           in_stock?: boolean | null
           name: string
           price: number
+          sku?: string | null
+          status?: string
+          stock?: number | null
+          tags?: string[] | null
           updated_at?: string | null
+          video_url?: string | null
+          whatsapp?: string | null
         }
         Update: {
           category?: string
           created_at?: string | null
           description?: string | null
+          discount_price?: number | null
+          external_link?: string | null
+          featured?: boolean
           id?: string
           image_url?: string | null
+          images?: string[] | null
           in_stock?: boolean | null
           name?: string
           price?: number
+          sku?: string | null
+          status?: string
+          stock?: number | null
+          tags?: string[] | null
           updated_at?: string | null
+          video_url?: string | null
+          whatsapp?: string | null
         }
         Relationships: []
       }

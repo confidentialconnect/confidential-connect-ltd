@@ -20,6 +20,7 @@ interface AdminLayoutProps {
 
 const navItems = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true },
+  { to: "/admin/products", label: "Products", icon: Package },
   { to: "/admin/promotions", label: "Promotions", icon: Megaphone },
   { to: "/admin/orders", label: "Payments & Orders", icon: Wallet },
   { to: "/admin/users", label: "Users", icon: UsersIcon },
