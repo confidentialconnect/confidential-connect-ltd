@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import {
-  LayoutDashboard, Megaphone, Package, Users as UsersIcon,
+  LayoutDashboard, Megaphone, Package, Users as UsersIcon, Tag,
   BarChart3, Settings, LogOut, Bell, Menu, X, Wallet, Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -21,6 +21,7 @@ interface AdminLayoutProps {
 const navItems = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true },
   { to: "/admin/products", label: "Products", icon: Package },
+  { to: "/admin/categories", label: "Categories", icon: Tag },
   { to: "/admin/promotions", label: "Promotions", icon: Megaphone },
   { to: "/admin/orders", label: "Payments & Orders", icon: Wallet },
   { to: "/admin/users", label: "Users", icon: UsersIcon },

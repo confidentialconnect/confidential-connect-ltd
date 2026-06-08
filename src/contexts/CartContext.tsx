@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 export type CartItem = {
-  id: number;
+  id: string | number;
   name: string;
   price: number; // price per unit in NGN
   quantity: number;
@@ -10,8 +10,8 @@ export type CartItem = {
 export type CartContextType = {
   items: CartItem[];
   addItem: (item: Omit<CartItem, "quantity">, quantity?: number) => void;
-  removeItem: (id: number) => void;
-  updateQuantity: (id: number, quantity: number) => void;
+  removeItem: (id: string | number) => void;
+  updateQuantity: (id: string | number, quantity: number) => void;
   clearCart: () => void;
   totalItems: number; // total quantity across items
   subtotal: number; // NGN
