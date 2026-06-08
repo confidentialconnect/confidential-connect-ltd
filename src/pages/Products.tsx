@@ -1,336 +1,210 @@
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { supabase } from "@/integrations/supabase/client";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Star, ArrowLeft } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from "@/components/ui/select";
+import { useCart } from "@/contexts/CartContext";
+import { toast } from "sonner";
+import { Search, ShoppingCart, Star, Package, Loader2 } from "lucide-react";
 
-// Complete products data with all 12 cloud services
-const getAllProducts = () => [
-  {
-    id: "1",
-    name: "Complete Cybersecurity Audit",
-    description: "Comprehensive security assessment for your business infrastructure",
-    price: 250000,
-    category: "security",
-    image: "/lovable-uploads/844d6332-7434-4200-93de-bb9fa92f86e9.png",
-    rating: 4.8,
-    reviews: 24,
-    inStock: true
-  },
-  {
-    id: "2", 
-    name: "Penetration Testing Service",
-    description: "Advanced penetration testing to identify security vulnerabilities",
-    price: 180000,
-    category: "security",
-    image: "/lovable-uploads/56744fde-8308-4e73-8a51-d4b460dcfe1a.png",
-    rating: 4.9,
-    reviews: 18,
-    inStock: true
-  },
-  {
-    id: "3",
-    name: "Custom Software Development",
-    description: "Tailored software solutions for your business needs",
-    price: 500000,
-    category: "software",
-    image: "/lovable-uploads/3657742a-fb6a-4c1a-a6c1-7bf4cf61cd8e.png",
-    rating: 4.7,
-    reviews: 32,
-    inStock: true
-  },
-  {
-    id: "4",
-    name: "AWS Cloud Migration",
-    description: "Seamless migration of your infrastructure to AWS cloud",
-    price: 400000,
-    category: "cloud",
-    image: "/placeholder.svg",
-    rating: 4.8,
-    reviews: 22,
-    inStock: true
-  },
-  {
-    id: "5",
-    name: "Azure Cloud Setup",
-    description: "Complete Microsoft Azure cloud infrastructure setup",
-    price: 350000,
-    category: "cloud",
-    image: "/placeholder.svg",
-    rating: 4.6,
-    reviews: 19,
-    inStock: true
-  },
-  {
-    id: "6",
-    name: "Google Cloud Platform Setup",
-    description: "Professional GCP cloud infrastructure deployment",
-    price: 370000,
-    category: "cloud",
-    image: "/placeholder.svg",
-    rating: 4.7,
-    reviews: 25,
-    inStock: true
-  },
-  {
-    id: "7",
-    name: "Multi-Cloud Strategy",
-    description: "Hybrid multi-cloud infrastructure management",
-    price: 600000,
-    category: "cloud",
-    image: "/placeholder.svg",
-    rating: 4.9,
-    reviews: 15,
-    inStock: true
-  },
-  {
-    id: "8",
-    name: "Cloud Security Audit",
-    description: "Comprehensive cloud security assessment and hardening",
-    price: 280000,
-    category: "cloud",
-    image: "/placeholder.svg",
-    rating: 4.8,
-    reviews: 21,
-    inStock: true
-  },
-  {
-    id: "9",
-    name: "Cloud Backup & Recovery",
-    description: "Enterprise-grade cloud backup and disaster recovery solution",
-    price: 220000,
-    category: "cloud",
-    image: "/placeholder.svg",
-    rating: 4.7,
-    reviews: 28,
-    inStock: true
-  },
-  {
-    id: "10",
-    name: "Cloud Cost Optimization",
-    description: "AI-powered cloud cost analysis and optimization",
-    price: 150000,
-    category: "cloud",
-    image: "/placeholder.svg",
-    rating: 4.6,
-    reviews: 17,
-    inStock: true
-  },
-  {
-    id: "11",
-    name: "Serverless Architecture",
-    description: "Serverless application development and deployment",
-    price: 320000,
-    category: "cloud",
-    image: "/placeholder.svg",
-    rating: 4.8,
-    reviews: 20,
-    inStock: true
-  },
-  {
-    id: "12",
-    name: "Cloud Native Development",
-    description: "Cloud-native application development with containers",
-    price: 480000,
-    category: "cloud",
-    image: "/placeholder.svg",
-    rating: 4.9,
-    reviews: 24,
-    inStock: true
-  },
-  {
-    id: "13",
-    name: "Network Infrastructure Setup",
-    description: "Complete network design and implementation",
-    price: 350000,
-    category: "network",
-    image: "/placeholder.svg",
-    rating: 4.6,
-    reviews: 15,
-    inStock: true
-  },
-  {
-    id: "14",
-    name: "Database Optimization Service",
-    description: "Performance tuning and optimization for your databases",
-    price: 120000,
-    category: "database", 
-    image: "/placeholder.svg",
-    rating: 4.8,
-    reviews: 21,
-    inStock: true
-  },
-  {
-    id: "15",
-    name: "Hardware Procurement & Setup",
-    description: "Complete hardware solution with installation and configuration",
-    price: 450000,
-    category: "hardware",
-    image: "/placeholder.svg",
-    rating: 4.5,
-    reviews: 28,
-    inStock: true
-  }
-,
-  {
-    id: "16",
-    name: "Birth Certificate",
-    description: "Official birth certificate processing with verification and authentication support.",
-    price: 5000,
-    category: "documentation",
-    image: "/assets/certificates-collection.jpg",
-    rating: 4.9,
-    reviews: 42,
-    inStock: true
-  },
-  {
-    id: "17",
-    name: "State of Origin Certificate",
-    description: "Authentic state of origin certificate with government endorsement and verification.",
-    price: 12000,
-    category: "documentation",
-    image: "/assets/origin-certificate.jpg",
-    rating: 4.8,
-    reviews: 37,
-    inStock: true
-  },
-  {
-    id: "18",
-    name: "WAEC Certificate Service",
-    description: "Complete WAEC certificate collection, verification, and authentication service.",
-    price: 12000,
-    category: "documentation",
-    image: "/assets/identification-certificate.jpg",
-    rating: 4.9,
-    reviews: 51,
-    inStock: true
-  }
-];
+interface Product {
+  id: string;
+  name: string;
+  description: string | null;
+  price: number;
+  discount_price: number | null;
+  image_url: string | null;
+  images: string[] | null;
+  category: string;
+  featured: boolean;
+  status: string;
+  created_at: string | null;
+}
 
-const categoryNames: Record<string, string> = {
-  security: "Security Services",
-  software: "Software Development", 
-  network: "Network Solutions",
-  database: "Database Services",
-  hardware: "Hardware Solutions",
-  cloud: "Cloud Services",
-  documentation: "Documentation Services"
-};
+interface Category { id: string; name: string; slug: string }
 
 const Products = () => {
-  const [searchParams] = useSearchParams();
-  const category = searchParams.get("category");
-  const [products, setProducts] = useState<any[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialCategory = searchParams.get("category") || "all";
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [category, setCategory] = useState(initialCategory);
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("newest");
+  const [maxPrice, setMaxPrice] = useState<string>("");
+  const { addItem } = useCart();
 
   useEffect(() => {
-    const allProducts = getAllProducts();
-    const filteredProducts = category 
-      ? allProducts.filter(product => product.category === category)
-      : allProducts;
-    setProducts(filteredProducts);
+    document.title = "Shop | Confidential Connect Ltd";
+    (async () => {
+      const [p, c] = await Promise.all([
+        supabase.from("products").select("*").eq("status", "published"),
+        supabase.from("product_categories").select("id,name,slug").order("display_order"),
+      ]);
+      setProducts((p.data as any) || []);
+      setCategories((c.data as any) || []);
+      setLoading(false);
+    })();
+  }, []);
+
+  useEffect(() => {
+    const next = new URLSearchParams(searchParams);
+    if (category && category !== "all") next.set("category", category); else next.delete("category");
+    setSearchParams(next, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category]);
 
-  const categoryName = category ? categoryNames[category] || "Services" : "All Services";
+  const filtered = useMemo(() => {
+    let list = [...products];
+    if (category !== "all") list = list.filter((p) => p.category === category);
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      list = list.filter((p) =>
+        p.name.toLowerCase().includes(q) ||
+        (p.description || "").toLowerCase().includes(q)
+      );
+    }
+    if (maxPrice) {
+      const m = Number(maxPrice);
+      if (!isNaN(m)) list = list.filter((p) => (p.discount_price || p.price) <= m);
+    }
+    switch (sort) {
+      case "price-asc": list.sort((a, b) => (a.discount_price || a.price) - (b.discount_price || b.price)); break;
+      case "price-desc": list.sort((a, b) => (b.discount_price || b.price) - (a.discount_price || a.price)); break;
+      case "name": list.sort((a, b) => a.name.localeCompare(b.name)); break;
+      default: list.sort((a, b) => (b.created_at || "").localeCompare(a.created_at || ""));
+    }
+    return list;
+  }, [products, category, search, sort, maxPrice]);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background">
       <Header />
-      
-      <main className="pt-20 pb-12">
+      <main className="pt-20 pb-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Breadcrumb */}
-          <div className="flex items-center gap-2 mb-6">
-            <Button
-              variant="ghost" 
-              asChild
-              className="p-0 h-auto"
-            >
-              <Link to="/categories">
-                <ArrowLeft className="h-4 w-4 mr-1" />
-                Back to Categories
-              </Link>
-            </Button>
-          </div>
-
-          {/* Page Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">
-              {categoryName}
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              {category 
-                ? `Explore our ${categoryName.toLowerCase()} and solutions`
-                : "Browse our complete range of technology services"
-              }
+          <div className="mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold font-display mb-2">Shop Products &amp; Services</h1>
+            <p className="text-muted-foreground">
+              Browse our full catalog of verified documents, services, and educational products.
             </p>
           </div>
 
-          {/* Products Grid */}
-          {products.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {products.map((product) => (
-                <Card key={product.id} className="hover-lift">
-                  <CardHeader className="p-0">
-                    <div className="aspect-video bg-muted rounded-t-lg overflow-hidden">
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  </CardHeader>
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <Badge variant="secondary">{categoryNames[product.category]}</Badge>
-                      <div className="flex items-center gap-1">
-                        <Star className="h-3 w-3 fill-warning text-warning" />
-                        <span className="text-xs text-muted-foreground">
-                          {product.rating} ({product.reviews})
-                        </span>
-                      </div>
-                    </div>
-                    
-                    <CardTitle className="text-lg mb-2 line-clamp-2">
-                      {product.name}
-                    </CardTitle>
-                    
-                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-                      {product.description}
-                    </p>
-                    
-                    <div className="flex items-center justify-between">
-                      <div className="text-lg font-semibold text-primary">
-                        ₦{product.price.toLocaleString()}
-                      </div>
-                      <Button asChild size="sm">
-                        <Link to={`/product/${product.id}`}>
-                          View Details
-                        </Link>
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+          <Card className="mb-6">
+            <CardContent className="p-4 grid grid-cols-1 md:grid-cols-4 gap-3">
+              <div className="relative md:col-span-2">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input placeholder="Search products..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
+              </div>
+              <Select value={category} onValueChange={setCategory}>
+                <SelectTrigger><SelectValue placeholder="Category" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  {categories.map((c) => (
+                    <SelectItem key={c.id} value={c.slug}>{c.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Select value={sort} onValueChange={setSort}>
+                <SelectTrigger><SelectValue placeholder="Sort" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="newest">Newest</SelectItem>
+                  <SelectItem value="price-asc">Price: Low to High</SelectItem>
+                  <SelectItem value="price-desc">Price: High to Low</SelectItem>
+                  <SelectItem value="name">Name (A–Z)</SelectItem>
+                </SelectContent>
+              </Select>
+              <Input
+                type="number"
+                placeholder="Max price (₦)"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(e.target.value)}
+                className="md:col-span-1"
+              />
+            </CardContent>
+          </Card>
+
+          {loading ? (
+            <div className="flex justify-center py-20"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>
+          ) : filtered.length === 0 ? (
+            <Card><CardContent className="text-center py-20">
+              <Package className="h-12 w-12 mx-auto text-muted-foreground mb-3" />
+              <h3 className="font-semibold mb-1">No products found</h3>
+              <p className="text-sm text-muted-foreground">Try adjusting your filters or check back later.</p>
+            </CardContent></Card>
           ) : (
-            <div className="text-center py-12">
-              <h3 className="text-xl font-semibold mb-2">No services found</h3>
-              <p className="text-muted-foreground mb-4">
-                No services available in this category at the moment.
-              </p>
-              <Button asChild>
-                <Link to="/categories">
-                  Browse All Categories
-                </Link>
-              </Button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filtered.map((p) => {
+                const img = p.image_url || (p.images && p.images[0]) || "";
+                const finalPrice = p.discount_price || p.price;
+                return (
+                  <Card key={p.id} className="overflow-hidden group hover:shadow-xl transition-all hover:-translate-y-1">
+                    <Link to={`/product/${p.id}`} className="block aspect-video bg-muted relative overflow-hidden">
+                      {img ? (
+                        <img src={img} alt={p.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                          <Package className="h-10 w-10" />
+                        </div>
+                      )}
+                      {p.featured && <Badge className="absolute top-2 right-2">Featured</Badge>}
+                      {p.discount_price && p.price > p.discount_price && (
+                        <Badge className="absolute top-2 left-2 bg-destructive">SALE</Badge>
+                      )}
+                    </Link>
+                    <CardContent className="p-4 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <Badge variant="secondary" className="text-xs">{p.category}</Badge>
+                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                          <Star className="h-3 w-3 fill-primary text-primary" /> 4.8
+                        </div>
+                      </div>
+                      <Link to={`/product/${p.id}`}>
+                        <h3 className="font-semibold line-clamp-1 font-display hover:text-primary">{p.name}</h3>
+                      </Link>
+                      <p className="text-xs text-muted-foreground line-clamp-2 min-h-[2rem]">{p.description}</p>
+                      <div className="flex items-end justify-between pt-1">
+                        <div>
+                          {p.discount_price ? (
+                            <>
+                              <p className="text-lg font-bold text-primary">₦{Number(p.discount_price).toLocaleString()}</p>
+                              <p className="text-xs text-muted-foreground line-through">₦{Number(p.price).toLocaleString()}</p>
+                            </>
+                          ) : (
+                            <p className="text-lg font-bold text-primary">₦{Number(p.price).toLocaleString()}</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex gap-2 pt-2">
+                        <Button asChild size="sm" variant="outline" className="flex-1">
+                          <Link to={`/product/${p.id}`}>View</Link>
+                        </Button>
+                        <Button
+                          size="sm"
+                          className="flex-1"
+                          onClick={() => {
+                            addItem({ id: p.id, name: p.name, price: finalPrice });
+                            toast.success(`${p.name} added to cart`);
+                          }}
+                        >
+                          <ShoppingCart className="h-3.5 w-3.5 mr-1" /> Add
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           )}
         </div>
       </main>
-
       <Footer />
     </div>
   );

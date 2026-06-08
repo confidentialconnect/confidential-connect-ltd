@@ -10,7 +10,7 @@ import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { CTASection } from "@/components/CTASection";
 import { ContactSectionNew } from "@/components/ContactSectionNew";
 import { FooterNew } from "@/components/FooterNew";
-import { ProductGrid } from "@/components/ProductGrid";
+import { FeaturedProducts } from "@/components/FeaturedProducts";
 import { AIChatWidget } from "@/components/AIChatWidget";
 import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
 import { ScrollToTop } from "@/components/ScrollToTop";
@@ -48,7 +48,7 @@ const Index = () => {
                 <HeroSection />
                 <AboutSection />
                 <ServiceCategories />
-                <ProductGrid />
+                <FeaturedProducts />
                 <MoneyMakingFeatures />
                 <WhyChooseUs />
                 <ImpactSection />
