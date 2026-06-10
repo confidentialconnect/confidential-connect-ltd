@@ -11,7 +11,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import {
     FileText, Bell, Clock, CheckCircle, AlertCircle,
-    Plus, Loader2, Package
+    Plus, Loader2, Package, Download
 } from 'lucide-react';
 
 interface ServiceRequest {
@@ -22,6 +22,9 @@ interface ServiceRequest {
     updated_at: string;
     description: string | null;
     admin_notes: string | null;
+    delivered_file_url: string | null;
+    delivered_at: string | null;
+    delivery_note: string | null;
 }
 
 interface Notification {
@@ -122,6 +125,18 @@ const Dashboard = () => {
     };
 
     const unreadCount = notifications.filter(n => !n.is_read).length;
+    const delivered = requests.filter(r => r.delivered_file_url);
+
+    const downloadDelivered = async (path: string) => {
+        const { data, error } = await supabase.storage
+            .from('delivered-documents')
+            .createSignedUrl(path, 120);
+        if (error || !data) {
+            toast({ title: 'Error', description: error?.message || 'Could not generate link', variant: 'destructive' });
+            return;
+        }
+        window.open(data.signedUrl, '_blank');
+    };
 
     if (!user) {
         return (
@@ -205,6 +220,15 @@ const Dashboard = () => {
                                 <FileText className="h-4 w-4" />
                                 My Requests
                             </TabsTrigger>
+                            <TabsTrigger value="downloads" className="flex items-center gap-2">
+                                <Download className="h-4 w-4" />
+                                Downloads
+                                {delivered.length > 0 && (
+                                    <span className="ml-1 bg-green-600 text-white text-xs rounded-full h-5 min-w-5 px-1 flex items-center justify-center">
+                                        {delivered.length}
+                                    </span>
+                                )}
+                            </TabsTrigger>
                             <TabsTrigger value="notifications" className="flex items-center gap-2">
                                 <Bell className="h-4 w-4" />
                                 Notifications
@@ -275,6 +299,50 @@ const Dashboard = () => {
                                             </Card>
                                         );
                                     })}
+                                </div>
+                            )}
+                        </TabsContent>
+
+                        <TabsContent value="downloads">
+                            {delivered.length === 0 ? (
+                                <Card>
+                                    <CardContent className="py-12 text-center">
+                                        <Download className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                                        <p className="text-muted-foreground">
+                                            No delivered documents yet. You'll see them here once we complete your requests.
+                                        </p>
+                                    </CardContent>
+                                </Card>
+                            ) : (
+                                <div className="space-y-3">
+                                    {delivered.map((req) => (
+                                        <Card key={req.id}>
+                                            <CardContent className="p-4 flex flex-col md:flex-row md:items-center gap-3">
+                                                <div className="flex-1">
+                                                    <div className="flex items-center gap-2">
+                                                        <FileText className="h-4 w-4 text-primary" />
+                                                        <span className="font-semibold">
+                                                            {SERVICE_LABELS[req.service_type] || req.service_type}
+                                                        </span>
+                                                        <Badge variant="outline" className="text-green-700 border-green-300">
+                                                            Ready
+                                                        </Badge>
+                                                    </div>
+                                                    {req.delivery_note && (
+                                                        <p className="text-sm text-muted-foreground mt-1">{req.delivery_note}</p>
+                                                    )}
+                                                    {req.delivered_at && (
+                                                        <p className="text-xs text-muted-foreground mt-1">
+                                                            Delivered {new Date(req.delivered_at).toLocaleString()}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                                <Button onClick={() => downloadDelivered(req.delivered_file_url!)}>
+                                                    <Download className="h-4 w-4 mr-2" /> Download
+                                                </Button>
+                                            </CardContent>
+                                        </Card>
+                                    ))}
                                 </div>
                             )}
                         </TabsContent>
