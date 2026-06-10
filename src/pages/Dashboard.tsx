@@ -11,7 +11,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import {
     FileText, Bell, Clock, CheckCircle, AlertCircle,
-    Plus, Loader2, Package, Download
+    Plus, Loader2, Package, Download, Megaphone
 } from 'lucide-react';
 
 interface ServiceRequest {
@@ -35,6 +35,16 @@ interface Notification {
     is_read: boolean;
     created_at: string;
     link: string | null;
+}
+
+interface PromotionRow {
+    id: string;
+    plan: string;
+    amount: number;
+    business_name: string | null;
+    status: string;
+    admin_notes: string | null;
+    created_at: string;
 }
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; icon: any }> = {
@@ -66,6 +76,7 @@ const Dashboard = () => {
     const { toast } = useToast();
     const [requests, setRequests] = useState<ServiceRequest[]>([]);
     const [notifications, setNotifications] = useState<Notification[]>([]);
+    const [promotions, setPromotions] = useState<PromotionRow[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -78,7 +89,7 @@ const Dashboard = () => {
 
     const fetchData = async () => {
         try {
-            const [reqRes, notifRes] = await Promise.all([
+            const [reqRes, notifRes, promoRes] = await Promise.all([
                 supabase
                     .from('service_requests')
                     .select('*')
@@ -90,10 +101,16 @@ const Dashboard = () => {
                     .eq('user_id', user!.id)
                     .order('created_at', { ascending: false })
                     .limit(20),
+                supabase
+                    .from('promotion_payments')
+                    .select('id, plan, amount, business_name, status, admin_notes, created_at')
+                    .eq('user_id', user!.id)
+                    .order('created_at', { ascending: false }),
             ]);
 
             if (reqRes.data) setRequests(reqRes.data);
             if (notifRes.data) setNotifications(notifRes.data);
+            if (promoRes.data) setPromotions(promoRes.data as PromotionRow[]);
         } catch (error) {
             console.error('Dashboard fetch error:', error);
         } finally {
@@ -229,6 +246,10 @@ const Dashboard = () => {
                                     </span>
                                 )}
                             </TabsTrigger>
+                            <TabsTrigger value="promotions" className="flex items-center gap-2">
+                                <Megaphone className="h-4 w-4" />
+                                Promotions
+                            </TabsTrigger>
                             <TabsTrigger value="notifications" className="flex items-center gap-2">
                                 <Bell className="h-4 w-4" />
                                 Notifications
@@ -343,6 +364,56 @@ const Dashboard = () => {
                                             </CardContent>
                                         </Card>
                                     ))}
+                                </div>
+                            )}
+                        </TabsContent>
+
+                        <TabsContent value="promotions">
+                            {promotions.length === 0 ? (
+                                <Card>
+                                    <CardContent className="py-12 text-center">
+                                        <Megaphone className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                                        <p className="text-muted-foreground mb-4">No promotions yet</p>
+                                        <Button asChild>
+                                            <Link to="/advertising">Promote Your Business</Link>
+                                        </Button>
+                                    </CardContent>
+                                </Card>
+                            ) : (
+                                <div className="space-y-3">
+                                    {promotions.map((p) => {
+                                        const color =
+                                            p.status === 'approved' || p.status === 'live'
+                                                ? 'bg-green-500/10 text-green-700 border-green-300'
+                                                : p.status === 'rejected'
+                                                ? 'bg-red-500/10 text-red-700 border-red-300'
+                                                : 'bg-yellow-500/10 text-yellow-700 border-yellow-300';
+                                        return (
+                                            <Card key={p.id}>
+                                                <CardContent className="p-4">
+                                                    <div className="flex items-start justify-between gap-3">
+                                                        <div>
+                                                            <p className="font-semibold capitalize">
+                                                                {p.plan} Plan — ₦{Number(p.amount).toLocaleString()}
+                                                            </p>
+                                                            {p.business_name && (
+                                                                <p className="text-sm text-muted-foreground">{p.business_name}</p>
+                                                            )}
+                                                            <p className="text-xs text-muted-foreground mt-1">
+                                                                {new Date(p.created_at).toLocaleString()}
+                                                            </p>
+                                                            {p.admin_notes && (
+                                                                <div className="bg-muted/50 rounded p-2 mt-2 text-sm">
+                                                                    <span className="font-medium">Admin:</span> {p.admin_notes}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                        <Badge variant="outline" className={color}>{p.status}</Badge>
+                                                    </div>
+                                                </CardContent>
+                                            </Card>
+                                        );
+                                    })}
                                 </div>
                             )}
                         </TabsContent>
