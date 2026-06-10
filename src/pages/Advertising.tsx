@@ -108,6 +108,9 @@ const Advertising = () => {
                   )}
                   <CardContent className="p-6">
                     <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>
+                    <Badge variant="outline" className="mb-2 text-amber-700 border-amber-400 bg-amber-50">
+                      Limited slots available
+                    </Badge>
                     <div className="flex items-baseline gap-1 mb-2">
                       <span className="text-3xl font-extrabold text-foreground">{plan.price}</span>
                       {plan.period && <span className="text-sm text-muted-foreground">{plan.period}</span>}
