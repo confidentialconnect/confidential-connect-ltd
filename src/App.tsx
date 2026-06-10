@@ -40,6 +40,7 @@ import AdminAnalytics from "./pages/AdminAnalytics";
 import AdminSettings from "./pages/AdminSettings";
 import AdminProducts from "./pages/AdminProducts";
 import AdminCategories from "./pages/AdminCategories";
+import AdminDocuments from "./pages/AdminDocuments";
 import RequireAdmin from "./components/RequireAdmin";
 import AdminLayout from "./components/AdminLayout";
 
@@ -81,6 +82,7 @@ const App = () => (
               <Route path="/admin/users" element={<RequireAdmin><AdminLayout><AdminUsers /></AdminLayout></RequireAdmin>} />
               <Route path="/admin/products" element={<RequireAdmin><AdminLayout><AdminProducts /></AdminLayout></RequireAdmin>} />
               <Route path="/admin/categories" element={<RequireAdmin><AdminLayout><AdminCategories /></AdminLayout></RequireAdmin>} />
+              <Route path="/admin/documents" element={<RequireAdmin><AdminLayout><AdminDocuments /></AdminLayout></RequireAdmin>} />
               <Route path="/admin/analytics" element={<RequireAdmin><AdminLayout><AdminAnalytics /></AdminLayout></RequireAdmin>} />
               <Route path="/admin/settings" element={<RequireAdmin><AdminLayout><AdminSettings /></AdminLayout></RequireAdmin>} />
               <Route path="/advertising" element={<Advertising />} />

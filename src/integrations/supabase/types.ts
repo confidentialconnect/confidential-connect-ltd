@@ -315,6 +315,9 @@ export type Database = {
           client_name: string
           client_phone: string
           created_at: string | null
+          delivered_at: string | null
+          delivered_file_url: string | null
+          delivery_note: string | null
           description: string | null
           document_url: string | null
           id: string
@@ -329,6 +332,9 @@ export type Database = {
           client_name: string
           client_phone: string
           created_at?: string | null
+          delivered_at?: string | null
+          delivered_file_url?: string | null
+          delivery_note?: string | null
           description?: string | null
           document_url?: string | null
           id?: string
@@ -343,6 +349,9 @@ export type Database = {
           client_name?: string
           client_phone?: string
           created_at?: string | null
+          delivered_at?: string | null
+          delivered_file_url?: string | null
+          delivery_note?: string | null
           description?: string | null
           document_url?: string | null
           id?: string
