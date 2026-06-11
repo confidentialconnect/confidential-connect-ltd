@@ -11,7 +11,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import {
     FileText, Bell, Clock, CheckCircle, AlertCircle,
-    Plus, Loader2, Package, Download, Megaphone
+    Plus, Loader2, Package, Download, Megaphone, ShieldCheck
 } from 'lucide-react';
 
 interface ServiceRequest {
@@ -198,6 +198,22 @@ const Dashboard = () => {
                     </div>
 
                     {/* Summary Cards */}
+                    {!(profile as any)?.verified && (
+                        <Card className="mb-6 border-amber-300 bg-amber-50">
+                            <CardContent className="p-4 flex items-center justify-between gap-3 flex-wrap">
+                                <div className="flex items-center gap-3">
+                                    <div className="h-10 w-10 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center">
+                                        <ShieldCheck className="h-5 w-5" />
+                                    </div>
+                                    <div>
+                                        <p className="font-semibold text-amber-900">Verify your identity</p>
+                                        <p className="text-xs text-amber-800">Get a verified badge and unlock higher transaction limits.</p>
+                                    </div>
+                                </div>
+                                <Link to="/verify-identity"><Button size="sm" className="bg-amber-600 hover:bg-amber-700 text-white">Start verification</Button></Link>
+                            </CardContent>
+                        </Card>
+                    )}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                         <Card>
                             <CardContent className="p-4 text-center">
