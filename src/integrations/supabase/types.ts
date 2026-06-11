@@ -14,6 +14,90 @@ export type Database = {
   }
   public: {
     Tables: {
+      audit_logs: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          id: string
+          ip_address: string | null
+          metadata: Json | null
+          target_id: string | null
+          target_table: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json | null
+          target_id?: string | null
+          target_table?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json | null
+          target_id?: string | null
+          target_table?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
+      kyc_submissions: {
+        Row: {
+          created_at: string
+          document_number: string
+          document_type: string
+          document_url: string
+          full_name: string
+          id: string
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          selfie_url: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          document_number: string
+          document_type: string
+          document_url: string
+          full_name: string
+          id?: string
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          selfie_url?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          document_number?: string
+          document_type?: string
+          document_url?: string
+          full_name?: string
+          id?: string
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          selfie_url?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           created_at: string | null
@@ -230,6 +314,7 @@ export type Database = {
           is_admin: boolean | null
           phone: string | null
           updated_at: string | null
+          verified: boolean
         }
         Insert: {
           created_at?: string | null
@@ -239,6 +324,7 @@ export type Database = {
           is_admin?: boolean | null
           phone?: string | null
           updated_at?: string | null
+          verified?: boolean
         }
         Update: {
           created_at?: string | null
@@ -248,6 +334,7 @@ export type Database = {
           is_admin?: boolean | null
           phone?: string | null
           updated_at?: string | null
+          verified?: boolean
         }
         Relationships: []
       }
