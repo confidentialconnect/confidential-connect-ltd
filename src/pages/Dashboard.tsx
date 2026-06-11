@@ -198,8 +198,6 @@ const Dashboard = () => {
                     </div>
 
                     {/* Summary Cards */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                    </div>
                     {!(profile as any)?.verified && (
                         <Card className="mb-6 border-amber-300 bg-amber-50">
                             <CardContent className="p-4 flex items-center justify-between gap-3 flex-wrap">
