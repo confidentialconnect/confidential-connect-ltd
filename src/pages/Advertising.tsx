@@ -6,8 +6,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { Megaphone, Sparkles, LineChart, Users, Star, Zap, Check, ArrowRight } from "lucide-react";
+import { usePromotionPlans, formatNaira } from "@/hooks/usePromotionPlans";
 
 const Advertising = () => {
+  const { plans, loading } = usePromotionPlans();
   useEffect(() => {
     document.title = "Advertising Services | Confidential Connect Ltd";
     const desc = document.querySelector('meta[name="description"]');
@@ -83,23 +85,10 @@ const Advertising = () => {
               <p className="text-muted-foreground">Simple, affordable pricing for students and small business owners.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[{
-                name: "Starter", price: "₦2,000", period: "/day", duration: "1 Day Promotion",
-                perks: ["2 posts daily (Morning & Evening)", "Quick and affordable visibility"],
-                slug: "starter", popular: false,
-              },{
-                name: "Weekly", price: "₦10,500", period: "", duration: "7 Days Promotion",
-                perks: ["Consistent daily promotion", "Better reach and engagement"],
-                slug: "weekly", popular: false,
-              },{
-                name: "Growth", price: "₦18,200", period: "", duration: "14 Days Promotion",
-                perks: ["Extended promotion period", "Strong audience reach", "Higher engagement"],
-                slug: "growth", popular: true,
-              },{
-                name: "Premium", price: "₦36,000", period: "", duration: "30 Days Promotion",
-                perks: ["Maximum visibility", "Priority placement", "Long-term promotion"],
-                slug: "premium", popular: false,
-              }].map((plan, i) => (
+              {loading && plans.length === 0 && (
+                <p className="col-span-full text-center text-muted-foreground">Loading plans…</p>
+              )}
+              {plans.map((plan, i) => (
                 <Card key={i} className={`relative overflow-hidden hover-lift ${plan.popular ? 'border-primary shadow-lg scale-[1.02]' : ''}`}>
                   {plan.popular && (
                     <Badge className="absolute top-3 right-3 bg-primary text-primary-foreground">
@@ -112,14 +101,14 @@ const Advertising = () => {
                       Limited slots available
                     </Badge>
                     <div className="flex items-baseline gap-1 mb-2">
-                      <span className="text-3xl font-extrabold text-foreground">{plan.price}</span>
-                      {plan.period && <span className="text-sm text-muted-foreground">{plan.period}</span>}
+                      <span className="text-3xl font-extrabold text-foreground">{formatNaira(plan.price)}</span>
+                      {plan.period_label && <span className="text-sm text-muted-foreground">{plan.period_label}</span>}
                     </div>
                     <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary bg-primary/10 rounded-full px-2.5 py-1 mb-4">
-                      <Zap className="h-3 w-3" /> {plan.duration}
+                      <Zap className="h-3 w-3" /> {plan.duration_label}
                     </div>
                     <ul className="space-y-2 text-sm mb-6">
-                      {plan.perks.map((p, idx) => (
+                      {plan.features.map((p, idx) => (
                         <li key={idx} className="flex items-start gap-2">
                           <Check className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                           <span className="text-foreground/80">{p}</span>
