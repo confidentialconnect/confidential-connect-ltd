@@ -395,6 +395,107 @@ export type Database = {
         }
         Relationships: []
       }
+      promotion_plan_price_history: {
+        Row: {
+          changed_at: string
+          changed_by: string | null
+          changed_by_email: string | null
+          id: string
+          new_price: number
+          old_price: number | null
+          plan_id: string
+          plan_name: string
+          plan_slug: string
+        }
+        Insert: {
+          changed_at?: string
+          changed_by?: string | null
+          changed_by_email?: string | null
+          id?: string
+          new_price: number
+          old_price?: number | null
+          plan_id: string
+          plan_name: string
+          plan_slug: string
+        }
+        Update: {
+          changed_at?: string
+          changed_by?: string | null
+          changed_by_email?: string | null
+          id?: string
+          new_price?: number
+          old_price?: number | null
+          plan_id?: string
+          plan_name?: string
+          plan_slug?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "promotion_plan_price_history_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "promotion_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      promotion_plans: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string | null
+          duration_days: number
+          duration_label: string
+          emoji: string | null
+          features: Json
+          id: string
+          name: string
+          period_label: string | null
+          popular: boolean
+          price: number
+          slug: string
+          sort_order: number
+          updated_at: string
+          visible: boolean
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          duration_days?: number
+          duration_label: string
+          emoji?: string | null
+          features?: Json
+          id?: string
+          name: string
+          period_label?: string | null
+          popular?: boolean
+          price: number
+          slug: string
+          sort_order?: number
+          updated_at?: string
+          visible?: boolean
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          duration_days?: number
+          duration_label?: string
+          emoji?: string | null
+          features?: Json
+          id?: string
+          name?: string
+          period_label?: string | null
+          popular?: boolean
+          price?: number
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+          visible?: boolean
+        }
+        Relationships: []
+      }
       service_requests: {
         Row: {
           admin_notes: string | null
