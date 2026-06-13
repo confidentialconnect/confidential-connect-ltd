@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import {
   LayoutDashboard, Megaphone, Package, Users as UsersIcon, Tag, FileText,
-  BarChart3, Settings, LogOut, Bell, Menu, X, Wallet, Shield, ShieldCheck, ScrollText,
+  BarChart3, Settings, LogOut, Bell, Menu, X, Wallet, Shield, ShieldCheck, ScrollText, Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,7 @@ const navItems = [
   { to: "/admin/products", label: "Products", icon: Package },
   { to: "/admin/categories", label: "Categories", icon: Tag },
   { to: "/admin/promotions", label: "Promotions", icon: Megaphone },
+  { to: "/admin/promotion-plans", label: "Promotion Plans", icon: Sparkles },
   { to: "/admin/orders", label: "Payments & Orders", icon: Wallet },
   { to: "/admin/documents", label: "Document Delivery", icon: FileText },
   { to: "/admin/kyc", label: "KYC Verification", icon: ShieldCheck },

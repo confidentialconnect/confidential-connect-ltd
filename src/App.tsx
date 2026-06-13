@@ -35,6 +35,7 @@ import Dashboard from "./pages/Dashboard";
 import ServiceRequest from "./pages/ServiceRequest";
 import PromotionPayment from "./pages/PromotionPayment";
 import AdminPromotionPayments from "./pages/AdminPromotionPayments";
+import AdminPromotionPlans from "./pages/AdminPromotionPlans";
 import AdminUsers from "./pages/AdminUsers";
 import AdminAnalytics from "./pages/AdminAnalytics";
 import AdminSettings from "./pages/AdminSettings";
@@ -83,6 +84,7 @@ const App = () => (
               <Route path="/admin" element={<RequireAdmin><AdminLayout><AdminHome /></AdminLayout></RequireAdmin>} />
               <Route path="/admin/orders" element={<RequireAdmin><AdminLayout><AdminOrders /></AdminLayout></RequireAdmin>} />
               <Route path="/admin/promotions" element={<RequireAdmin><AdminLayout><AdminPromotionPayments /></AdminLayout></RequireAdmin>} />
+              <Route path="/admin/promotion-plans" element={<RequireAdmin><AdminLayout><AdminPromotionPlans /></AdminLayout></RequireAdmin>} />
               <Route path="/admin/users" element={<RequireAdmin><AdminLayout><AdminUsers /></AdminLayout></RequireAdmin>} />
               <Route path="/admin/products" element={<RequireAdmin><AdminLayout><AdminProducts /></AdminLayout></RequireAdmin>} />
               <Route path="/admin/categories" element={<RequireAdmin><AdminLayout><AdminCategories /></AdminLayout></RequireAdmin>} />

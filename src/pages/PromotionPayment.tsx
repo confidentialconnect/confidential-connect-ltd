@@ -14,69 +14,7 @@ import {
 import { PromotionProofForm } from "@/components/PromotionProofForm";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-type PlanKey = "starter" | "weekly" | "growth" | "premium";
-
-const plans: Record<PlanKey, {
-    name: string;
-    price: string;
-    amount: string;
-    period: string;
-    description: string;
-    features: string[];
-    popular?: boolean;
-    emoji?: string;
-}> = {
-    starter: {
-        name: "Starter",
-        price: "₦2,000",
-        amount: "2000",
-        period: "1 Day Promotion",
-        description: "Quick daily visibility — Morning & Evening promotion.",
-        features: [
-            "2 posts daily (Morning & Evening)",
-            "Quick and affordable visibility",
-        ],
-    },
-    weekly: {
-        name: "Weekly",
-        price: "₦10,500",
-        amount: "10500",
-        period: "7 Days Promotion",
-        description: "Consistent weekly visibility for better reach.",
-        features: [
-            "Consistent daily promotion",
-            "Better reach and engagement",
-        ],
-    },
-    growth: {
-        name: "Growth",
-        price: "₦18,200",
-        amount: "18200",
-        period: "14 Days Promotion",
-        description: "Best value for business growth.",
-        features: [
-            "Extended promotion period",
-            "Strong audience reach",
-            "Higher engagement",
-        ],
-        popular: true,
-        emoji: "🔥",
-    },
-    premium: {
-        name: "Premium",
-        price: "₦36,000",
-        amount: "36000",
-        period: "30 Days Promotion",
-        description: "Maximum visibility with priority placement.",
-        features: [
-            "Maximum visibility",
-            "Priority placement",
-            "Long-term promotion",
-        ],
-        emoji: "💎",
-    },
-};
+import { usePromotionPlanBySlug, formatNaira } from "@/hooks/usePromotionPlans";
 
 const BANK = {
     bank: "Opay",
@@ -86,8 +24,20 @@ const BANK = {
 
 const PromotionPayment = () => {
     const { plan: planParam } = useParams<{ plan: string }>();
-    const planKey = (planParam ?? "").toLowerCase() as PlanKey;
-    const plan = plans[planKey];
+    const slug = (planParam ?? "").toLowerCase();
+    const { plan: dbPlan, loading, notFound } = usePromotionPlanBySlug(slug);
+    const plan = dbPlan
+        ? {
+            name: dbPlan.name,
+            price: formatNaira(dbPlan.price),
+            amount: String(Math.round(dbPlan.price)),
+            period: dbPlan.duration_label,
+            description: dbPlan.description ?? "",
+            features: dbPlan.features,
+            popular: dbPlan.popular,
+            emoji: dbPlan.emoji ?? undefined,
+        }
+        : null;
     const { toast } = useToast();
     const [copied, setCopied] = useState(false);
     const [payerEmail, setPayerEmail] = useState("");
@@ -107,7 +57,15 @@ const PromotionPayment = () => {
         window.scrollTo(0, 0);
     }, [plan]);
 
-    if (!plan) {
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-background">
+                <Header />
+                <main className="container mx-auto px-4 py-20 text-center text-muted-foreground">Loading plan…</main>
+            </div>
+        );
+    }
+    if (notFound || !plan) {
         return <Navigate to="/" replace />;
     }
 

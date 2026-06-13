@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.log_promotion_plan_price_change() FROM PUBLIC, anon, authenticated;

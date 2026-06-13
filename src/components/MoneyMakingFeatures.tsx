@@ -6,53 +6,7 @@ import {
     Megaphone, Briefcase, FileCheck, Crown, CreditCard,
     ArrowRight, Check, Zap, Star
 } from "lucide-react";
-
-const pricingPlans = [
-    {
-        name: "Starter",
-        price: "₦2,000",
-        period: "/day",
-        duration: "1 Day Promotion",
-        description: "Quick daily visibility",
-        features: ["2 posts daily (Morning & Evening)", "Quick and affordable visibility"],
-        popular: false,
-        emoji: "",
-        slug: "starter",
-    },
-    {
-        name: "Weekly",
-        price: "₦10,500",
-        period: "",
-        duration: "7 Days Promotion",
-        description: "Consistent weekly visibility",
-        features: ["Consistent daily promotion", "Better reach and engagement"],
-        popular: false,
-        emoji: "",
-        slug: "weekly",
-    },
-    {
-        name: "Growth",
-        price: "₦18,200",
-        period: "",
-        duration: "14 Days Promotion",
-        description: "Best value for business growth",
-        features: ["Extended promotion period", "Strong audience reach", "Higher engagement"],
-        popular: true,
-        emoji: "🔥",
-        slug: "growth",
-    },
-    {
-        name: "Premium",
-        price: "₦36,000",
-        period: "",
-        duration: "30 Days Promotion",
-        description: "Maximum visibility & results",
-        features: ["Maximum visibility", "Priority placement", "Long-term promotion"],
-        popular: false,
-        emoji: "💎",
-        slug: "premium",
-    },
-];
+import { usePromotionPlans, formatNaira } from "@/hooks/usePromotionPlans";
 
 const revenueFeatures = [
     {
@@ -86,6 +40,7 @@ const revenueFeatures = [
 ];
 
 export const MoneyMakingFeatures = () => {
+    const { plans: pricingPlans, loading } = usePromotionPlans();
     return (
         <section id="pricing" className="py-24 bg-background">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -137,6 +92,9 @@ export const MoneyMakingFeatures = () => {
                 </div>
 
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-8">
+                    {loading && pricingPlans.length === 0 && (
+                        <p className="col-span-full text-center text-muted-foreground font-body">Loading plans…</p>
+                    )}
                     {pricingPlans.map((plan, idx) => (
                         <Card key={idx} className={`relative overflow-hidden transition-all duration-300 hover:-translate-y-1 ${
                             plan.popular 
@@ -164,14 +122,14 @@ export const MoneyMakingFeatures = () => {
                             <CardContent className="space-y-6">
                                 <div>
                                     <div className="flex items-baseline gap-1">
-                                        <span className="text-3xl font-extrabold text-foreground font-display">{plan.price}</span>
-                                        {plan.period && (
-                                            <span className="text-sm text-muted-foreground font-body">{plan.period}</span>
+                                        <span className="text-3xl font-extrabold text-foreground font-display">{formatNaira(plan.price)}</span>
+                                        {plan.period_label && (
+                                            <span className="text-sm text-muted-foreground font-body">{plan.period_label}</span>
                                         )}
                                     </div>
                                     <div className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-primary bg-primary/10 rounded-full px-2.5 py-1 font-body">
                                         <Zap className="h-3 w-3" />
-                                        {plan.duration}
+                                        {plan.duration_label}
                                     </div>
                                 </div>
                                 <div className="space-y-3">
