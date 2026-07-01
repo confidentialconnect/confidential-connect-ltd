@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import {
-  LayoutDashboard, Megaphone, Package, Users as UsersIcon, Tag, FileText,
+  LayoutDashboard, Megaphone, Package, Users as UsersIcon, Tag, FileText, Store,
   BarChart3, Settings, LogOut, Bell, Menu, X, Wallet, Shield, ShieldCheck, ScrollText, Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -22,6 +22,7 @@ const navItems = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true },
   { to: "/admin/products", label: "Products", icon: Package },
   { to: "/admin/categories", label: "Categories", icon: Tag },
+  { to: "/admin/businesses", label: "Businesses", icon: Store },
   { to: "/admin/promotions", label: "Promotions", icon: Megaphone },
   { to: "/admin/promotion-plans", label: "Promotion Plans", icon: Sparkles },
   { to: "/admin/orders", label: "Payments & Orders", icon: Wallet },
