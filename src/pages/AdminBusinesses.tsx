@@ -53,7 +53,7 @@ const AdminBusinesses = () => {
       toast.success("Business updated");
     } else {
       const { data: userData } = await supabase.auth.getUser();
-      const { error } = await supabase.from("businesses").insert({ ...payload, owner_id: userData.user?.id });
+      const { error } = await supabase.from("businesses").insert({ ...payload, owner_id: userData.user?.id } as any);
       if (error) { toast.error(error.message); return; }
       toast.success("Business added");
     }
