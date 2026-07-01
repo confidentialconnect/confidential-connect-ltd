@@ -45,6 +45,8 @@ import AdminDocuments from "./pages/AdminDocuments";
 import AdminKYC from "./pages/AdminKYC";
 import AdminAuditLogs from "./pages/AdminAuditLogs";
 import VerifyIdentity from "./pages/VerifyIdentity";
+import AdminBusinesses from "./pages/AdminBusinesses";
+import BusinessDetail from "./pages/BusinessDetail";
 import RequireAdmin from "./components/RequireAdmin";
 import AdminLayout from "./components/AdminLayout";
 
@@ -81,6 +83,7 @@ const App = () => (
               <Route path="/request-service" element={<ServiceRequest />} />
               <Route path="/verify-identity" element={<VerifyIdentity />} />
               <Route path="/promote/:plan" element={<PromotionPayment />} />
+              <Route path="/business/:id" element={<BusinessDetail />} />
               <Route path="/admin" element={<RequireAdmin><AdminLayout><AdminHome /></AdminLayout></RequireAdmin>} />
               <Route path="/admin/orders" element={<RequireAdmin><AdminLayout><AdminOrders /></AdminLayout></RequireAdmin>} />
               <Route path="/admin/promotions" element={<RequireAdmin><AdminLayout><AdminPromotionPayments /></AdminLayout></RequireAdmin>} />
@@ -90,6 +93,7 @@ const App = () => (
               <Route path="/admin/categories" element={<RequireAdmin><AdminLayout><AdminCategories /></AdminLayout></RequireAdmin>} />
               <Route path="/admin/documents" element={<RequireAdmin><AdminLayout><AdminDocuments /></AdminLayout></RequireAdmin>} />
               <Route path="/admin/kyc" element={<RequireAdmin><AdminLayout><AdminKYC /></AdminLayout></RequireAdmin>} />
+              <Route path="/admin/businesses" element={<RequireAdmin><AdminLayout><AdminBusinesses /></AdminLayout></RequireAdmin>} />
               <Route path="/admin/audit-logs" element={<RequireAdmin><AdminLayout><AdminAuditLogs /></AdminLayout></RequireAdmin>} />
               <Route path="/admin/analytics" element={<RequireAdmin><AdminLayout><AdminAnalytics /></AdminLayout></RequireAdmin>} />
               <Route path="/admin/settings" element={<RequireAdmin><AdminLayout><AdminSettings /></AdminLayout></RequireAdmin>} />
