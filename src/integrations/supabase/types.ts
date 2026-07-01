@@ -50,6 +50,93 @@ export type Database = {
         }
         Relationships: []
       }
+      businesses: {
+        Row: {
+          address: string | null
+          category: string
+          city: string | null
+          cover_url: string | null
+          created_at: string
+          description: string | null
+          email: string | null
+          id: string
+          link_clicks: number
+          logo_url: string | null
+          name: string
+          owner_id: string | null
+          phone: string | null
+          promotion_expires_at: string | null
+          promotion_tier: number
+          short_description: string | null
+          slug: string | null
+          sort_boost: number
+          state: string | null
+          status: string
+          updated_at: string
+          verified: boolean
+          views: number
+          website: string | null
+          whatsapp: string | null
+          whatsapp_clicks: number
+        }
+        Insert: {
+          address?: string | null
+          category?: string
+          city?: string | null
+          cover_url?: string | null
+          created_at?: string
+          description?: string | null
+          email?: string | null
+          id?: string
+          link_clicks?: number
+          logo_url?: string | null
+          name: string
+          owner_id?: string | null
+          phone?: string | null
+          promotion_expires_at?: string | null
+          promotion_tier?: number
+          short_description?: string | null
+          slug?: string | null
+          sort_boost?: number
+          state?: string | null
+          status?: string
+          updated_at?: string
+          verified?: boolean
+          views?: number
+          website?: string | null
+          whatsapp?: string | null
+          whatsapp_clicks?: number
+        }
+        Update: {
+          address?: string | null
+          category?: string
+          city?: string | null
+          cover_url?: string | null
+          created_at?: string
+          description?: string | null
+          email?: string | null
+          id?: string
+          link_clicks?: number
+          logo_url?: string | null
+          name?: string
+          owner_id?: string | null
+          phone?: string | null
+          promotion_expires_at?: string | null
+          promotion_tier?: number
+          short_description?: string | null
+          slug?: string | null
+          sort_boost?: number
+          state?: string | null
+          status?: string
+          updated_at?: string
+          verified?: boolean
+          views?: number
+          website?: string | null
+          whatsapp?: string | null
+          whatsapp_clicks?: number
+        }
+        Relationships: []
+      }
       kyc_submissions: {
         Row: {
           created_at: string
@@ -644,6 +731,10 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      increment_business_metric: {
+        Args: { _business_id: string; _metric: string }
+        Returns: undefined
       }
     }
     Enums: {
