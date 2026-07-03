@@ -299,6 +299,111 @@ export type Database = {
         }
         Relationships: []
       }
+      pin_orders: {
+        Row: {
+          created_at: string
+          customer_email: string
+          customer_name: string
+          delivered_at: string | null
+          error_message: string | null
+          id: string
+          paystack_reference: string | null
+          pin: string | null
+          product_name: string
+          product_slug: string
+          provider_response: Json | null
+          quantity: number
+          serial: string | null
+          status: string
+          total_amount: number
+          unit_price: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          customer_email: string
+          customer_name: string
+          delivered_at?: string | null
+          error_message?: string | null
+          id?: string
+          paystack_reference?: string | null
+          pin?: string | null
+          product_name: string
+          product_slug: string
+          provider_response?: Json | null
+          quantity?: number
+          serial?: string | null
+          status?: string
+          total_amount: number
+          unit_price: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          customer_email?: string
+          customer_name?: string
+          delivered_at?: string | null
+          error_message?: string | null
+          id?: string
+          paystack_reference?: string | null
+          pin?: string | null
+          product_name?: string
+          product_slug?: string
+          provider_response?: Json | null
+          quantity?: number
+          serial?: string | null
+          status?: string
+          total_amount?: number
+          unit_price?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      pin_products: {
+        Row: {
+          cost_price: number
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          provider_card_type_id: number
+          retail_price: number
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          cost_price: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          provider_card_type_id: number
+          retail_price: number
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          cost_price?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          provider_card_type_id?: number
+          retail_price?: number
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       product_categories: {
         Row: {
           created_at: string
