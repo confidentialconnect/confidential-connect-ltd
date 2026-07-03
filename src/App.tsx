@@ -47,6 +47,7 @@ import AdminAuditLogs from "./pages/AdminAuditLogs";
 import VerifyIdentity from "./pages/VerifyIdentity";
 import AdminBusinesses from "./pages/AdminBusinesses";
 import BusinessDetail from "./pages/BusinessDetail";
+import BuyPin from "./pages/BuyPin";
 import RequireAdmin from "./components/RequireAdmin";
 import AdminLayout from "./components/AdminLayout";
 
@@ -84,6 +85,8 @@ const App = () => (
               <Route path="/verify-identity" element={<VerifyIdentity />} />
               <Route path="/promote/:plan" element={<PromotionPayment />} />
               <Route path="/business/:id" element={<BusinessDetail />} />
+              <Route path="/buy-pin" element={<BuyPin />} />
+              <Route path="/pins" element={<BuyPin />} />
               <Route path="/admin" element={<RequireAdmin><AdminLayout><AdminHome /></AdminLayout></RequireAdmin>} />
               <Route path="/admin/orders" element={<RequireAdmin><AdminLayout><AdminOrders /></AdminLayout></RequireAdmin>} />
               <Route path="/admin/promotions" element={<RequireAdmin><AdminLayout><AdminPromotionPayments /></AdminLayout></RequireAdmin>} />
