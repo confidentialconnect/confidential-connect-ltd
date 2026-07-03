@@ -12,6 +12,7 @@ import { ContactSectionNew } from "@/components/ContactSectionNew";
 import { FooterNew } from "@/components/FooterNew";
 import { FeaturedProducts } from "@/components/FeaturedProducts";
 import { MarketplaceSection } from "@/components/MarketplaceSection";
+import { InstantPinsBanner } from "@/components/InstantPinsBanner";
 import { AIChatWidget } from "@/components/AIChatWidget";
 import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
 import { ScrollToTop } from "@/components/ScrollToTop";
@@ -47,6 +48,7 @@ const Index = () => {
             <Header />
             <main>
                 <HeroSection />
+                <InstantPinsBanner />
                 <MarketplaceSection />
                 <AboutSection />
                 <ServiceCategories />
