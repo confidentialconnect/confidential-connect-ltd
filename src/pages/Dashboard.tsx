@@ -189,12 +189,20 @@ const Dashboard = () => {
                                 Track your service requests and notifications
                             </p>
                         </div>
-                        <Button asChild>
-                            <Link to="/request-service">
-                                <Plus className="h-4 w-4 mr-2" />
-                                New Service Request
-                            </Link>
-                        </Button>
+                        <div className="flex gap-2 flex-wrap">
+                            <Button asChild variant="outline">
+                                <Link to="/my-purchases">
+                                    <Package className="h-4 w-4 mr-2" />
+                                    My Purchases
+                                </Link>
+                            </Button>
+                            <Button asChild>
+                                <Link to="/request-service">
+                                    <Plus className="h-4 w-4 mr-2" />
+                                    New Service Request
+                                </Link>
+                            </Button>
+                        </div>
                     </div>
 
                     {/* Summary Cards */}
