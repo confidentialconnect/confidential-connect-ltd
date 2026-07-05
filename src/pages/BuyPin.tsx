@@ -199,11 +199,6 @@ export default function BuyPin() {
                   <Label htmlFor="email">Email (PIN delivery)</Label>
                   <Input id="email" type="email" value={customerEmail} onChange={(e) => setCustomerEmail(e.target.value)} placeholder="you@example.com" />
                 </div>
-                <div>
-                  <Label htmlFor="qty">Quantity</Label>
-                  <Input id="qty" type="number" min={1} max={10} value={quantity}
-                    onChange={(e) => setQuantity(Math.max(1, Math.min(10, parseInt(e.target.value) || 1)))} />
-                </div>
               </div>
 
               {selected && (
