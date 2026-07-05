@@ -206,8 +206,41 @@ export default function BuyPin() {
                 </div>
               </div>
 
-              <div className="mt-6 border-t pt-4 space-y-2 text-sm">
-                <div className="flex justify-between"><span>Product</span><span className="font-medium">{selected?.name || "—"}</span></div>
+              {selected && (
+                <div className="mt-6 border-t pt-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Ticket className="h-4 w-4 text-primary" />
+                    <h3 className="font-semibold text-sm">Tokens in this order ({quantity})</h3>
+                  </div>
+                  <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
+                    {Array.from({ length: quantity }).map((_, i) => (
+                      <div key={i} className="flex items-center justify-between text-sm bg-muted/50 rounded-md px-3 py-2">
+                        <span className="flex items-center gap-2">
+                          <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-primary/10 text-primary text-xs font-bold">{i + 1}</span>
+                          <span>{selected.name}</span>
+                        </span>
+                        <span className="font-medium">{NGN(selected.retail_price)}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-3 flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Adjust quantity</span>
+                    <div className="flex items-center gap-2">
+                      <Button type="button" size="icon" variant="outline" className="h-8 w-8"
+                        onClick={() => setQuantity((q) => Math.max(1, q - 1))} disabled={quantity <= 1}>
+                        <Minus className="h-3 w-3" />
+                      </Button>
+                      <span className="w-8 text-center font-semibold">{quantity}</span>
+                      <Button type="button" size="icon" variant="outline" className="h-8 w-8"
+                        onClick={() => setQuantity((q) => Math.min(10, q + 1))} disabled={quantity >= 10}>
+                        <Plus className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="mt-4 border-t pt-4 space-y-2 text-sm">
                 <div className="flex justify-between"><span>Unit price</span><span>{selected ? NGN(selected.retail_price) : "—"}</span></div>
                 <div className="flex justify-between"><span>Quantity</span><span>× {quantity}</span></div>
                 <div className="flex justify-between text-base font-bold text-primary pt-2 border-t"><span>Total</span><span>{NGN(total)}</span></div>
