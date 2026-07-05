@@ -137,16 +137,19 @@ serve(async (req) => {
     const pJson = await pRes.json().catch(() => ({}));
     console.log("NaijaResultPins response", pRes.status, JSON.stringify(pJson));
 
-    // Extract pin/serial from various possible shapes
-    let pin = "", serial = "";
-    const container = pJson?.data ?? pJson?.card ?? pJson?.cards ?? pJson;
-    const first = Array.isArray(container) ? container[0] : container;
-    if (first && typeof first === "object") {
-      pin = first.pin || first.PIN || first.pin_code || first.code || first.token || "";
-      serial = first.serial || first.serial_no || first.serial_number || first.card_serial || "";
-    }
+    // Extract pin/serial pairs — API may return one or many
+    const container = pJson?.data ?? pJson?.cards ?? pJson?.card ?? pJson?.pins ?? pJson;
+    const rawList = Array.isArray(container) ? container : (container ? [container] : []);
+    const tokens = rawList
+      .map((it: any) => ({
+        pin: it?.pin || it?.PIN || it?.pin_code || it?.code || it?.token || "",
+        serial: it?.serial || it?.serial_no || it?.serial_number || it?.card_serial || "",
+      }))
+      .filter((t) => t.pin);
+    const pin = tokens[0]?.pin || "";
+    const serial = tokens[0]?.serial || "";
 
-    if (!pRes.ok || !pin) {
+    if (!pRes.ok || tokens.length === 0) {
       const errMsg = pJson?.message || pJson?.error || `Provider error (${pRes.status})`;
       await supabase.from("pin_orders").update({
         status: "failed",
@@ -164,9 +167,9 @@ serve(async (req) => {
       delivered_at: new Date().toISOString(),
     }).eq("id", orderId);
 
-    await sendReceipt(customer_email, customer_name, product.name, pin, serial, reference);
+    await sendReceipt(customer_email, customer_name, product.name, tokens, reference);
 
-    return json({ success: true, pin, serial, reference, product: product.name });
+    return json({ success: true, pin, serial, tokens, reference, product: product.name });
   } catch (err) {
     console.error("purchase-pin error", err);
     return json({ success: false, error: "Unexpected error" }, 500);
