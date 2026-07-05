@@ -141,10 +141,18 @@ export default function BuyPin() {
             <CheckCircle2 className="h-12 w-12 text-green-500 mx-auto mb-3" />
             <h2 className="text-2xl font-bold mb-2">{result.product} delivered</h2>
             <p className="text-sm text-muted-foreground mb-6">A copy has also been sent to {customerEmail}.</p>
-            <div className="rounded-lg bg-muted p-6 text-left space-y-3 font-mono">
-              <div><span className="text-xs uppercase text-muted-foreground">PIN</span><div className="text-lg font-bold">{result.pin}</div></div>
-              <div><span className="text-xs uppercase text-muted-foreground">Serial</span><div className="text-lg font-bold">{result.serial}</div></div>
-              <div><span className="text-xs uppercase text-muted-foreground">Reference</span><div className="text-sm">{result.reference}</div></div>
+            <div className="space-y-3 text-left">
+              {result.tokens.map((t, i) => (
+                <div key={i} className="rounded-lg bg-muted p-4 font-mono">
+                  <div className="text-xs uppercase text-muted-foreground mb-1">Token {i + 1}</div>
+                  <div><span className="text-xs uppercase text-muted-foreground">PIN</span><div className="text-lg font-bold">{t.pin}</div></div>
+                  <div className="mt-1"><span className="text-xs uppercase text-muted-foreground">Serial</span><div className="text-lg font-bold">{t.serial}</div></div>
+                </div>
+              ))}
+              <div className="rounded-lg border p-3 font-mono">
+                <span className="text-xs uppercase text-muted-foreground">Reference</span>
+                <div className="text-sm">{result.reference}</div>
+              </div>
             </div>
             <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
               <Button onClick={() => { setResult(null); setQuantity(1); }}>Buy another</Button>
