@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
-import { Loader2, CheckCircle2, GraduationCap, ShieldCheck } from "lucide-react";
+import { Loader2, CheckCircle2, GraduationCap, ShieldCheck, Ticket, Plus, Minus } from "lucide-react";
 
 type PinProduct = {
   id: string;
@@ -33,7 +33,7 @@ export default function BuyPin() {
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [paying, setPaying] = useState(false);
-  const [result, setResult] = useState<{ pin: string; serial: string; product: string; reference: string } | null>(null);
+  const [result, setResult] = useState<{ tokens: { pin: string; serial: string }[]; product: string; reference: string } | null>(null);
 
   useEffect(() => {
     document.title = "Buy WAEC, NECO, NABTEB Result Checker PINs — Confidential Connect";
@@ -106,7 +106,10 @@ export default function BuyPin() {
               });
               return;
             }
-            setResult({ pin: data.pin, serial: data.serial, product: data.product || selected.name, reference: response.reference });
+            const tokens = Array.isArray(data.tokens) && data.tokens.length
+              ? data.tokens
+              : [{ pin: data.pin, serial: data.serial }];
+            setResult({ tokens, product: data.product || selected.name, reference: response.reference });
             toast({ title: "PIN delivered", description: "Check your email for a copy." });
           } catch (e: any) {
             toast({ title: "Verification error", description: e.message || "Please contact support.", variant: "destructive" });
