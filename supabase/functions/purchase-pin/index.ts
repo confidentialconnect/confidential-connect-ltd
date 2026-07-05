@@ -15,9 +15,15 @@ const Body = z.object({
   customer_email: z.string().email().max(255),
 });
 
-async function sendReceipt(to: string, name: string, product: string, pin: string, serial: string, reference: string) {
+async function sendReceipt(to: string, name: string, product: string, tokens: {pin:string;serial:string}[], reference: string) {
   const key = Deno.env.get("RESEND_API_KEY");
   if (!key) return;
+  const rows = tokens.map((t, i) => `
+    <div style="background:#f6f6ff;padding:12px 16px;border-radius:8px;margin:8px 0">
+      <div style="font-size:12px;color:#666;margin-bottom:4px">Token ${i + 1}</div>
+      <p style="margin:2px 0"><b>PIN:</b> <code style="font-size:16px">${t.pin}</code></p>
+      <p style="margin:2px 0"><b>Serial:</b> <code style="font-size:16px">${t.serial}</code></p>
+    </div>`).join("");
   try {
     await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -30,12 +36,9 @@ async function sendReceipt(to: string, name: string, product: string, pin: strin
           <div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;padding:24px;border:1px solid #eee;border-radius:12px">
             <h2 style="color:#4f39e6;margin:0 0 12px">Confidential Connect Ltd</h2>
             <p>Hi ${name},</p>
-            <p>Thank you for your purchase. Here are your <b>${product}</b> details:</p>
-            <div style="background:#f6f6ff;padding:16px;border-radius:8px;margin:16px 0">
-              <p style="margin:4px 0"><b>PIN:</b> <code style="font-size:16px">${pin}</code></p>
-              <p style="margin:4px 0"><b>Serial:</b> <code style="font-size:16px">${serial}</code></p>
-              <p style="margin:4px 0"><b>Reference:</b> ${reference}</p>
-            </div>
+            <p>Thank you for your purchase. Here ${tokens.length > 1 ? `are your ${tokens.length} <b>${product}</b> tokens` : `is your <b>${product}</b>`}:</p>
+            ${rows}
+            <p style="margin:12px 0 4px"><b>Reference:</b> ${reference}</p>
             <p>Keep this email safe. If you have any issue, reply or WhatsApp us at +234 704 029 4858.</p>
             <p style="color:#888;font-size:12px">CONFIDENTIAL CONNECT LTD (RC 9081270) — In partnership with All Campus Connect TV.</p>
           </div>`,
