@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
-import { Loader2, CheckCircle2, GraduationCap, ShieldCheck } from "lucide-react";
+import { Loader2, CheckCircle2, GraduationCap, ShieldCheck, Ticket, Plus, Minus } from "lucide-react";
 
 type PinProduct = {
   id: string;
@@ -33,7 +33,7 @@ export default function BuyPin() {
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [paying, setPaying] = useState(false);
-  const [result, setResult] = useState<{ pin: string; serial: string; product: string; reference: string } | null>(null);
+  const [result, setResult] = useState<{ tokens: { pin: string; serial: string }[]; product: string; reference: string } | null>(null);
 
   useEffect(() => {
     document.title = "Buy WAEC, NECO, NABTEB Result Checker PINs — Confidential Connect";
@@ -106,7 +106,10 @@ export default function BuyPin() {
               });
               return;
             }
-            setResult({ pin: data.pin, serial: data.serial, product: data.product || selected.name, reference: response.reference });
+            const tokens = Array.isArray(data.tokens) && data.tokens.length
+              ? data.tokens
+              : [{ pin: data.pin, serial: data.serial }];
+            setResult({ tokens, product: data.product || selected.name, reference: response.reference });
             toast({ title: "PIN delivered", description: "Check your email for a copy." });
           } catch (e: any) {
             toast({ title: "Verification error", description: e.message || "Please contact support.", variant: "destructive" });
@@ -138,10 +141,18 @@ export default function BuyPin() {
             <CheckCircle2 className="h-12 w-12 text-green-500 mx-auto mb-3" />
             <h2 className="text-2xl font-bold mb-2">{result.product} delivered</h2>
             <p className="text-sm text-muted-foreground mb-6">A copy has also been sent to {customerEmail}.</p>
-            <div className="rounded-lg bg-muted p-6 text-left space-y-3 font-mono">
-              <div><span className="text-xs uppercase text-muted-foreground">PIN</span><div className="text-lg font-bold">{result.pin}</div></div>
-              <div><span className="text-xs uppercase text-muted-foreground">Serial</span><div className="text-lg font-bold">{result.serial}</div></div>
-              <div><span className="text-xs uppercase text-muted-foreground">Reference</span><div className="text-sm">{result.reference}</div></div>
+            <div className="space-y-3 text-left">
+              {result.tokens.map((t, i) => (
+                <div key={i} className="rounded-lg bg-muted p-4 font-mono">
+                  <div className="text-xs uppercase text-muted-foreground mb-1">Token {i + 1}</div>
+                  <div><span className="text-xs uppercase text-muted-foreground">PIN</span><div className="text-lg font-bold">{t.pin}</div></div>
+                  <div className="mt-1"><span className="text-xs uppercase text-muted-foreground">Serial</span><div className="text-lg font-bold">{t.serial}</div></div>
+                </div>
+              ))}
+              <div className="rounded-lg border p-3 font-mono">
+                <span className="text-xs uppercase text-muted-foreground">Reference</span>
+                <div className="text-sm">{result.reference}</div>
+              </div>
             </div>
             <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
               <Button onClick={() => { setResult(null); setQuantity(1); }}>Buy another</Button>
@@ -188,15 +199,43 @@ export default function BuyPin() {
                   <Label htmlFor="email">Email (PIN delivery)</Label>
                   <Input id="email" type="email" value={customerEmail} onChange={(e) => setCustomerEmail(e.target.value)} placeholder="you@example.com" />
                 </div>
-                <div>
-                  <Label htmlFor="qty">Quantity</Label>
-                  <Input id="qty" type="number" min={1} max={10} value={quantity}
-                    onChange={(e) => setQuantity(Math.max(1, Math.min(10, parseInt(e.target.value) || 1)))} />
-                </div>
               </div>
 
-              <div className="mt-6 border-t pt-4 space-y-2 text-sm">
-                <div className="flex justify-between"><span>Product</span><span className="font-medium">{selected?.name || "—"}</span></div>
+              {selected && (
+                <div className="mt-6 border-t pt-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Ticket className="h-4 w-4 text-primary" />
+                    <h3 className="font-semibold text-sm">Tokens in this order ({quantity})</h3>
+                  </div>
+                  <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
+                    {Array.from({ length: quantity }).map((_, i) => (
+                      <div key={i} className="flex items-center justify-between text-sm bg-muted/50 rounded-md px-3 py-2">
+                        <span className="flex items-center gap-2">
+                          <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-primary/10 text-primary text-xs font-bold">{i + 1}</span>
+                          <span>{selected.name}</span>
+                        </span>
+                        <span className="font-medium">{NGN(selected.retail_price)}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-3 flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Adjust quantity</span>
+                    <div className="flex items-center gap-2">
+                      <Button type="button" size="icon" variant="outline" className="h-8 w-8"
+                        onClick={() => setQuantity((q) => Math.max(1, q - 1))} disabled={quantity <= 1}>
+                        <Minus className="h-3 w-3" />
+                      </Button>
+                      <span className="w-8 text-center font-semibold">{quantity}</span>
+                      <Button type="button" size="icon" variant="outline" className="h-8 w-8"
+                        onClick={() => setQuantity((q) => Math.min(10, q + 1))} disabled={quantity >= 10}>
+                        <Plus className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="mt-4 border-t pt-4 space-y-2 text-sm">
                 <div className="flex justify-between"><span>Unit price</span><span>{selected ? NGN(selected.retail_price) : "—"}</span></div>
                 <div className="flex justify-between"><span>Quantity</span><span>× {quantity}</span></div>
                 <div className="flex justify-between text-base font-bold text-primary pt-2 border-t"><span>Total</span><span>{NGN(total)}</span></div>
