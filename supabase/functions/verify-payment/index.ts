@@ -9,8 +9,7 @@ const corsHeaders = {
 
 const VerifyPaymentSchema = z.object({
   paymentReference: z.string().min(1, "Payment reference required").max(100, "Reference too long"),
-  transactionId: z.string().max(100).optional(),
-  paymentStatus: z.enum(['completed', 'failed'], { errorMap: () => ({ message: "Invalid payment status" }) })
+  transactionId: z.string().max(100).optional()
 });
 
 function getSafeErrorMessage(error: any): string {
@@ -70,12 +69,12 @@ serve(async (req) => {
       );
     }
 
-    const { paymentReference, paymentStatus } = validationResult.data;
+    const { paymentReference } = validationResult.data;
 
     // Check if user owns this order or is admin
     const { data: orderCheck, error: orderError } = await supabase
       .from("orders")
-      .select("user_id")
+      .select("user_id, total_amount")
       .eq("payment_reference", paymentReference)
       .single();
 
@@ -98,7 +97,33 @@ serve(async (req) => {
       );
     }
 
-    // Update order payment status
+    // Verify the transaction with Paystack — never trust client-supplied status
+    const secretKey = Deno.env.get('PAYSTACK_SECRET_KEY');
+    if (!secretKey) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Payment provider not configured' }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    const psRes = await fetch(
+      `https://api.paystack.co/transaction/verify/${encodeURIComponent(paymentReference)}`,
+      { headers: { Authorization: `Bearer ${secretKey}` } }
+    );
+    const psJson = await psRes.json();
+
+    const paystackSuccess = psJson?.status === true && psJson?.data?.status === 'success';
+    const expectedKobo = Math.round(Number(orderCheck.total_amount) * 100);
+    const paidKobo = Number(psJson?.data?.amount ?? 0);
+    const amountMatches = paidKobo >= expectedKobo;
+
+    const paymentStatus = paystackSuccess && amountMatches ? 'completed' : 'failed';
+
+    if (paystackSuccess && !amountMatches) {
+      console.error('Amount mismatch', { paymentReference, expectedKobo, paidKobo });
+    }
+
+    // Update order payment status based on Paystack's verdict
     const { data: order, error } = await supabase
       .from("orders")
       .update({
@@ -115,9 +140,11 @@ serve(async (req) => {
 
     return new Response(
       JSON.stringify({
-        success: true,
+        success: paymentStatus === 'completed',
         order,
-        message: `Payment ${paymentStatus} successfully`
+        message: paymentStatus === 'completed'
+          ? 'Payment verified successfully'
+          : (paystackSuccess ? 'Payment amount mismatch' : 'Payment not successful')
       }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },

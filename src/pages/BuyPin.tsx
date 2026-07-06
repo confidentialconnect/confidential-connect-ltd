@@ -40,7 +40,7 @@ export default function BuyPin() {
     (async () => {
       const { data, error } = await supabase
         .from("pin_products")
-        .select("*")
+        .select("id,slug,name,description,retail_price,is_active,sort_order")
         .eq("is_active", true)
         .order("sort_order", { ascending: true });
       if (error) toast({ title: "Failed to load products", description: error.message, variant: "destructive" });
