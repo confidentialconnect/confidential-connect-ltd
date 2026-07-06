@@ -87,7 +87,7 @@ serve(async (req) => {
       );
     }
 
-    const { customer, items, totalAmount, userId: requestUserId } = validationResult.data;
+    const { customer, items, userId: requestUserId } = validationResult.data;
     
     // Ensure user can only create orders for themselves
     if (requestUserId && requestUserId !== user.id) {
@@ -99,9 +99,47 @@ serve(async (req) => {
 
     const userId = user.id;
 
+    // Server-side price validation: never trust client-supplied prices.
+    // For items with a UUID product id, use the current database price.
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    const uuidIds = items.filter(i => uuidRegex.test(String(i.id))).map(i => String(i.id));
+    let priceMap = new Map<string, number>();
+    if (uuidIds.length > 0) {
+      const { data: dbProducts, error: prodErr } = await supabase
+        .from('products')
+        .select('id, price, discount_price, status')
+        .in('id', uuidIds);
+      if (prodErr) {
+        console.error('Product lookup error:', prodErr);
+        throw prodErr;
+      }
+      for (const p of dbProducts ?? []) {
+        const effective = p.discount_price != null && Number(p.discount_price) > 0
+          ? Number(p.discount_price)
+          : Number(p.price);
+        priceMap.set(String(p.id), effective);
+      }
+      // Every UUID item must exist in the catalog
+      for (const id of uuidIds) {
+        if (!priceMap.has(id)) {
+          return new Response(
+            JSON.stringify({ success: false, error: 'One or more products no longer exist' }),
+            { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          );
+        }
+      }
+    }
+
+    // Recompute item prices and the order total server-side
+    const pricedItems = items.map(item => ({
+      ...item,
+      price: priceMap.has(String(item.id)) ? priceMap.get(String(item.id))! : item.price,
+    }));
+    const totalAmount = pricedItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
+
     console.log('Processing order for:', { 
       customerName: customer.fullName, 
-      itemCount: items.length, 
+      itemCount: pricedItems.length, 
       total: totalAmount,
       userId 
     });
@@ -134,8 +172,7 @@ serve(async (req) => {
 
     // Create individual order items (only for valid UUID product IDs)
     console.log('Creating order items...');
-    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-    const validItems = items.filter(item => uuidRegex.test(String(item.id)));
+    const validItems = pricedItems.filter(item => uuidRegex.test(String(item.id)));
     
     if (validItems.length > 0) {
       const orderItems = validItems.map(item => ({

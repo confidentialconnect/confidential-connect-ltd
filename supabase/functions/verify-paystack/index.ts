@@ -55,7 +55,7 @@ serve(async (req) => {
 
     const { data: ownedOrder } = await supabase
       .from('orders')
-      .select('id')
+      .select('id, total_amount')
       .eq('payment_reference', reference)
       .eq('user_id', user.id)
       .maybeSingle();
@@ -78,6 +78,22 @@ serve(async (req) => {
     const data = await response.json();
 
     if (data.status && data.data.status === 'success') {
+      // Ensure the amount Paystack actually collected matches the order total
+      const expectedKobo = Math.round(Number(ownedOrder.total_amount) * 100);
+      const paidKobo = Number(data.data.amount ?? 0);
+      if (paidKobo < expectedKobo) {
+        console.error('Amount mismatch', { reference, expectedKobo, paidKobo });
+        await supabase
+          .from('orders')
+          .update({ payment_status: 'failed' })
+          .eq('payment_reference', reference)
+          .eq('user_id', user.id);
+        return new Response(
+          JSON.stringify({ success: false, status: 'failed', message: 'Payment amount mismatch' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
       await supabase
         .from('orders')
         .update({ payment_status: 'completed', payment_reference: reference })
