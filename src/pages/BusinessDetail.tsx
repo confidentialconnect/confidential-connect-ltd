@@ -25,7 +25,9 @@ const BusinessDetail = () => {
       setB(data);
       setLoading(false);
       if (data) {
-        supabase.rpc("increment_business_metric", { _business_id: id, _metric: "views" });
+        void supabase.functions.invoke("track-business-metric", {
+          body: { business_id: id, metric: "views" },
+        });
         document.title = `${data.name} — Confidential Connect Ltd`;
       }
     })();
@@ -40,7 +42,10 @@ const BusinessDetail = () => {
   })();
 
   const track = (metric: "whatsapp_clicks" | "link_clicks") => {
-    if (id) supabase.rpc("increment_business_metric", { _business_id: id, _metric: metric });
+    if (!id) return;
+    void supabase.functions.invoke("track-business-metric", {
+      body: { business_id: id, metric },
+    });
   };
 
   return (
