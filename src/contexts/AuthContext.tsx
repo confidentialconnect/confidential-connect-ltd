@@ -136,13 +136,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!user) return false;
     
     try {
-      const { data, error } = await supabase.rpc('has_role', {
-        _user_id: user.id,
-        _role: role
-      });
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('role', role)
+        .maybeSingle();
       
       if (error) throw error;
-      return data === true;
+      return data !== null;
     } catch (error) {
       console.error('Role check failed:', error);
       return false;

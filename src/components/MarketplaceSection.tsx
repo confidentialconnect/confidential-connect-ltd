@@ -84,7 +84,9 @@ export const MarketplaceSection = () => {
   };
 
   const track = (id: string, metric: "whatsapp_clicks" | "link_clicks") => {
-    supabase.rpc("increment_business_metric", { _business_id: id, _metric: metric });
+    void supabase.functions.invoke("track-business-metric", {
+      body: { business_id: id, metric },
+    });
   };
 
   return (
