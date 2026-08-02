@@ -15,9 +15,22 @@ const Body = z.object({
   customer_email: z.string().email().max(255),
 });
 
+const mask_email = (value: string) => {
+  const [name, domain] = value.split("@");
+  if (!domain) return "***";
+  return `${name.slice(0, 2)}***@${domain}`;
+};
+
+const log = (stage: string, details: Record<string, unknown> = {}) => {
+  console.log(JSON.stringify({ fn: "purchase-pin", stage, at: new Date().toISOString(), ...details }));
+};
+
 async function sendReceipt(to: string, name: string, product: string, tokens: {pin:string;serial:string}[], reference: string) {
   const key = Deno.env.get("RESEND_API_KEY");
-  if (!key) return;
+  if (!key) {
+    log("receipt_skipped_no_api_key", { reference });
+    return;
+  }
   const rows = tokens.map((t, i) => `
     <div style="background:#f6f6ff;padding:12px 16px;border-radius:8px;margin:8px 0">
       <div style="font-size:12px;color:#666;margin-bottom:4px">Token ${i + 1}</div>
@@ -25,7 +38,7 @@ async function sendReceipt(to: string, name: string, product: string, tokens: {p
       <p style="margin:2px 0"><b>Serial:</b> <code style="font-size:16px">${t.serial}</code></p>
     </div>`).join("");
   try {
-    await fetch("https://api.resend.com/emails", {
+    const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -44,13 +57,24 @@ async function sendReceipt(to: string, name: string, product: string, tokens: {p
           </div>`,
       }),
     });
+    const body = await res.text().catch(() => "");
+    log("receipt_sent", {
+      reference,
+      to: mask_email(to),
+      http_status: res.status,
+      ok: res.ok,
+      response: body.slice(0, 300),
+    });
   } catch (e) {
-    console.error("Resend error", e);
+    log("receipt_error", { reference, message: e instanceof Error ? e.message : String(e) });
   }
 }
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+
+  const started_at = Date.now();
+  const elapsed = () => Date.now() - started_at;
 
   const supabase = createClient(
     Deno.env.get("SUPABASE_URL")!,
@@ -59,15 +83,31 @@ serve(async (req) => {
 
   try {
     const authHeader = req.headers.get("Authorization");
-    if (!authHeader) return json({ success: false, error: "Auth required" }, 401);
+    if (!authHeader) {
+      log("auth_missing");
+      return json({ success: false, error: "Auth required" }, 401);
+    }
     const { data: userData, error: authErr } = await supabase.auth.getUser(authHeader.replace("Bearer ", ""));
-    if (authErr || !userData?.user) return json({ success: false, error: "Invalid auth" }, 401);
+    if (authErr || !userData?.user) {
+      log("auth_invalid", { message: authErr?.message });
+      return json({ success: false, error: "Invalid auth" }, 401);
+    }
     const user = userData.user;
 
     const raw = await req.json();
     const parsed = Body.safeParse(raw);
-    if (!parsed.success) return json({ success: false, error: parsed.error.errors[0].message }, 400);
+    if (!parsed.success) {
+      log("validation_failed", { user_id: user.id, issues: parsed.error.errors.map((e) => `${e.path.join(".")}: ${e.message}`) });
+      return json({ success: false, error: parsed.error.errors[0].message }, 400);
+    }
     const { reference, product_slug, quantity, customer_name, customer_email } = parsed.data;
+    log("request_received", {
+      user_id: user.id,
+      reference,
+      product_slug,
+      quantity,
+      customer_email: mask_email(customer_email),
+    });
 
     // Load product
     const { data: product, error: prodErr } = await supabase
@@ -76,22 +116,43 @@ serve(async (req) => {
       .eq("slug", product_slug)
       .eq("is_active", true)
       .maybeSingle();
-    if (prodErr || !product) return json({ success: false, error: "Product not found" }, 404);
+    if (prodErr || !product) {
+      log("product_not_found", { reference, product_slug, message: prodErr?.message });
+      return json({ success: false, error: "Product not found" }, 404);
+    }
 
     const expectedAmount = Number(product.retail_price) * quantity;
 
     // Verify Paystack
     const paystackKey = Deno.env.get("PAYSTACK_SECRET_KEY");
-    if (!paystackKey) return json({ success: false, error: "Payment not configured" }, 500);
+    if (!paystackKey) {
+      log("paystack_key_missing", { reference });
+      return json({ success: false, error: "Payment not configured" }, 500);
+    }
+    log("paystack_verify_start", { reference, expected_amount: expectedAmount, elapsed_ms: elapsed() });
     const vRes = await fetch(`https://api.paystack.co/transaction/verify/${encodeURIComponent(reference)}`, {
       headers: { Authorization: `Bearer ${paystackKey}` },
     });
     const vJson = await vRes.json();
+    log("paystack_verify_response", {
+      reference,
+      http_status: vRes.status,
+      paystack_status: vJson?.status,
+      transaction_status: vJson?.data?.status,
+      gateway_response: vJson?.data?.gateway_response,
+      channel: vJson?.data?.channel,
+      amount_kobo: vJson?.data?.amount,
+      paid_at: vJson?.data?.paid_at,
+      message: vJson?.message,
+      elapsed_ms: elapsed(),
+    });
     if (!vJson?.status || vJson?.data?.status !== "success") {
+      log("payment_not_verified", { reference, transaction_status: vJson?.data?.status, elapsed_ms: elapsed() });
       return json({ success: false, error: "Payment not verified" }, 400);
     }
     const paidAmount = Number(vJson.data.amount) / 100;
     if (paidAmount + 0.01 < expectedAmount) {
+      log("amount_mismatch", { reference, paid_amount: paidAmount, expected_amount: expectedAmount });
       return json({ success: false, error: "Amount mismatch" }, 400);
     }
 
@@ -102,6 +163,7 @@ serve(async (req) => {
       .eq("paystack_reference", reference)
       .maybeSingle();
     if (existing?.status === "delivered" && existing.pin) {
+      log("idempotent_replay", { reference, order_id: existing.id, elapsed_ms: elapsed() });
       return json({ success: true, pin: existing.pin, serial: existing.serial, reference });
     }
 
@@ -122,23 +184,45 @@ serve(async (req) => {
     if (!orderId) {
       const { data: inserted, error: insErr } = await supabase
         .from("pin_orders").insert(orderInsert).select("id").single();
-      if (insErr) return json({ success: false, error: "Order save failed" }, 500);
+      if (insErr) {
+        log("order_insert_failed", { reference, message: insErr.message, code: insErr.code, details: insErr.details });
+        return json({ success: false, error: "Order save failed" }, 500);
+      }
       orderId = inserted.id;
     }
+    log("order_ready", { reference, order_id: orderId, status: "paid", total_amount: expectedAmount, elapsed_ms: elapsed() });
 
     // Call NaijaResultPins
     const npToken = Deno.env.get("NAIJARESULTPINS_API_TOKEN");
     if (!npToken) {
+      log("provider_token_missing", { reference, order_id: orderId });
       await supabase.from("pin_orders").update({ status: "failed", error_message: "Provider not configured" }).eq("id", orderId);
       return json({ success: false, error: "Provider not configured" }, 500);
     }
+    log("provider_request_start", {
+      reference,
+      order_id: orderId,
+      card_type_id: product.provider_card_type_id,
+      quantity,
+      elapsed_ms: elapsed(),
+    });
+    const provider_started_at = Date.now();
     const pRes = await fetch("https://www.naijaresultpins.com/api/v1/exam-card/buy", {
       method: "POST",
       headers: { Authorization: `Bearer ${npToken}`, "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify({ card_type_id: product.provider_card_type_id, quantity }),
     });
     const pJson = await pRes.json().catch(() => ({}));
-    console.log("NaijaResultPins response", pRes.status, JSON.stringify(pJson));
+    log("provider_response", {
+      reference,
+      order_id: orderId,
+      http_status: pRes.status,
+      ok: pRes.ok,
+      provider_ms: Date.now() - provider_started_at,
+      message: (pJson as any)?.message ?? (pJson as any)?.error,
+      payload_keys: Object.keys((pJson as any) ?? {}),
+      elapsed_ms: elapsed(),
+    });
 
     // Extract pin/serial pairs — API may return one or many
     const container = pJson?.data ?? pJson?.cards ?? pJson?.card ?? pJson?.pins ?? pJson;
@@ -151,9 +235,18 @@ serve(async (req) => {
       .filter((t) => t.pin);
     const pin = tokens[0]?.pin || "";
     const serial = tokens[0]?.serial || "";
+    log("tokens_parsed", { reference, order_id: orderId, token_count: tokens.length, has_serial: Boolean(serial) });
 
     if (!pRes.ok || tokens.length === 0) {
       const errMsg = pJson?.message || pJson?.error || `Provider error (${pRes.status})`;
+      log("delivery_failed", {
+        reference,
+        order_id: orderId,
+        http_status: pRes.status,
+        error: String(errMsg).slice(0, 300),
+        raw_response: JSON.stringify(pJson).slice(0, 800),
+        elapsed_ms: elapsed(),
+      });
       await supabase.from("pin_orders").update({
         status: "failed",
         provider_response: pJson,
@@ -169,12 +262,26 @@ serve(async (req) => {
       provider_response: pJson,
       delivered_at: new Date().toISOString(),
     }).eq("id", orderId);
+    log("delivered", {
+      reference,
+      order_id: orderId,
+      product_slug: product.slug,
+      token_count: tokens.length,
+      elapsed_ms: elapsed(),
+    });
 
     await sendReceipt(customer_email, customer_name, product.name, tokens, reference);
 
     return json({ success: true, pin, serial, tokens, reference, product: product.name });
   } catch (err) {
-    console.error("purchase-pin error", err);
+    console.error(JSON.stringify({
+      fn: "purchase-pin",
+      stage: "unexpected_error",
+      at: new Date().toISOString(),
+      elapsed_ms: elapsed(),
+      message: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
+    }));
     return json({ success: false, error: "Unexpected error" }, 500);
   }
 
