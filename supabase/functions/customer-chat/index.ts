@@ -9,7 +9,27 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { messages } = await req.json();
+    const body = await req.json().catch(() => null);
+    const raw_messages = (body as { messages?: unknown } | null)?.messages;
+
+    // Abuse guard: this widget is intentionally usable by anonymous visitors,
+    // so cap the payload instead of requiring auth.
+    const is_valid_message = (m: unknown): m is { role: string; content: string } =>
+      typeof m === "object" && m !== null &&
+      ["user", "assistant", "system"].includes((m as { role?: string }).role ?? "") &&
+      typeof (m as { content?: unknown }).content === "string" &&
+      (m as { content: string }).content.length <= 2000;
+
+    if (!Array.isArray(raw_messages) || raw_messages.length === 0 || !raw_messages.every(is_valid_message)) {
+      return new Response(
+        JSON.stringify({ error: "Invalid messages payload" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Only the most recent turns are forwarded, bounding quota usage per call.
+    const messages = raw_messages.slice(-20);
+
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
