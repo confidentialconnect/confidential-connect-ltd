@@ -38,14 +38,13 @@ export default function BuyPin() {
   useEffect(() => {
     document.title = "Buy WAEC, NECO, NABTEB Result Checker PINs — Confidential Connect";
     (async () => {
-      const { data, error } = await supabase
-        .from("pin_products")
-        .select("id,slug,name,description,retail_price,is_active,sort_order")
-        .eq("is_active", true)
-        .order("sort_order", { ascending: true });
+      const { data, error } = await supabase.functions.invoke("public-pin-products", {
+        method: "GET",
+      });
       if (error) toast({ title: "Failed to load products", description: error.message, variant: "destructive" });
-      setProducts((data as PinProduct[]) || []);
-      if (data && data.length && !selectedSlug) setSelectedSlug((data[0] as PinProduct).slug);
+      const pin_products = (data?.products as PinProduct[]) || [];
+      setProducts(pin_products);
+      if (pin_products.length && !selectedSlug) setSelectedSlug(pin_products[0].slug);
       setLoading(false);
     })();
   }, []);

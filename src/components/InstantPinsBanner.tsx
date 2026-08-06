@@ -22,12 +22,13 @@ export const InstantPinsBanner = () => {
 
   useEffect(() => {
     (async () => {
-      const { data } = await supabase
-        .from("pin_products")
-        .select("id,slug,name,description,retail_price,sort_order")
-        .eq("is_active", true)
-        .order("sort_order", { ascending: true });
-      setPins((data as PinProduct[]) || []);
+      const { data, error } = await supabase.functions.invoke("public-pin-products", {
+        method: "GET",
+      });
+      if (error) {
+        console.error("PIN catalog request failed", error.message);
+      }
+      setPins((data?.products as PinProduct[]) || []);
       setLoading(false);
     })();
   }, []);
