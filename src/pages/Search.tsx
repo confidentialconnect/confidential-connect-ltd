@@ -50,25 +50,11 @@ const SearchPage = () => {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const [b, p, pin] = await Promise.all([
-        supabase.from("businesses")
-          .select("id,name,category,short_description,description,state,city,logo_url,verified,promotion_tier")
-          .eq("status", "approved")
-          .order("promotion_tier", { ascending: false })
-          .limit(200),
-        supabase.from("products")
-          .select("id,name,description,price,discount_price,image_url,category,featured")
-          .eq("status", "published")
-          .order("featured", { ascending: false })
-          .limit(200),
-        supabase.from("pin_products")
-          .select("id,slug,name,description,retail_price")
-          .eq("is_active", true)
-          .order("sort_order", { ascending: true }),
-      ]);
-      setBusinesses((b.data as Business[]) || []);
-      setProducts((p.data as Product[]) || []);
-      setPins((pin.data as PinProduct[]) || []);
+      const { data } = await supabase.functions.invoke("public-catalog");
+      const catalog = (data as any) || {};
+      setBusinesses((catalog.businesses as Business[]) || []);
+      setProducts((catalog.products as Product[]) || []);
+      setPins((catalog.pin_products as PinProduct[]) || []);
       setLoading(false);
     })();
   }, []);
