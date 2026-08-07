@@ -28,14 +28,10 @@ export const FeaturedProducts = () => {
 
   useEffect(() => {
     (async () => {
-      const { data } = await supabase
-        .from("products")
-        .select("id,name,description,price,discount_price,image_url,images,category,featured,status")
-        .eq("status", "published")
-        .eq("featured", true)
-        .order("created_at", { ascending: false })
-        .limit(8);
-      setProducts((data as any) || []);
+      const { data } = await supabase.functions.invoke("public-catalog");
+      const all = (((data as any)?.products as Product[]) || []);
+      const featured = all.filter((p) => p.featured);
+      setProducts((featured.length > 0 ? featured : all).slice(0, 8));
       setLoading(false);
     })();
   }, []);
