@@ -45,12 +45,9 @@ const Products = () => {
   useEffect(() => {
     document.title = "Shop | Confidential Connect Ltd";
     (async () => {
-      const [p, c] = await Promise.all([
-        supabase.from("products").select("*").eq("status", "published"),
-        supabase.from("product_categories").select("id,name,slug").order("display_order"),
-      ]);
-      setProducts((p.data as any) || []);
-      setCategories((c.data as any) || []);
+      const { data } = await supabase.functions.invoke("public-catalog");
+      setProducts(((data as any)?.products as Product[]) || []);
+      setCategories(((data as any)?.categories as Category[]) || []);
       setLoading(false);
     })();
   }, []);
