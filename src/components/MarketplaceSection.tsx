@@ -41,15 +41,8 @@ export const MarketplaceSection = () => {
   const [stateFilter, setStateFilter] = useState<string>("all");
 
   const load = async () => {
-    const { data } = await supabase
-      .from("businesses")
-      .select("id,name,category,short_description,description,state,city,phone,whatsapp,website,logo_url,verified,promotion_tier,status")
-      .eq("status", "approved")
-      .order("promotion_tier", { ascending: false })
-      .order("sort_boost", { ascending: false })
-      .order("created_at", { ascending: false })
-      .limit(120);
-    setItems((data ?? []) as Business[]);
+    const { data } = await supabase.functions.invoke("public-catalog");
+    setItems((((data as any)?.businesses as Business[]) ?? []).slice(0, 120));
     setLoading(false);
   };
 
