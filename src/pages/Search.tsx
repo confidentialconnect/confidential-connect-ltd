@@ -11,15 +11,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search as SearchIcon, Store, Package, GraduationCap, MapPin, BadgeCheck, Loader2 } from "lucide-react";
 import { NIGERIAN_STATES, BUSINESS_CATEGORIES } from "@/data/nigerianStates";
+import { CatalogProduct, PublicProductCard } from "@/components/PublicProductCard";
 
 type Business = {
   id: string; name: string; category: string; short_description: string | null; description: string | null;
   state: string | null; city: string | null; logo_url: string | null; verified: boolean; promotion_tier: number;
 };
-type Product = {
-  id: string; name: string; description: string | null; price: number; discount_price: number | null;
-  image_url: string | null; category: string; featured: boolean;
-};
+type Product = CatalogProduct;
 type PinProduct = {
   id: string; slug: string; name: string; description: string | null; retail_price: number;
 };
@@ -202,23 +200,7 @@ const ProductGrid = ({ items }: { items: Product[] }) => (
   <div>
     <h2 className="font-semibold mb-3 flex items-center gap-2"><Package className="h-4 w-4" /> Products</h2>
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {items.map((p) => {
-        const price = p.discount_price || p.price;
-        return (
-          <Card key={p.id} className="overflow-hidden hover:shadow-md transition-shadow">
-            <Link to={`/product/${p.id}`} className="block aspect-video bg-muted">
-              {p.image_url ? <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" /> : (
-                <div className="w-full h-full flex items-center justify-center"><Package className="h-8 w-8 text-muted-foreground" /></div>
-              )}
-            </Link>
-            <CardContent className="p-3">
-              <Badge variant="secondary" className="text-[10px]">{p.category}</Badge>
-              <Link to={`/product/${p.id}`} className="block font-semibold text-sm mt-2 line-clamp-1 hover:text-primary">{p.name}</Link>
-              <p className="text-primary font-bold mt-1">{NGN(price)}</p>
-            </CardContent>
-          </Card>
-        );
-      })}
+      {items.map((product) => <PublicProductCard key={product.id} product={product} />)}
     </div>
   </div>
 );

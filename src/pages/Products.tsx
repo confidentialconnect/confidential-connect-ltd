@@ -4,43 +4,25 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { useCart } from "@/contexts/CartContext";
-import { toast } from "sonner";
-import { Search, ShoppingCart, Star, Package, Loader2 } from "lucide-react";
-
-interface Product {
-  id: string;
-  name: string;
-  description: string | null;
-  price: number;
-  discount_price: number | null;
-  image_url: string | null;
-  images: string[] | null;
-  category: string;
-  featured: boolean;
-  status: string;
-  created_at: string | null;
-}
+import { Search, Package, Loader2 } from "lucide-react";
+import { CatalogProduct, PublicProductCard } from "@/components/PublicProductCard";
 
 interface Category { id: string; name: string; slug: string }
 
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const initialCategory = searchParams.get("category") || "all";
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<CatalogProduct[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState(initialCategory);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("newest");
   const [maxPrice, setMaxPrice] = useState<string>("");
-  const { addItem } = useCart();
 
   useEffect(() => {
     document.title = "Shop | Confidential Connect Ltd";
@@ -138,66 +120,9 @@ const Products = () => {
             </CardContent></Card>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filtered.map((p) => {
-                const img = p.image_url || (p.images && p.images[0]) || "";
-                const finalPrice = p.discount_price || p.price;
-                return (
-                  <Card key={p.id} className="overflow-hidden group hover:shadow-xl transition-all hover:-translate-y-1">
-                    <Link to={`/product/${p.id}`} className="block aspect-video bg-muted relative overflow-hidden">
-                      {img ? (
-                        <img src={img} alt={p.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                          <Package className="h-10 w-10" />
-                        </div>
-                      )}
-                      {p.featured && <Badge className="absolute top-2 right-2">Featured</Badge>}
-                      {p.discount_price && p.price > p.discount_price && (
-                        <Badge className="absolute top-2 left-2 bg-destructive">SALE</Badge>
-                      )}
-                    </Link>
-                    <CardContent className="p-4 space-y-2">
-                      <div className="flex items-center justify-between">
-                        <Badge variant="secondary" className="text-xs">{p.category}</Badge>
-                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                          <Star className="h-3 w-3 fill-primary text-primary" /> 4.8
-                        </div>
-                      </div>
-                      <Link to={`/product/${p.id}`}>
-                        <h3 className="font-semibold line-clamp-1 font-display hover:text-primary">{p.name}</h3>
-                      </Link>
-                      <p className="text-xs text-muted-foreground line-clamp-2 min-h-[2rem]">{p.description}</p>
-                      <div className="flex items-end justify-between pt-1">
-                        <div>
-                          {p.discount_price ? (
-                            <>
-                              <p className="text-lg font-bold text-primary">₦{Number(p.discount_price).toLocaleString()}</p>
-                              <p className="text-xs text-muted-foreground line-through">₦{Number(p.price).toLocaleString()}</p>
-                            </>
-                          ) : (
-                            <p className="text-lg font-bold text-primary">₦{Number(p.price).toLocaleString()}</p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex gap-2 pt-2">
-                        <Button asChild size="sm" variant="outline" className="flex-1">
-                          <Link to={`/product/${p.id}`}>View</Link>
-                        </Button>
-                        <Button
-                          size="sm"
-                          className="flex-1"
-                          onClick={() => {
-                            addItem({ id: p.id, name: p.name, price: finalPrice });
-                            toast.success(`${p.name} added to cart`);
-                          }}
-                        >
-                          <ShoppingCart className="h-3.5 w-3.5 mr-1" /> Add
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
+              {filtered.map((product) => (
+                <PublicProductCard key={product.id} product={product} />
+              ))}
             </div>
           )}
         </div>
