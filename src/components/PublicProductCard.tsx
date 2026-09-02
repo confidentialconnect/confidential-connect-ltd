@@ -21,6 +21,7 @@ export interface CatalogProduct {
   category: string;
   featured: boolean;
   status: string;
+  created_at?: string | null;
   in_stock?: boolean | null;
 }
 

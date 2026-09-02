@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { CatalogProduct } from '@/components/PublicProductCard';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { Upload, FileText, CheckCircle } from 'lucide-react';
 
@@ -19,20 +20,20 @@ const RECAPTCHA_SITE_KEY =
     '6LeOHhwtAAAAAKKutxAOG_pK8lmJhHFq98xBaT21';
 
 const SERVICE_TYPES = [
-    { value: 'birth_certificate', label: 'Birth Certificate', price: '₦5,000' },
-    { value: 'state_of_origin', label: 'State of Origin Certificate', price: '₦12,000' },
-    { value: 'waec_certificate', label: 'WAEC Certificate', price: '₦12,000' },
-    { value: 'waec_scratch_card', label: 'WAEC Scratch Card', price: '₦4,200' },
-    { value: 'neco_token', label: 'NECO Token', price: '₦1,600' },
-    { value: 'nabteb_scratch_card', label: 'NABTEB Scratch Card', price: '₦1,600' },
-    { value: 'nabteb_token', label: 'NABTEB Token', price: '₦1,600' },
-    { value: 'result_checker', label: 'Result Checker', price: '₦500' },
-    { value: 'gce_result_checker', label: 'G.C.E. Result Checker', price: '₦500' },
-    { value: 'post_utme', label: 'Post UTME Registration', price: '₦6,000' },
-    { value: 'hostel_booking', label: 'Hostel Booking', price: '₦20,000' },
-    { value: 'cv_preparation', label: 'Professional CV Preparation', price: 'Contact Us' },
-    { value: 'document_processing', label: 'Document Processing', price: 'Contact Us' },
-    { value: 'other', label: 'Other Service', price: 'Contact Us' },
+    { value: 'birth_certificate', label: 'Birth Certificate' },
+    { value: 'state_of_origin', label: 'State of Origin Certificate' },
+    { value: 'waec_certificate', label: 'WAEC Certificate' },
+    { value: 'waec_scratch_card', label: 'WAEC Scratch Card' },
+    { value: 'neco_token', label: 'NECO Token' },
+    { value: 'nabteb_scratch_card', label: 'NABTEB Scratch Card' },
+    { value: 'nabteb_token', label: 'NABTEB Token' },
+    { value: 'result_checker', label: 'Result Checker' },
+    { value: 'gce_result_checker', label: 'G.C.E. Result Checker' },
+    { value: 'post_utme', label: 'Post UTME Registration' },
+    { value: 'hostel_booking', label: 'Hostel Booking' },
+    { value: 'cv_preparation', label: 'Professional CV Preparation' },
+    { value: 'document_processing', label: 'Document Processing' },
+    { value: 'other', label: 'Other Service' },
 ];
 
 const ServiceRequest = () => {
@@ -42,7 +43,15 @@ const ServiceRequest = () => {
     const captchaRef = useRef<ReCAPTCHA>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
+    useEffect(() => {
+        void (async () => {
+            const { data } = await supabase.functions.invoke('public-catalog');
+            setCatalogProducts(((data as any)?.products as CatalogProduct[]) || []);
+        })();
+    }, []);
+
     const [isLoading, setIsLoading] = useState(false);
+    const [catalogProducts, setCatalogProducts] = useState<CatalogProduct[]>([]);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [formData, setFormData] = useState({
         service_type: '',
@@ -181,7 +190,16 @@ const ServiceRequest = () => {
         }
     };
 
-    const selectedService = SERVICE_TYPES.find(s => s.value === formData.service_type);
+    const catalogOptions = catalogProducts.map((product) => ({
+        value: product.id,
+        label: product.name,
+        price: `₦${Number(product.discount_price || product.price).toLocaleString()}`,
+    }));
+    const serviceOptions = [
+        ...catalogOptions,
+        ...SERVICE_TYPES.map((service) => ({ ...service, price: 'Contact Us' })),
+    ];
+    const selectedService = serviceOptions.find(s => s.value === formData.service_type);
 
     return (
         <div className="min-h-screen bg-background">
@@ -219,7 +237,7 @@ const ServiceRequest = () => {
                                             <SelectValue placeholder="Select a service" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {SERVICE_TYPES.map((service) => (
+                                            {serviceOptions.map((service) => (
                                                 <SelectItem key={service.value} value={service.value}>
                                                     {service.label} — {service.price}
                                                 </SelectItem>

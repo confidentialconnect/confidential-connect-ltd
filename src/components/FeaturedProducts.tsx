@@ -12,7 +12,7 @@ export const FeaturedProducts = () => {
   useEffect(() => {
     (async () => {
       const { data } = await supabase.functions.invoke("public-catalog");
-      const all = (((data as any)?.products as Product[]) || []);
+      const all = (((data as any)?.products as CatalogProduct[]) || []);
       const featured = all.filter((p) => p.featured);
       setProducts((featured.length > 0 ? featured : all).slice(0, 8));
       setLoading(false);
