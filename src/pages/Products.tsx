@@ -28,7 +28,7 @@ const Products = () => {
     document.title = "Shop | Confidential Connect Ltd";
     (async () => {
       const { data } = await supabase.functions.invoke("public-catalog");
-      setProducts(((data as any)?.products as Product[]) || []);
+      setProducts(((data as any)?.products as CatalogProduct[]) || []);
       setCategories(((data as any)?.categories as Category[]) || []);
       setLoading(false);
     })();
