@@ -191,7 +191,7 @@ const ServiceRequest = () => {
     };
 
     const catalogOptions = catalogProducts.map((product) => ({
-        value: product.id,
+        value: product.name,
         label: product.name,
         price: `₦${Number(product.discount_price || product.price).toLocaleString()}`,
     }));
