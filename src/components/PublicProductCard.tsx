@@ -6,9 +6,9 @@ import { ShoppingCart, Star, Package } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
 import servicesBanner from "@/assets/services-banner.jpg";
-import originCertificate from "@/assets/origin-certificate.jpg";
-import identificationCertificate from "@/assets/identification-certificate.jpg";
-import certificatesCollection from "@/assets/certificates-collection.jpg";
+const originCertificate = "/assets/origin-certificate.jpg";
+const identificationCertificate = "/assets/identification-certificate.jpg";
+const certificatesCollection = "/assets/certificates-collection.jpg";
 
 export interface CatalogProduct {
   id: string;
