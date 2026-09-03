@@ -78,8 +78,6 @@ const Pricing = () => {
                             </CardContent>
                         </Card>
                     )}
-                    </div>
-
                     {/* Note */}
                     <div className="mt-12 bg-muted/30 border border-border rounded-xl p-6 text-center">
                         <p className="text-sm text-muted-foreground mb-1">

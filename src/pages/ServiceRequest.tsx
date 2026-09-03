@@ -166,7 +166,7 @@ const ServiceRequest = () => {
             await supabase.from('notifications').insert({
                 user_id: user.id,
                 title: 'Service Request Submitted',
-                message: `Your request for "${SERVICE_TYPES.find(s => s.value === formData.service_type)?.label}" has been submitted successfully. We will process it shortly.`,
+                message: `Your request for "${selectedService?.label || formData.service_type}" has been submitted successfully. We will process it shortly.`,
                 type: 'success',
                 link: '/dashboard',
             });
@@ -191,7 +191,7 @@ const ServiceRequest = () => {
     };
 
     const catalogOptions = catalogProducts.map((product) => ({
-        value: product.id,
+        value: product.name,
         label: product.name,
         price: `₦${Number(product.discount_price || product.price).toLocaleString()}`,
     }));
